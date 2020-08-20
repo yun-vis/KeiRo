@@ -15,7 +15,6 @@
 #include "GraphicsBallItem.h"
 
 namespace Ui {
-namespace Vector {
 
     //------------------------------------------------------------------------------
     //	Private functions
@@ -165,5 +164,4 @@ namespace Vector {
         return 0; //GRAPHICS_BALL+QGraphicsItem::UserType;
     }
 
-} // namespace Vector
 } // namespace Ui

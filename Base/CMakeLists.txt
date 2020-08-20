@@ -9,17 +9,21 @@ set( MAIN_PROJECT_ROOT "${CMAKE_SOURCE_DIR}/.." )
 
 add_library(${Target_Name} SHARED
         src/Base.cpp
+        src/Color.cpp
         src/Common.cpp
-        src/Coord2.cpp
-        src/Label.cpp
-        src/Grid2.cpp
         src/Config.cpp
+        src/Coord2.cpp
+        src/Line2.cpp
+        src/Polygon2.cpp
+        src/Object.cpp
+#        src/Label.cpp
+#        src/Grid2.cpp
         )
 
 set_target_properties(${Target_Name} PROPERTIES
         VERSION ${PROJECT_VERSION}
         SOVERSION 1
-        PUBLIC_HEADER "src/Common.h;src/Base.h;src/Coord2.h;src/Label.h;src/Grid2.h;src/Config.h" 
+        PUBLIC_HEADER "src/Base.h;src/Color.h;src/Common.h;src/Config.h;src/Coord2.h;src/Line2.h;src/Object.h;src/Timer.h"
         )
 
 set( INSTALL_LIBDIR ${CMAKE_SOURCE_DIR}/lib )

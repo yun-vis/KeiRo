@@ -22,6 +22,8 @@ using namespace std;
 #include "Common.h"
 #include "Coord2.h"
 
+namespace KeiRo {
+namespace Base {
 
 //------------------------------------------------------------------------------
 //	Macro Definitions
@@ -765,5 +767,6 @@ istream & operator >> ( istream & stream, Coord2 & obj )
 }
 
 
-
+} // namespace Base
+} // namespace KeiRo
 

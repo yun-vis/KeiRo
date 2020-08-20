@@ -40,7 +40,6 @@ using namespace std;
 //#endif // Q_MOC_RUN
 
 namespace Ui {
-namespace Vector {
 
     //------------------------------------------------------------------------------
     //	Class definition
@@ -120,7 +119,6 @@ namespace Vector {
 
     };
 
-} // namespace Vector
 } // namespace Ui
 
 #endif // Ui_Vector_GraphicsBallItem_H

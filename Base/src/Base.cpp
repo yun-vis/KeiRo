@@ -14,8 +14,11 @@
 
 #include "Base.h"
 
+namespace KeiRo {
+namespace Base {
 
-
+} // namespace Base
+} // namespace KeiRo
 
 // end of header file
 // Do not add any stuff under this line.

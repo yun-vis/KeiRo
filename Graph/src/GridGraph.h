@@ -1,15 +1,15 @@
 //******************************************************************************
-// BaseUndirectedGraph.h
-//	: header file for base undirected graph
+// GridGraph.h
+//	: header file for grid graph
 //
 //------------------------------------------------------------------------------
 //
-//	Ver 1.00		Date: Tue Dec 27 23:16:12 2018
+//	Ver 1.00		Date: Sun Feb 09 23:16:12 2020
 //
 //******************************************************************************
 
-#ifndef _Graph_BaseUndirectedGraph_H
-#define _Graph_BaseUndirectedGraph_H
+#ifndef _Graph_GridGraph_H
+#define _Graph_GridGraph_H
 
 //------------------------------------------------------------------------------
 //	Including Header Files
@@ -31,20 +31,12 @@ using namespace std;
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/iteration_macros.hpp>
 
-// force-directed layout
-#include <boost/graph/fruchterman_reingold.hpp>
-#include <boost/graph/kamada_kawai_spring_layout.hpp>
-#include <boost/graph/random_layout.hpp>
-#include <boost/graph/topology.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/graph/connected_components.hpp>
-
 using namespace boost;
 
-#include "base/Coord2.h"
-#include "graph/BaseGraphProperty.h"
-#include "graph/BaseVertexProperty.h"
-#include "graph/BaseEdgeProperty.h"
+#include "Coord2.h"
+#include "GridGraphProperty.h"
+#include "GridVertexProperty.h"
+#include "GridEdgeProperty.h"
 
 //------------------------------------------------------------------------------
 //	Defining Macros
@@ -53,15 +45,15 @@ using namespace boost;
 namespace Graph {
 
     typedef adjacency_list< listS, listS, undirectedS,
-            BaseVertexProperty, BaseEdgeProperty,
-            BaseGraphProperty >  BaseUndirectedGraph;
+            GridVertexProperty, GridEdgeProperty,
+            GridGraphProperty >  GridGraph;
 
     //------------------------------------------------------------------------------
     //	Special functions
     //------------------------------------------------------------------------------
-    void printGraph( const BaseUndirectedGraph & g );
-    void clearGraph( BaseUndirectedGraph & g );
+    void printGraph( const GridGraph & g );
+    void clearGraph( GridGraph & g );
 
 } // namespace Graph
 
-#endif  // _Graph_BaseUndirectedGraph_H
+#endif  // _Graph_GridGraph_H

@@ -1,27 +1,32 @@
 //******************************************************************************
-// BaseEdgeProperty.h
-//	: header file for base edge property
+// GridVertexProperty.h
+//	: header file for tree vertex property
 //
 //------------------------------------------------------------------------------
 //
-//	Ver 1.00		Date: Tue Dec 27 23:16:12 2018
+//	Ver 1.00		Date: Sun Feb 09 23:16:12 2020
 //
 //******************************************************************************
 
-#ifndef	_Graph_BaseEdgeProperty_H
-#define _Graph_BaseEdgeProperty_H
+#ifndef	_Graph_GridVertexProperty_H
+#define _Graph_GridVertexProperty_H
 
 //------------------------------------------------------------------------------
 //	Including Header Files
 //------------------------------------------------------------------------------
-
 #include <iostream>
 #include <vector>
 
 using namespace std;
 
 #include "Coord2.h"
-//#include "GraphicsEdgeItem.h"
+#include "Common.h"
+#include "BaseVertexProperty.h"
+
+//------------------------------------------------------------------------------
+//	Defining Macros
+//------------------------------------------------------------------------------
+#define VERTEX_CAPACITY (1)
 
 //------------------------------------------------------------------------------
 //	Defining Macros
@@ -29,10 +34,13 @@ using namespace std;
 
 namespace Graph {
 
+    enum GRID_VERTEX_TYPE{ GRID_VERTEX_DEFAULT, GRID_VERTEX_CORNER,
+                           GRID_VERTEX_BOUNDARY_ONX, GRID_VERTEX_BOUNDARY_ONY, GRID_VERTEX_FREE };
+
     //------------------------------------------------------------------------------
     //	Defining Classes
     //------------------------------------------------------------------------------
-    class BaseEdgeProperty {
+    class GridVertexProperty: public BaseVertexProperty {
 
     private:
 
@@ -41,35 +49,28 @@ namespace Graph {
         //------------------------------------------------------------------------------
         //	Special functions
         //------------------------------------------------------------------------------
-        void		    _init( void );
+          void		    _init( void );
 
     public:
 
-        unsigned int                id;
-
-        double                      angle;
-        double                      weight;
-        bool                        visit;
-        int                         visitedTimes;
-
-        bool                        isFore;
-        bool                        isBack;
-        bool                        isShow;
-
-        //Ui::Vector::GraphicsEdgeItem * itemPtr;
+        // gird type
+        GRID_VERTEX_TYPE                        gridVType;
+        // initial position
+        KeiRo::Base::Coord2 *                   geoPtr;
+        // position after deformation
+        KeiRo::Base::Coord2 *                   smoothPtr;
+        // flag on if the pixel is occupied
+        bool                            isOccupied;
 
         //------------------------------------------------------------------------------
         //	Constructors & Destructors
         //------------------------------------------------------------------------------
         // default constructor
-        BaseEdgeProperty( void );
+        GridVertexProperty( void );
         // copy constructor
-        BaseEdgeProperty( const BaseEdgeProperty & e ) {
-            id	    = e.id;
-            weight	= e.weight;
-        }
+        GridVertexProperty( const GridVertexProperty & c ) {}
         // destructor
-        virtual ~BaseEdgeProperty( void ) {}
+        virtual ~GridVertexProperty( void ) {}
 
         //------------------------------------------------------------------------------
         //	Assignment operators
@@ -83,7 +84,7 @@ namespace Graph {
         //	Special functions
         //------------------------------------------------------------------------------
 
-        void        init( void )		      { _init(); }
+        void        init( void )		{ _init(); }
 
         //------------------------------------------------------------------------------
         //	Friend functions
@@ -93,14 +94,14 @@ namespace Graph {
         //	I/O functions
         //------------------------------------------------------------------------------
         // output
-        friend ostream &	operator << ( ostream & s, const BaseEdgeProperty & v );
+        friend ostream &	operator << ( ostream & s, const GridVertexProperty & v );
         // input
-        friend istream &	operator >> ( istream & s, BaseEdgeProperty & v );
+        friend istream &	operator >> ( istream & s, GridVertexProperty & v );
         // class name
-        virtual const char * className( void ) const { return "BaseEdgeProperty"; }
+        virtual const char * className( void ) const { return "GridVertexProperty"; }
 
     };
 
 } // namespace Graph
 
-#endif // _Graph_BaseEdgeProperty_H
+#endif // _Graph_GridVertexProperty_H

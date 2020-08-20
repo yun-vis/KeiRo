@@ -1,18 +1,17 @@
 //******************************************************************************
-// BaseUndirectedGraph.cpp
-//      : program file for graph function
+// GridGraph.cpp
+//	: program file for grid graph
 //
 //------------------------------------------------------------------------------
 //
-//	Ver 1.00		Date: Mon Mar 14 02:16:23 2019
+//	Ver 1.00		Date: Tue Dec 27 23:16:12 2018
 //
 //******************************************************************************
 
 //------------------------------------------------------------------------------
 //	Including Header Files
 //------------------------------------------------------------------------------
-
-#include "BaseUndirectedGraph.h"
+#include "GridGraph.h"
 
 namespace Graph {
 
@@ -32,7 +31,7 @@ namespace Graph {
     //	Special functions
     //------------------------------------------------------------------------------
     //
-    //  BaseUndirectedGraph::printGraph -- print the graph.
+    //  GridGraph::printGraph -- print the graph.
     //
     //  Inputs
     //  g   : object of Grpah
@@ -40,47 +39,49 @@ namespace Graph {
     //  Outputs
     //  none
     //
-    void printGraph( const BaseUndirectedGraph & graph )
+    void printGraph( const GridGraph & graph )
     {
         cerr << "num_vertices = " << num_vertices( graph ) << endl;
         cerr << "num_edges = " << num_edges( graph ) << endl;
 
-    //#ifdef  DEBUG
+    #ifdef  DEBUG
         // print vertex information
-        BGL_FORALL_VERTICES( vd, graph, BaseUndirectedGraph ) {
+        int count = 0;
+        BGL_FORALL_VERTICES( vd, graph, GridGraph ) {
 
-            //BaseUndirectedGraph::degree_size_type      degrees         = out_degree( vd, graph );
-            cerr << " id = " << graph[vd].id << " initID = " << graph[vd].initID
-                 << " coord = " << *graph[ vd ].coordPtr;
+            //GridGraph::degree_size_type      degrees         = out_degree( vd, graph );
+            //cerr << "vid = " << graph[vd].id << " level = " << graph[vd].level
+            //     << " leafSize = " << graph[vd].leafVec.size() << endl;
+            //if( graph[vd].leafVec.size() == 1 ) count++;
         }
-    //#endif  // DEBUG
+        cerr << "count = " << count << " ?= nVertices = " << num_vertices( graph ) << endl;
+    #endif  // DEBUG
 
-    //#ifdef  DEBUG
+    #ifdef  DEBUG
         // print edge information
-        BGL_FORALL_EDGES( ed, graph, BaseUndirectedGraph ) {
+        BGL_FORALL_EDGES( ed, graph, GridGraph ) {
 
-            BaseUndirectedGraph::vertex_descriptor vdS = source( ed, graph );
-            BaseUndirectedGraph::vertex_descriptor vdT = target( ed, graph );
+            GridGraph::vertex_descriptor vdS = source( ed, graph );
+            GridGraph::vertex_descriptor vdT = target( ed, graph );
 
-            cerr << "eid = " << graph[ ed ].id << " ( " << graph[ vdS ].id << " == " << graph[ vdT ].id << " ) "
-                 << " w = " << graph[ ed ].weight << endl;
+            cerr << "eid = " << graph[ ed ].id << " ( " << graph[ vdS ].id << " == " << graph[ vdT ].id << " ) " << endl;
         }
-    //#endif  // DEBUG
+    #endif  // DEBUG
     }
 
     //
-    //  BaseUndirectedGraph::clearGraph -- clear the graph.
+    //  GridGraph::clearGraph -- clear the graph.
     //
     //  Inputs
-    //  g   : object of Graph
+    //  g   : object of Grpah
     //
     //  Outputs
     //  none
     //
-    void clearGraph( BaseUndirectedGraph & graph )
+    void clearGraph( GridGraph & graph )
     {
         // clear edges
-        BaseUndirectedGraph::edge_iterator ei, ei_end, e_next;
+        GridGraph::edge_iterator ei, ei_end, e_next;
         tie( ei, ei_end ) = edges( graph );
         for ( e_next = ei; ei != ei_end; ei = e_next ) {
             e_next++;
@@ -95,9 +96,9 @@ namespace Graph {
     #endif  // SKIP
 
         // clear vertices
-        pair< BaseUndirectedGraph::vertex_iterator, BaseUndirectedGraph::vertex_iterator > vp;
+        pair< GridGraph::vertex_iterator, GridGraph::vertex_iterator > vp;
         for ( vp = vertices( graph ); vp.first != vp.second;  ) {
-            BaseUndirectedGraph::vertex_descriptor vd = (*vp.first);
+            GridGraph::vertex_descriptor vd = (*vp.first);
             ++vp.first;
             clear_vertex( vd, graph );
             remove_vertex( vd, graph );

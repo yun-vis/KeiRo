@@ -54,7 +54,6 @@ using namespace std;
 //------------------------------------------------------------------------------
 
 namespace Ui{
-namespace Vector {
 
     //------------------------------------------------------------------------------
     //	Class definition
@@ -68,12 +67,6 @@ namespace Vector {
         // picking testing
 //        QPainterPath                    _selectionArea;
 
-        //------------------------------------------------------------------------------
-        //	Data
-        //------------------------------------------------------------------------------
-        // scene
-        QGraphicsScene                  *_scenePtr;
-	    Base                            *_basePtr;
 
         //------------------------------------------------------------------------------
         //	UI
@@ -92,8 +85,15 @@ namespace Vector {
         void _clear             ( void );
 
     protected:
-
-        //------------------------------------------------------------------------------
+	
+	    //------------------------------------------------------------------------------
+	    //	Data
+	    //------------------------------------------------------------------------------
+	    // scene
+	    QGraphicsScene                  *_scenePtr;
+	    KeiRo::Base::Base               *_basePtr;
+	    
+	    //------------------------------------------------------------------------------
         //	Event handlers
         //------------------------------------------------------------------------------
         void keyPressEvent      ( QKeyEvent *event )    Q_DECL_OVERRIDE;
@@ -104,13 +104,13 @@ namespace Vector {
         //------------------------------------------------------------------------------
         //	Drawing functions
         //------------------------------------------------------------------------------
-        void _item_data                ( void );
-        void _update_item_data         ( void );
+
 
         //------------------------------------------------------------------------------
         //	Special functions
         //------------------------------------------------------------------------------
-
+        virtual void readInputData( void ) = 0;
+        
     public:
 
         //settings
@@ -137,14 +137,15 @@ namespace Vector {
         //------------------------------------------------------------------------------
         //	    Special functions
         //------------------------------------------------------------------------------
-        void init               ( Base *__b_ptr ) {
+        void init               ( KeiRo::Base::Base *__b_ptr ) {
 	        _basePtr = __b_ptr;
             _init();
         }
 
         void simulateKey        ( Qt::Key key );
-        void initSceneItems     ( void );
-        void updateSceneItems     ( void );
+
+        virtual void initSceneItems     ( void ) = 0;
+        virtual void updateSceneItems   ( void ) = 0;
 
         void exportPNG ( double x, double y, double w, double h );
         void exportSVG ( double x, double y, double w, double h );
@@ -165,7 +166,6 @@ namespace Vector {
 
     };
 
-} // namespace Vector
 } // namespace Ui
 
 #endif // Ui_Vector_GraphicsView_H

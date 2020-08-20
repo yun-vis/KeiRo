@@ -44,3 +44,10 @@ ERROR: dylib is not generated successfully on macOS
 https://stackoverflow.com/questions/36659004/eigen-matrix-multiplication-speed
 
 # windows
+
+# Third Party
+- [CTPL][ctpl] (Modern and efficient C++ Thread Pool Library)
+- [micans][micans] (Markov Cluster Algorithm Library)
+
+[ctpl]: https://github.com/vit-vit/CTPL
+[micans]: https://micans.org/mcl/

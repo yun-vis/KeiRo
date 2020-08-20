@@ -3,13 +3,11 @@ PROJECT( UI VERSION 1.0 DESCRIPTION "The UI module of the KeiRo package")
 set( Target_Name KeiRoUI )
 
 #include(GNUInstallDirs)
-message( "GNUInstallDirs: " ${GNUInstallDirs} )
+#message( "GNUInstallDirs: " ${GNUInstallDirs} )
 
 set( MAIN_PROJECT_ROOT "${CMAKE_SOURCE_DIR}/.." )
 
 add_library(${Target_Name} SHARED
-#        src/Bitmap/Widget.cpp
-#        src/Bitmap/Window.cpp
         src/GraphicsVertexItem.cpp
         src/GraphicsBallItem.cpp
         src/GraphicsEdgeItem.cpp
@@ -20,7 +18,6 @@ add_library(${Target_Name} SHARED
 set_target_properties(${Target_Name} PROPERTIES
         VERSION ${PROJECT_VERSION}
         SOVERSION 1
-        #        PUBLIC_HEADER "src/Bitmap/Widget.h;src/Bitmap/Window.h"
         PUBLIC_HEADER "src/MainWindow.h;src/GraphicsView.h;src/GraphicsBallItem.h;src/GraphicsVertexItem.h;src/GraphicsEdgeItem.h"
         )
 
@@ -40,16 +37,15 @@ target_link_directories(${Target_Name}
         ${CMAKE_BINARY_DIR}/Graph/
         )
 set( CUSTOM_LIBRARIES "-lKeiRoBase")
-target_link_libraries(${Target_Name}
-        PRIVATE ${CUSTOM_LIBRARIES})
+target_link_libraries(${Target_Name} PRIVATE ${CUSTOM_LIBRARIES})
 
 #----------------------------------------------------------------------
 # cmake setting
 #----------------------------------------------------------------------
 ## set output folder
 #set(CMAKE_INCLUDE_CURRENT_DIR ON)
-##message( "CMAKE_BINARY_DIR: " ${CMAKE_BINARY_DIR} )
-##message( "CMAKE_SOURCE_DIR: " ${CMAKE_SOURCE_DIR} )
+#message( "CMAKE_BINARY_DIR: " ${CMAKE_BINARY_DIR} )
+#message( "CMAKE_SOURCE_DIR: " ${CMAKE_SOURCE_DIR} )
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 #set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 #set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")

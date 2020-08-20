@@ -1,27 +1,28 @@
 //******************************************************************************
-// BaseEdgeProperty.h
-//	: header file for base edge property
+// GridGraphProperty.h
+//	: header file for tree graph property
 //
 //------------------------------------------------------------------------------
 //
-//	Ver 1.00		Date: Tue Dec 27 23:16:12 2018
+//	Ver 1.00		Date: Sun Feb 09 23:16:12 2020
 //
 //******************************************************************************
 
-#ifndef	_Graph_BaseEdgeProperty_H
-#define _Graph_BaseEdgeProperty_H
+#ifndef	_Graph__GridGraphProperty_H
+#define _Graph__GridGraphProperty_H
 
 //------------------------------------------------------------------------------
 //	Including Header Files
 //------------------------------------------------------------------------------
 
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
 #include "Coord2.h"
-//#include "GraphicsEdgeItem.h"
+#include "Common.h"
+#include "BaseGraphProperty.h"
+
 
 //------------------------------------------------------------------------------
 //	Defining Macros
@@ -32,7 +33,7 @@ namespace Graph {
     //------------------------------------------------------------------------------
     //	Defining Classes
     //------------------------------------------------------------------------------
-    class BaseEdgeProperty {
+    class GridGraphProperty: public BaseGraphProperty {
 
     private:
 
@@ -41,35 +42,19 @@ namespace Graph {
         //------------------------------------------------------------------------------
         //	Special functions
         //------------------------------------------------------------------------------
-        void		    _init( void );
+         void		    _init( double &width, double &height );
 
     public:
-
-        unsigned int                id;
-
-        double                      angle;
-        double                      weight;
-        bool                        visit;
-        int                         visitedTimes;
-
-        bool                        isFore;
-        bool                        isBack;
-        bool                        isShow;
-
-        //Ui::Vector::GraphicsEdgeItem * itemPtr;
 
         //------------------------------------------------------------------------------
         //	Constructors & Destructors
         //------------------------------------------------------------------------------
         // default constructor
-        BaseEdgeProperty( void );
+        GridGraphProperty( void );
         // copy constructor
-        BaseEdgeProperty( const BaseEdgeProperty & e ) {
-            id	    = e.id;
-            weight	= e.weight;
-        }
+        GridGraphProperty( const GridGraphProperty & c ) {}
         // destructor
-        virtual ~BaseEdgeProperty( void ) {}
+        virtual ~GridGraphProperty( void ) {}
 
         //------------------------------------------------------------------------------
         //	Assignment operators
@@ -83,24 +68,27 @@ namespace Graph {
         //	Special functions
         //------------------------------------------------------------------------------
 
-        void        init( void )		      { _init(); }
+        void        init( double &__width, double &__height ) {
+            _init( __width, __height );
+        }
 
         //------------------------------------------------------------------------------
         //	Friend functions
         //------------------------------------------------------------------------------
 
+
         //------------------------------------------------------------------------------
         //	I/O functions
         //------------------------------------------------------------------------------
         // output
-        friend ostream &	operator << ( ostream & s, const BaseEdgeProperty & v );
+        friend ostream &	operator << ( ostream & s, const GridGraphProperty & v );
         // input
-        friend istream &	operator >> ( istream & s, BaseEdgeProperty & v );
+        friend istream &	operator >> ( istream & s, GridGraphProperty & v );
         // class name
-        virtual const char * className( void ) const { return "BaseEdgeProperty"; }
+        virtual const char * className( void ) const { return "GridGraphProperty"; }
 
     };
 
 } // namespace Graph
 
-#endif // _Graph_BaseEdgeProperty_H
+#endif // _Graph_GridGraphProperty_H

@@ -4,7 +4,7 @@
 //
 //------------------------------------------------------------------------------
 //
-//	Ver 1.00		Date: Tue Aug 13 23:16:12 2020
+//	Ver 1.00		Date: Tue Dec 27 23:16:12 2018
 //
 //******************************************************************************
 
@@ -22,6 +22,7 @@ using namespace std;
 
 #include "Coord2.h"
 #include "Common.h"
+//#include "GraphicsBallItem.h"
 
 //------------------------------------------------------------------------------
 //	Defining Macros
@@ -46,23 +47,26 @@ namespace Graph {
     public:
 
         unsigned int                id;
+        unsigned int                initID;                 // initial id
+        unsigned int                groupID;                // group id
+        unsigned int                componentID;            // component id
+
         string *                    namePtr;
         double *                    namePixelWidthPtr;      // pixel width of the name
         double *                    namePixelHeightPtr;     // pixel height of the name
-        double                      weight;                 // vertex weight
 
-        Coord2 *                    geoPtr;                 // center coordinates
-	    Coord2 *                    smoothPtr;              // center coordinates
-	    Coord2 *                    octilinearPtr;          // center coordinates
-	    Coord2 *                    coordPtr;               // center coordinates
+        double                      weight;
+
+        KeiRo::Base::Coord2 *              coordPtr;               // center coordinates
         double *                    widthPtr;               // vertex width
         double *                    heightPtr;              // vertex height
         double *                    areaPtr;                // vertex area
-	
-	    vector< unsigned int >      lineID;                 // line id
+
         int                         color;                  // color type
         bool                        flag;                   // flag
-        
+
+        // Ui::Vector::GraphicsBallItem * itemPtr;
+
         //------------------------------------------------------------------------------
         //	Constructors & Destructors
         //------------------------------------------------------------------------------

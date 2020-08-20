@@ -28,6 +28,8 @@ using namespace std;
 //------------------------------------------------------------------------------
 //	Defining Classes
 //------------------------------------------------------------------------------
+namespace KeiRo {
+namespace Base {
 
 class Coord2 {
 
@@ -162,6 +164,7 @@ class Coord2 {
 				// クラス名
 
 };
-
+} // namespace Base
+} // namespace KeiRo
 
 #endif // _Coord2_H

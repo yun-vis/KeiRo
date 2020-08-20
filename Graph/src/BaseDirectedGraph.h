@@ -1,6 +1,6 @@
 //******************************************************************************
-// BaseUndirectedGraph.h
-//	: header file for base undirected graph
+// BaseDirectedGraph.h
+//	: header file for base directed graph
 //
 //------------------------------------------------------------------------------
 //
@@ -8,8 +8,8 @@
 //
 //******************************************************************************
 
-#ifndef _Graph_BaseUndirectedGraph_H
-#define _Graph_BaseUndirectedGraph_H
+#ifndef _Graph_BaseDirectedGraph_H
+#define _Graph_BaseDirectedGraph_H
 
 //------------------------------------------------------------------------------
 //	Including Header Files
@@ -33,7 +33,7 @@ using namespace std;
 
 // force-directed layout
 #include <boost/graph/fruchterman_reingold.hpp>
-#include <boost/graph/kamada_kawai_spring_layout.hpp>
+//#include <boost/graph/kamada_kawai_spring_layout.hpp>
 #include <boost/graph/random_layout.hpp>
 #include <boost/graph/topology.hpp>
 #include <boost/lexical_cast.hpp>
@@ -52,16 +52,32 @@ using namespace boost;
 
 namespace Graph {
 
-    typedef adjacency_list< listS, listS, undirectedS,
+    typedef adjacency_list< listS, listS, bidirectionalS,
             BaseVertexProperty, BaseEdgeProperty,
-            BaseGraphProperty >  BaseUndirectedGraph;
+            BaseGraphProperty >  BaseDirectedGraph;
+
+    // position map
+    typedef boost::rectangle_topology<> topologyType;
+    typedef topologyType::point_type pointType;
+    typedef vector< pointType > PositionVec;
+    typedef iterator_property_map< PositionVec::iterator,
+            property_map< BaseDirectedGraph, unsigned int BaseVertexProperty::* >::type > PositionMap;
+
+    // difference map
+    typedef boost::convex_topology< 2 >::point_difference PointDifference;
+    typedef vector< PointDifference > DifferenceVec;
+    typedef iterator_property_map< DifferenceVec::iterator,
+            property_map< BaseDirectedGraph, unsigned int BaseVertexProperty::* >::type > DifferenceMap;
+    typedef vector< PointDifference > DifferenceVec;
 
     //------------------------------------------------------------------------------
     //	Special functions
     //------------------------------------------------------------------------------
-    void printGraph( const BaseUndirectedGraph & g );
-    void clearGraph( BaseUndirectedGraph & g );
+    void randomGraphLayout( BaseDirectedGraph & graph, double width, double height );
+    void fruchtermanGraphLayout( BaseDirectedGraph & graph, double width, double height );
+    void printGraph( const  BaseDirectedGraph & g );
+    void clearGraph( BaseDirectedGraph & g );
 
 } // namespace Graph
 
-#endif  // _Graph_BaseUndirectedGraph_H
+#endif  // _Graph_BaseDirectedGraph_H

@@ -13,12 +13,16 @@ add_library(${Target_Name} SHARED
         src/BaseEdgeProperty.cpp
         src/BaseGraphProperty.cpp
         src/BaseUndirectedGraph.cpp
+        src/GridEdgeProperty.cpp
+        src/GridVertexProperty.cpp
+        src/GridGraphProperty.cpp
+        src/GridGraph.cpp
         )
 
 set_target_properties(${Target_Name} PROPERTIES
         VERSION ${PROJECT_VERSION}
         SOVERSION 1
-        PUBLIC_HEADER "src/BaseVertexProperty.h;src/BaseEdgeProperty.h;src/BaseGraphProperty.h;src/BaseUndirectedGraph.h"
+        PUBLIC_HEADER "src/BaseVertexProperty.h;src/BaseEdgeProperty.h;src/BaseGraphProperty.h;src/BaseUndirectedGraph.h;src/GridVertexProperty.h;src/GridEdgeProperty.h;src/GridGraphProperty.h;src/GridGraph.h"
         )
 
 #----------------------------------------------------------------------
@@ -35,7 +39,7 @@ target_link_directories(${Target_Name}
         ${CMAKE_BINARY_DIR}/Base/
         )
 set( CUSTOM_LIBRARIES "-lKeiRoBase")
-target_link_libraries(${Target_Name} ${CUSTOM_LIBRARIES})
+target_link_libraries(${Target_Name} PUBLIC ${CUSTOM_LIBRARIES})
 
 #----------------------------------------------------------------------
 # Boost

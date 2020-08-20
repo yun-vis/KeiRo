@@ -24,43 +24,6 @@ namespace Ui {
     //	Private functions
     //------------------------------------------------------------------------------
     //
-    //  MainWindow::_init -- initialization
-    //
-    //  Inputs
-    //  none
-    //
-    //  Outputs
-    //  none
-    //
-    void MainWindow::_init( void )
-    {
-		 createMainView();
-
-        _createActions();
-        _createStatusBar();
-        _createDockWindows();
-		
-		setWindowTitle( tr("KeiRo") );
-		setMouseTracking( false );
-		setUnifiedTitleAndToolBarOnMac(true );
-    }
-
-    //
-    //  MainWindow::init -- initialization
-    //
-    //  Inputs
-    //  none
-    //
-    //  Outputs
-    //  none
-    //
-    void MainWindow::init( Base *__b_ptr )
-    {
-    	_basePtr = __b_ptr;
-	    _init();
-    }
-
-    //
     //  MainWindow::_createActions -- create actions
     //
     //  Inputs
@@ -351,24 +314,6 @@ namespace Ui {
         cerr << "icon_height = " << icon_height << endl;
 	    cerr << "win_width = " << width() << " win_height = " << height() << endl;
 //#endif // DEBUG
-    }
-
-
-    void MainWindow::createMainView(void)
-    {
-	    _mainGV = new Vector::GraphicsView( this );
-        _mainGV->setStyleSheet("background: white; border: transparent;");
-	    _mainGV->setGeometry( QRect( 0, 0, KeiRo::Base::Common::getDockWidgetWidth(),
-	                                 KeiRo::Base::Common::getMainwidgetHeight() ) );
-	    _mainGV->setMinimumSize( QSize( KeiRo::Base::Common::getDockWidgetWidth(),
-	                                    KeiRo::Base::Common::getMainwidgetHeight() ) );
-	    _mainGV->setMouseTracking( true );
-	    _mainGV->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	    _mainGV->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	    _mainGV->init( _basePtr );
-	    _mainGV->initSceneItems();
-
-	    setCentralWidget( _mainGV );
     }
     
 

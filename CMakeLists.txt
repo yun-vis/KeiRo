@@ -17,10 +17,10 @@ message( "CMAKE_SOURCE_DIR: " ${CMAKE_SOURCE_DIR} )
 add_subdirectory( Base )
 add_subdirectory( Graph )
 add_subdirectory( UI )
-#add_subdirectory( FileIO )
+add_subdirectory( FileIO )
 #add_subdirectory( Metabopolis )
-#add_subdirectory( Harmony )
-add_subdirectory( Lens )
+add_subdirectory( Harmony )
+#add_subdirectory( ResponsiveLens )
 
 # Copy directories
 file(COPY ${CMAKE_SOURCE_DIR}/config/ DESTINATION ${CMAKE_BINARY_DIR}/config/)

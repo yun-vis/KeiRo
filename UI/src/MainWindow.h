@@ -44,12 +44,12 @@ namespace Ui {
         Q_OBJECT
 
     private:
-    	
-        Base                                        *_basePtr;
+	
+	    KeiRo::Base::Base                           *_basePtr;
     
     private:
 
-        Vector::GraphicsView                        *_mainGV;
+        GraphicsView                                *_mainGV;
 	    QDockWidget                                 *_settingsDock;
 	    QDockWidget                                 *_interactionDock;
         QWidget                                     *_setting;
@@ -59,7 +59,18 @@ namespace Ui {
         //------------------------------------------------------------------------------
         //	Special functions
         //------------------------------------------------------------------------------
-        void _init  ( void );
+        template <class T> void _init  ( T *__t_ptr ){
+        	
+	        createMainView( __t_ptr );
+	
+	        _createActions();
+	        _createStatusBar();
+	        _createDockWindows();
+	
+	        setWindowTitle( tr("KeiRo") );
+	        setMouseTracking( false );
+	        setUnifiedTitleAndToolBarOnMac(true );
+        }
         void _createActions     ( void );
         void _createStatusBar   ( void );
         void _createDockWindows ( void );
@@ -91,7 +102,28 @@ namespace Ui {
         //------------------------------------------------------------------------------
         //	Specific functions
         //------------------------------------------------------------------------------
-        void init  ( Base *__b_ptr );
+        template <class T> void init  ( KeiRo::Base::Base *__b_ptr, T *__t_ptr ){
+	        _basePtr = __b_ptr;
+	        _init( __t_ptr );
+        }
+        
+	    template <class T> void createMainView( T *__t_ptr ){
+      
+		    _mainGV = __t_ptr;
+		    // _mainGV = new Ui::GraphicsView( this );
+		    _mainGV->setStyleSheet("background: white; border: transparent;");
+		    _mainGV->setGeometry( QRect( 0, 0, KeiRo::Base::Common::getDockWidgetWidth(),
+		                                 KeiRo::Base::Common::getMainwidgetHeight() ) );
+		    _mainGV->setMinimumSize( QSize( KeiRo::Base::Common::getDockWidgetWidth(),
+		                                    KeiRo::Base::Common::getMainwidgetHeight() ) );
+		    _mainGV->setMouseTracking( true );
+		    _mainGV->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+		    _mainGV->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+		    _mainGV->init( _basePtr );
+		    _mainGV->initSceneItems();
+		
+		    setCentralWidget( _mainGV );
+        }
 
 	    //------------------------------------------------------------------------------
         //	I/O functions
@@ -110,7 +142,6 @@ namespace Ui {
         void print  ( void );
         void undo   ( void );
         void about  ( void );
-        void createMainView(void);
         void _updateSetting      ( const QString &setting );
         void _updateInteraction  ( const QString &interaction );
         void _updateAllDocks    ( void );

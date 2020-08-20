@@ -1,75 +1,61 @@
 //******************************************************************************
-// BaseEdgeProperty.h
-//	: header file for base edge property
+// Color.h
+//	: header file for color schemes
 //
 //------------------------------------------------------------------------------
 //
-//	Ver 1.00		Date: Tue Dec 27 23:16:12 2018
+//	Ver 1.00		Date: Tue Jun 19 02:36:37 2019
 //
 //******************************************************************************
 
-#ifndef	_Graph_BaseEdgeProperty_H
-#define _Graph_BaseEdgeProperty_H
+#ifndef _Base_Color_H
+#define _Base_Color_H
 
 //------------------------------------------------------------------------------
 //	Including Header Files
 //------------------------------------------------------------------------------
 
-#include <iostream>
 #include <vector>
+#include <iostream>
 
 using namespace std;
 
-#include "Coord2.h"
-//#include "GraphicsEdgeItem.h"
+#include "Common.h"
 
 //------------------------------------------------------------------------------
 //	Defining Macros
 //------------------------------------------------------------------------------
+#define MAX_COLOR_TYPE      (12)
 
-namespace Graph {
+namespace KeiRo {
+namespace Base {
 
     //------------------------------------------------------------------------------
     //	Defining Classes
     //------------------------------------------------------------------------------
-    class BaseEdgeProperty {
+    class Color {
 
     private:
-
-    protected:
 
         //------------------------------------------------------------------------------
         //	Special functions
         //------------------------------------------------------------------------------
-        void		    _init( void );
+        // initialize color
+        virtual void	_init( void );
+
+    protected:
 
     public:
-
-        unsigned int                id;
-
-        double                      angle;
-        double                      weight;
-        bool                        visit;
-        int                         visitedTimes;
-
-        bool                        isFore;
-        bool                        isBack;
-        bool                        isShow;
-
-        //Ui::Vector::GraphicsEdgeItem * itemPtr;
 
         //------------------------------------------------------------------------------
         //	Constructors & Destructors
         //------------------------------------------------------------------------------
         // default constructor
-        BaseEdgeProperty( void );
+        Color( void ) {}
         // copy constructor
-        BaseEdgeProperty( const BaseEdgeProperty & e ) {
-            id	    = e.id;
-            weight	= e.weight;
-        }
+        Color( const Color & c ) {}
         // destructor
-        virtual ~BaseEdgeProperty( void ) {}
+        ~Color( void ){}
 
         //------------------------------------------------------------------------------
         //	Assignment operators
@@ -82,8 +68,11 @@ namespace Graph {
         //------------------------------------------------------------------------------
         //	Special functions
         //------------------------------------------------------------------------------
-
-        void        init( void )		      { _init(); }
+        static unsigned long RGBtoHex( int r, int g, int b );
+        // select a color scheme
+        static void pickMonotoneColor( vector< double > &rgb );
+        static void pickPastelColor( unsigned int id, vector< double > &rgb );
+        static void pickBrewerColor( unsigned int id, vector< double > &rgb );
 
         //------------------------------------------------------------------------------
         //	Friend functions
@@ -93,14 +82,15 @@ namespace Graph {
         //	I/O functions
         //------------------------------------------------------------------------------
         // output
-        friend ostream &	operator << ( ostream & s, const BaseEdgeProperty & v );
+        friend ostream &	operator << ( ostream & s, const Color & v );
         // input
-        friend istream &	operator >> ( istream & s, BaseEdgeProperty & v );
+        friend istream &	operator >> ( istream & s, Color & v );
         // class name
-        virtual const char * className( void ) const { return "BaseEdgeProperty"; }
+        virtual const char * className( void ) const { return "Color"; }
 
     };
+	
+} // namespace Base
+} // namespace KeiRo
 
-} // namespace Graph
-
-#endif // _Graph_BaseEdgeProperty_H
+#endif // _Base_Color_H

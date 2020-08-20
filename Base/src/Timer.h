@@ -1,75 +1,60 @@
 //******************************************************************************
-// BaseEdgeProperty.h
-//	: header file for base edge property
+// Timer.h
+//	: header file for color schemes
 //
 //------------------------------------------------------------------------------
 //
-//	Ver 1.00		Date: Tue Dec 27 23:16:12 2018
+//	Ver 1.00		Date: Tue Jun 19 02:36:37 2019
 //
 //******************************************************************************
 
-#ifndef	_Graph_BaseEdgeProperty_H
-#define _Graph_BaseEdgeProperty_H
+#ifndef _Base_Timer_H
+#define _Base_Timer_H
 
 //------------------------------------------------------------------------------
 //	Including Header Files
 //------------------------------------------------------------------------------
 
+#include <chrono>
 #include <iostream>
-#include <vector>
 
 using namespace std;
-
-#include "Coord2.h"
-//#include "GraphicsEdgeItem.h"
 
 //------------------------------------------------------------------------------
 //	Defining Macros
 //------------------------------------------------------------------------------
 
-namespace Graph {
+namespace Base {
 
     //------------------------------------------------------------------------------
     //	Defining Classes
     //------------------------------------------------------------------------------
-    class BaseEdgeProperty {
+    template< typename T >
+    class Timer {
 
     private:
 
-    protected:
+        string _unit;
+        chrono::steady_clock::time_point _begin;
+        chrono::steady_clock::time_point _end;
 
         //------------------------------------------------------------------------------
         //	Special functions
         //------------------------------------------------------------------------------
-        void		    _init( void );
 
     public:
-
-        unsigned int                id;
-
-        double                      angle;
-        double                      weight;
-        bool                        visit;
-        int                         visitedTimes;
-
-        bool                        isFore;
-        bool                        isBack;
-        bool                        isShow;
-
-        //Ui::Vector::GraphicsEdgeItem * itemPtr;
 
         //------------------------------------------------------------------------------
         //	Constructors & Destructors
         //------------------------------------------------------------------------------
         // default constructor
-        BaseEdgeProperty( void );
+        Timer( void ) {}
         // copy constructor
-        BaseEdgeProperty( const BaseEdgeProperty & e ) {
-            id	    = e.id;
-            weight	= e.weight;
+        Timer( const string & s ) {
+            _unit = s;
         }
         // destructor
-        virtual ~BaseEdgeProperty( void ) {}
+        ~Timer( void ){}
 
         //------------------------------------------------------------------------------
         //	Assignment operators
@@ -82,8 +67,21 @@ namespace Graph {
         //------------------------------------------------------------------------------
         //	Special functions
         //------------------------------------------------------------------------------
+        void begin( void ) {
+            _begin = chrono::steady_clock::now();
+        }
+        void end( void ) {
+            _end = chrono::steady_clock::now();
+        }
+        void elapsed( void ) {
 
-        void        init( void )		      { _init(); }
+            // chrono::nanoseconds, ns, 1e9
+            // chrono::microseconds, µs, 1e6
+            // chrono::milliseconds, ms, 1e3
+            // chrono::seconds, sec, 1
+            cerr << "Computation Time: " << chrono::duration_cast< T >( _end-_begin ).count()
+                 << " in " << _unit << endl;
+        }
 
         //------------------------------------------------------------------------------
         //	Friend functions
@@ -93,14 +91,14 @@ namespace Graph {
         //	I/O functions
         //------------------------------------------------------------------------------
         // output
-        friend ostream &	operator << ( ostream & s, const BaseEdgeProperty & v );
+        friend ostream &	operator << ( ostream & s, const Timer & t );
         // input
-        friend istream &	operator >> ( istream & s, BaseEdgeProperty & v );
+        friend istream &	operator >> ( istream & s, Timer & t );
         // class name
-        virtual const char * className( void ) const { return "BaseEdgeProperty"; }
+        virtual const char * className( void ) const { return "Timer"; }
 
     };
 
-} // namespace Graph
+} // namespace Base
 
-#endif // _Graph_BaseEdgeProperty_H
+#endif // _Base_Timer_H

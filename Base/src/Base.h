@@ -7,6 +7,9 @@
 
 using namespace std;
 
+namespace KeiRo {
+namespace Base {
+
 class Base
 {
 	//------------------------------------------------------------------------------
@@ -45,5 +48,8 @@ public:
 	// class name
 	virtual const char * className( void ) const { return "Base"; }
 };
+
+} // namespace Base
+} // namespace KeiRo
 
 #endif // _Base_H
