@@ -5,8 +5,6 @@ set( Target_Name KeiRoUI )
 #include(GNUInstallDirs)
 #message( "GNUInstallDirs: " ${GNUInstallDirs} )
 
-set( MAIN_PROJECT_ROOT "${CMAKE_SOURCE_DIR}/.." )
-
 add_library(${Target_Name} SHARED
         src/GraphicsVertexItem.cpp
         src/GraphicsBallItem.cpp
@@ -25,6 +23,8 @@ set_target_properties(${Target_Name} PROPERTIES
 # path setting
 #----------------------------------------------------------------------
 
+if( APPLE )
+
 target_include_directories(${Target_Name}
         PUBLIC
         ${CMAKE_SOURCE_DIR}/Base/src/
@@ -36,6 +36,31 @@ target_link_directories(${Target_Name}
         ${CMAKE_BINARY_DIR}/Base/
         ${CMAKE_BINARY_DIR}/Graph/
         )
+elseif( UNIX )
+
+    set( CMAKE_PREFIX_PATH "/home/$ENV{USER}/MyLib/release/qt5-package/5.8/gcc_64/lib/cmake/Qt5")
+
+    target_include_directories(${Target_Name}
+            PUBLIC
+#            /opt/local/include/
+#            /usr/include/
+#            /usr/include/x86_64-linux-gnu/
+            ${CMAKE_SOURCE_DIR}/Base/src/
+            ${CMAKE_SOURCE_DIR}/Graph/src/
+#            ${QT5_PATH_DIR}/include/
+            )
+
+    target_link_directories( ${Target_Name}
+            PUBLIC
+#            /opt/local/lib/
+#            /usr/lib/
+#            /usr/lib/x86_64-linux-gnu/
+            ${CMAKE_BINARY_DIR}/Base/
+            ${CMAKE_BINARY_DIR}/Graph/
+#            ${QT5_PATH_DIR}/lib/
+            )
+endif()
+
 set( CUSTOM_LIBRARIES "-lKeiRoBase")
 target_link_libraries(${Target_Name} PRIVATE ${CUSTOM_LIBRARIES})
 
