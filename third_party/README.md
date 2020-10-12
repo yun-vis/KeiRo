@@ -28,6 +28,24 @@ $ sudo port install libsbml +layout +render
 ```
 
 ## intstall libSBGN2 
+# NEW
+- in CMakeList.txt <br/>
+  add "/opt/local/lib" to the library path <br/>
+  add "/opt/local/include" to the include path
+
+- temporarily remove libsbml-static-bk.a under /opt/local/lib to enforce sbgn package to link to the dynamic version of libsbml library
+
+```
+$ git clone https://github.com/fbergmann/libSBGN2.git
+$ cd libSBGN2
+$ mkdir build
+$ cd build
+$ cmake ../ -DEXTRA_LIBS=/opt/local/lib/ -DCMAKE_INSTALL_PREFIX=install/
+$ make
+$ make install
+```
+
+# OLD
 
 ```
 $ git clone https://github.com/fbergmann/libSBGN2.git
@@ -44,10 +62,3 @@ ERROR: dylib is not generated successfully on macOS
 https://stackoverflow.com/questions/36659004/eigen-matrix-multiplication-speed
 
 # windows
-
-# Third Party
-- [CTPL][ctpl] (Modern and efficient C++ Thread Pool Library)
-- [micans][micans] (Markov Cluster Algorithm Library)
-
-[ctpl]: https://github.com/vit-vit/CTPL
-[micans]: https://micans.org/mcl/

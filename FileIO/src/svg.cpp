@@ -67,7 +67,7 @@ namespace FileIO {
     //------------------------------------------------------------------------------
     //	Special functions
     //------------------------------------------------------------------------------
-    void SVG::_init( Base::Grid2 * __gridPtr, double __x, double __y, int __width, int __height )
+    void SVG::_init( Grid2 * __gridPtr, double __x, double __y, int __width, int __height )
     {
         _x          = __x;
         _y          = __y;
@@ -188,7 +188,7 @@ namespace FileIO {
             QStringList points = gElement.attribute( "points" ).split( " " );
 
             // create rectangle
-            Base::Polygon2 polygon;
+	        KeiRo::Base::Polygon2 polygon;
             polygon.name() = id.toStdString();
             polygon.fill() = fill;
             polygon.stroke() = stroke;
@@ -201,7 +201,7 @@ namespace FileIO {
                 if( coords.size() == 2 ){
                     double x = coords.at( 0 ).toDouble();
                     double y = -coords.at( 1 ).toDouble();
-                    polygon.elements().push_back(  Base::Coord2( x, y ) );
+                    polygon.elements().push_back( KeiRo::Base::Coord2( x, y ) );
                 }
             }
 
@@ -330,7 +330,7 @@ namespace FileIO {
             double y = -gElement.attribute( "cy" ).toDouble();
 
             // create rectangle
-            Base::Polygon2 polygon;
+	        KeiRo::Base::Polygon2 polygon;
             polygon.name() = id.toStdString();
             polygon.fill() = fill;
             polygon.stroke() = stroke;
@@ -343,7 +343,7 @@ namespace FileIO {
             }
             for( unsigned int j = 0; j < nDiv; j++ ){
                 double theta = 2.0*M_PI*(double)j / (double)nDiv;
-                polygon.elements().push_back(  Base::Coord2( x + r*cos( theta ), y + r*sin( theta ) ) );
+                polygon.elements().push_back( KeiRo::Base::Coord2( x + r*cos( theta ), y + r*sin( theta ) ) );
             }
             polygon.fixedElements() = polygon.elements();
             _polygonVec.push_back( polygon );
@@ -471,7 +471,7 @@ namespace FileIO {
             double y = -gElement.attribute( "y" ).toDouble();
 
             // create rectangle
-            Base::Polygon2 polygon;
+	        KeiRo::Base::Polygon2 polygon;
             polygon.name() = id.toStdString();
             polygon.fill() = fill;
             polygon.stroke() = stroke;
@@ -481,10 +481,10 @@ namespace FileIO {
             polygon.boundingBox().y() = h;
 
             // add polygon contour
-            polygon.elements().push_back( Base::Coord2( x, y-h ) );
-            polygon.elements().push_back( Base::Coord2( x, y ) );
-            polygon.elements().push_back( Base::Coord2( x+w, y ) );
-            polygon.elements().push_back( Base::Coord2( x+w, y-h ) );
+            polygon.elements().push_back( KeiRo::Base::Coord2( x, y-h ) );
+            polygon.elements().push_back( KeiRo::Base::Coord2( x, y ) );
+            polygon.elements().push_back( KeiRo::Base::Coord2( x+w, y ) );
+            polygon.elements().push_back( KeiRo::Base::Coord2( x+w, y-h ) );
             polygon.fixedElements() = polygon.elements();
             _polygonVec.push_back( polygon );
 
@@ -590,8 +590,8 @@ namespace FileIO {
 
             // element coordinates
             SVGTAGTYPE tag;
-            vector< Base::Coord2 > coordElements;
-            Base::Coord2 origin;
+            vector< KeiRo::Base::Coord2 > coordElements;
+	        KeiRo::Base::Coord2 origin;
 #ifdef SVG_DEBUG
             for( unsigned int j = 0; j < dList.size(); j++ ) {
                 cerr << "j = " << j << ", " << dList.at( j ).toStdString() << endl;
@@ -672,18 +672,18 @@ namespace FileIO {
                             QPolygonF polygon = path.toSubpathPolygons().at(0);
                             for( unsigned int k = 1; k < polygon.size();  ){
                                 QPointF point = polygon.at( k );
-                                Base::Coord2 coord( point.x(), point.y() );
+	                            KeiRo::Base::Coord2 coord( point.x(), point.y() );
                                 coordElements.push_back( coord );
                                 if( ( k+_curveDownSample >= polygon.size() ) && ( k != polygon.size()-1 ) ){
                                     QPointF point = polygon.at( polygon.size()-1 );
-                                    Base::Coord2 coord( point.x(), point.y() );
+	                                KeiRo::Base::Coord2 coord( point.x(), point.y() );
                                     coordElements.push_back( coord );
                                 }
                                 k += _curveDownSample;
                             }
                             // coordElements.push_back( Base::Coord2( e.x(), e.y() ) );
                             j += 3;
-                            origin = Base::Coord2( e.x(), e.y() );
+                            origin = KeiRo::Base::Coord2( e.x(), e.y() );
 
                             // check if the end of tag c
                             if( j == dList.size() ) break;
@@ -702,7 +702,7 @@ namespace FileIO {
 
                             QStringList coords = dList.at( j ).split( "," );
                             // relative path
-                            Base::Coord2 coord( origin.x(),
+	                        KeiRo::Base::Coord2 coord( origin.x(),
                                                 origin.y() - coords.at(0).toDouble() );
                             if ( origin != coord ) coordElements.push_back( coord );
                             origin = coord;
@@ -720,7 +720,7 @@ namespace FileIO {
 
                             QStringList coords = dList.at( j ).split( "," );
                             // relative path
-                            Base::Coord2 coord( origin.x() + coords.at(0).toDouble(),
+	                        KeiRo::Base::Coord2 coord( origin.x() + coords.at(0).toDouble(),
                                                 origin.y() );
                             if ( origin != coord ) coordElements.push_back( coord );
                             origin = coord;
@@ -738,7 +738,7 @@ namespace FileIO {
 
                             QStringList coords = dList.at( j ).split( "," );
                             // relative path
-                            Base::Coord2 coord( origin.x() + coords.at(0).toDouble(),
+	                        KeiRo::Base::Coord2 coord( origin.x() + coords.at(0).toDouble(),
                                                 origin.y() - coords.at(1).toDouble() );
                             if ( origin != coord ) coordElements.push_back( coord );
                             origin = coord;
@@ -764,7 +764,7 @@ namespace FileIO {
 
             // create object
             if( isClosed ){
-                Base::Polygon2 polygon;
+	            KeiRo::Base::Polygon2 polygon;
                 polygon.fixedElements() = polygon.elements() = coordElements;
 	            polygon.name() = id.toStdString();
 	            polygon.fill() = fill;
@@ -772,7 +772,7 @@ namespace FileIO {
                 _polygonVec.push_back( polygon );
             }
             else {
-                Base::Line2 polyline;
+	            KeiRo::Base::Line2 polyline;
                 polyline.fixedElements() = polyline.elements() = coordElements;
 	            polyline.name() = id.toStdString();
 	            polyline.fill() = fill;
@@ -851,8 +851,8 @@ namespace FileIO {
         // Scan all the vertex coordinates first
         for( unsigned int i = 0; i < _polygonVec.size(); i++ ){
             for( unsigned int j = 0; j < _polygonVec[i].elements().size(); j++ ){
-
-                Base::Coord2 &coord = _polygonVec[i].elements()[j];
+	
+	            KeiRo::Base::Coord2 &coord = _polygonVec[i].elements()[j];
                 if ( coord.x() < xMin ) xMin = coord.x();
                 if ( coord.x() > xMax ) xMax = coord.x();
                 if ( coord.y() < yMin ) yMin = coord.y();
@@ -861,8 +861,8 @@ namespace FileIO {
         }
         for( unsigned int i = 0; i < _polylineVec.size(); i++ ){
             for( unsigned int j = 0; j < _polylineVec[i].elements().size(); j++ ){
-
-                Base::Coord2 &coord = _polylineVec[i].elements()[j];
+	
+	            KeiRo::Base::Coord2 &coord = _polylineVec[i].elements()[j];
                 if ( coord.x() < xMin ) xMin = coord.x();
                 if ( coord.x() > xMax ) xMax = coord.x();
                 if ( coord.y() < yMin ) yMin = coord.y();
@@ -891,8 +891,8 @@ namespace FileIO {
         // normalize polygons
         for( unsigned int i = 0; i < _polygonVec.size(); i++ ){
             for( unsigned int j = 0; j < _polygonVec[i].elements().size(); j++ ){
-
-                Base::Coord2 coord = _polygonVec[i].elements()[j];
+	
+	            KeiRo::Base::Coord2 coord = _polygonVec[i].elements()[j];
 
                 coord.setX( (double)_width  * ( coord.x() - xMid ) / xRange + _x );
                 coord.setY( (double)_height * ( coord.y() - yMid ) / yRange + _y );
@@ -910,8 +910,8 @@ namespace FileIO {
         // normalize polylines
         for( unsigned int i = 0; i < _polylineVec.size(); i++ ){
             for( unsigned int j = 0; j < _polylineVec[i].elements().size(); j++ ){
-
-                Base::Coord2 coord = _polylineVec[i].elements()[j];
+	
+	            KeiRo::Base::Coord2 coord = _polylineVec[i].elements()[j];
 
                 coord.setX( (double)_width  * ( coord.x() - xMid ) / xRange + _x );
                 coord.setY( (double)_height * ( coord.y() - yMid ) / yRange + _y );

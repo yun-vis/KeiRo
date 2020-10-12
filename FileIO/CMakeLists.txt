@@ -1,5 +1,5 @@
 cmake_minimum_required( VERSION 3.8 )
-PROJECT( Base VERSION 1.0 DESCRIPTION "The FileIO module of the KeiRo package")
+PROJECT( FileIO VERSION 1.0 DESCRIPTION "The FileIO module of the KeiRo package")
 set( Target_Name KeiRoFileIO )
 
 #include(GNUInstallDirs)
@@ -22,26 +22,35 @@ set_target_properties(${Target_Name} PROPERTIES
 #----------------------------------------------------------------------
 # path setting
 #----------------------------------------------------------------------
+#set(THIRD_PARTY_INCLUDE ${CMAKE_SOURCE_DIR}/third_party/libSBGN2/src/ )
+#set(THIRD_PARTY_LIB ${CMAKE_SOURCE_DIR}/third_party/ )
 
 target_include_directories(${Target_Name}
         PUBLIC
         ${CMAKE_SOURCE_DIR}/Base/src/
-        ${CMAKE_SOURCE_DIR}/third_party/libSBGN2/src/
-        ${CMAKE_SOURCE_DIR}/third_party/libSBGN2/build/src/
+        ${CMAKE_SOURCE_DIR}/Graph/src/
+        ${CMAKE_SOURCE_DIR}/Composite/src/
+        ${CMAKE_SOURCE_DIR}/third_party/libSBGN2/build/install/include/
+        #${THIRD_PARTY_INCLUDE}
         )
-
+message(${CMAKE_SOURCE_DIR}/third_party/libSBGN2/build/install/lib/)
 target_link_directories(${Target_Name}
         PUBLIC
         ${CMAKE_BINARY_DIR}/Base/
+        ${CMAKE_BINARY_DIR}/Graph/
+        ${CMAKE_BINARY_DIR}/Composite/
+        ${CMAKE_SOURCE_DIR}/third_party/libSBGN2/build/install/lib/
         )
-set( CUSTOM_LIBRARIES "-lKeiRoBase")
-target_link_libraries(${Target_Name} PUBLIC ${CUSTOM_LIBRARIES})
+set( CUSTOM_LIBRARIES "-lKeiRoBase -lKeiRoGraph -lKeiRoComposite")
+target_link_libraries(${Target_Name} PUBLIC ${CUSTOM_LIBRARIES}
+        ${CMAKE_SOURCE_DIR}/third_party/libSBGN2/build/install/lib/libsbgn-static.a
+        )
 
 #----------------------------------------------------------------------
 # QT
 #----------------------------------------------------------------------
 message(STATUS "-- Linking qt")
-set(QT_REQUIRED_COMPONENTS Core Gui Svg Widgets OpenGL)
+set(QT_REQUIRED_COMPONENTS Core Gui Svg Widgets OpenGL Xml)
 find_package(Qt5 COMPONENTS ${QT_REQUIRED_COMPONENTS} REQUIRED)
 
 # Add components to the target

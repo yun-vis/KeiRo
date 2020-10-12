@@ -18,6 +18,7 @@ add_library(${Target_Name} SHARED
         src/Object.cpp
 #        src/Label.cpp
 #        src/Grid2.cpp
+#        src/Compression.cpp
         )
 
 set_target_properties(${Target_Name} PROPERTIES

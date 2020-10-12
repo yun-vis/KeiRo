@@ -1,4 +1,3 @@
-
 cmake_minimum_required( VERSION 3.8 )
 PROJECT( Graph VERSION 1.0 DESCRIPTION "The Graph module of the KeiRo package")
 set( Target_Name KeiRoGraph )

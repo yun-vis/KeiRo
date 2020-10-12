@@ -18,8 +18,8 @@ using namespace std;
 #ifndef Q_MOC_RUN
 #include "Object.h"
 #include "Polygon2.h"
-#include "core/Compression.h"
-#include "core/Grid2.h"
+#include "Compression.h"
+#include "Grid2.h"
 #endif // Q_MOC_RUN
 
 //------------------------------------------------------------------------------
@@ -39,20 +39,20 @@ namespace FileIO {
         vector<  KeiRo::Base::Polygon2 >    _polygonVec;
         // arcs in SVG
         vector< KeiRo::Base::Line2 >       _polylineVec;
-        Base::Grid2                *_gridPtr;
+        Grid2                       *_gridPtr;
 
         int                         _x, _y, _width, _height;
 
         static int                  _curveDownSample;
 
-        Base::Compression           _compression;
+        Compression                 _compression;
 
     protected:
 
         //------------------------------------------------------------------------------
         //	Special functions
         //------------------------------------------------------------------------------
-        void _init( Base::Grid2 * __gridPtr, double __x, double __y, int __width, int __height );
+        void _init( Grid2 * __gridPtr, double __x, double __y, int __width, int __height );
 
     public:
 
@@ -69,18 +69,18 @@ namespace FileIO {
         //------------------------------------------------------------------------------
         //	Reference to elements
         //------------------------------------------------------------------------------
-        vector< Base::Polygon2 > &	        polygonVec( void ) 	        { return _polygonVec; }
-        const vector< Base::Polygon2 > &	polygonVec( void ) const	{ return _polygonVec; }
-        vector< Base::Line2 > &	            polylineVec( void ) 	    { return _polylineVec; }
-        const vector< Base::Line2 > &	    polylineVec( void ) const	{ return _polylineVec; }
+        vector< KeiRo::Base::Polygon2 > &	        polygonVec( void ) 	        { return _polygonVec; }
+        const vector< KeiRo::Base::Polygon2 > &	    polygonVec( void ) const	{ return _polygonVec; }
+        vector< KeiRo::Base::Line2 > &	            polylineVec( void ) 	    { return _polylineVec; }
+        const vector< KeiRo::Base::Line2 > &	    polylineVec( void ) const	{ return _polylineVec; }
 
-        Base::Compression &	                compression( void ) 	    { return _compression; }
-        const Base::Compression &	        compression( void ) const	{ return _compression; }
+        Compression &	                            compression( void ) 	    { return _compression; }
+        const Compression &	                        compression( void ) const	{ return _compression; }
 
         //------------------------------------------------------------------------------
         //	Special functions
         //------------------------------------------------------------------------------
-        void init( Base::Grid2 * __gridPtr, double __x, double __y, int __width, int __height ) {
+        void init( Grid2 * __gridPtr, double __x, double __y, int __width, int __height ) {
             _init( __gridPtr, __x, __y, __width, __height );
         }
 

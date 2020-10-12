@@ -29,12 +29,14 @@ target_include_directories(${Target_Name}
         PUBLIC
         ${CMAKE_SOURCE_DIR}/Base/src/
         ${CMAKE_SOURCE_DIR}/Graph/src/
+        ${CMAKE_SOURCE_DIR}/third_party/libSBGN2/build/install/include/
         )
 
 target_link_directories(${Target_Name}
         PUBLIC
         ${CMAKE_BINARY_DIR}/Base/
         ${CMAKE_BINARY_DIR}/Graph/
+        ${CMAKE_SOURCE_DIR}/third_party/libSBGN2/build/install/lib/
         )
 elseif( UNIX )
 
@@ -62,7 +64,9 @@ elseif( UNIX )
 endif()
 
 set( CUSTOM_LIBRARIES "-lKeiRoBase")
-target_link_libraries(${Target_Name} PRIVATE ${CUSTOM_LIBRARIES})
+target_link_libraries(${Target_Name} PRIVATE ${CUSTOM_LIBRARIES}
+        )
+#${THIRD_PARTY_LIB}/libSBGN2/build/src/sbgn/libsbgn-static.a
 
 #----------------------------------------------------------------------
 # cmake setting

@@ -31,7 +31,7 @@ namespace FileIO {
         // arcs in SBGN
         vector< KeiRo::Base::Line2 >       _polylineVec;
 
-        int                         _width, _height;
+        int                                 _width, _height;
 
     protected:
 

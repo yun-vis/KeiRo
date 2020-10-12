@@ -44,7 +44,7 @@ namespace Base {
         unsigned int            _id;
         unsigned int            _gid;
         string                  _name;
-        Base::Common::IDPair    _parentFileID;
+        Common::IDPair          _parentFileID;
         unsigned int            _parentPolygonID;
         // string                  _parent;
         bool                    _isVisible;
@@ -85,12 +85,12 @@ namespace Base {
         const string &	            name( void ) const	    { return _name; }
 
         // parent file id
-        Base::Common::IDPair &	        parentFileID( void )	        { return _parentFileID; }
-        const Base::Common::IDPair &    parentFileID( void ) const	    { return _parentFileID; }
+        Common::IDPair &	        parentFileID( void )	        { return _parentFileID; }
+        const Common::IDPair &      parentFileID( void ) const	    { return _parentFileID; }
 
         // parent polygon id
-        unsigned int &	                parentPolygonID( void )	        { return _parentPolygonID; }
-        const unsigned int &	        parentPolygonID( void ) const	{ return _parentPolygonID; }
+        unsigned int &	            parentPolygonID( void )	        { return _parentPolygonID; }
+        const unsigned int &	    parentPolygonID( void ) const	{ return _parentPolygonID; }
 
         // parent name
         // string &	                parent( void )	        { return _parent; }

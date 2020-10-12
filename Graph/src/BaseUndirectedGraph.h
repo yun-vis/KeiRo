@@ -41,10 +41,10 @@ using namespace std;
 
 using namespace boost;
 
-#include "base/Coord2.h"
-#include "graph/BaseGraphProperty.h"
-#include "graph/BaseVertexProperty.h"
-#include "graph/BaseEdgeProperty.h"
+#include "Coord2.h"
+#include "BaseGraphProperty.h"
+#include "BaseVertexProperty.h"
+#include "BaseEdgeProperty.h"
 
 //------------------------------------------------------------------------------
 //	Defining Macros
