@@ -117,8 +117,8 @@ namespace Base {
         // reference to fill
         vector< unsigned int > &	    fill( void )	                { return _fill; }
         const vector< unsigned int > &  fill( void ) const              { return _fill; }
-
-        // graphics item
+        
+	    // graphics item
 //        void setItemPtr( Ui::Vector::GraphicsEdgeItem * ptr )	        { _itemPtr = ptr; }
 //        Ui::Vector::GraphicsEdgeItem * getItemPtr( void )               { return _itemPtr; }
 

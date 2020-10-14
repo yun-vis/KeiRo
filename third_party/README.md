@@ -40,7 +40,7 @@ $ git clone https://github.com/fbergmann/libSBGN2.git
 $ cd libSBGN2
 $ mkdir build
 $ cd build
-$ cmake ../ -DEXTRA_LIBS=/opt/local/lib/ -DCMAKE_INSTALL_PREFIX=install/
+$ cmake ../ -DEXTRA_LIBS=/opt/local/lib/ -DCMAKE_INSTALL_PREFIX=/opt/local/
 $ make
 $ make install
 ```

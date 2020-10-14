@@ -24,32 +24,6 @@ namespace Ui {
 	//------------------------------------------------------------------------------
 	//	Private functions
 	//------------------------------------------------------------------------------
-	//
-	//  GraphicsView::_init -- initialize data
-	//
-	//  Inputs
-	//  none
-	//
-	//  Outputs
-	//  none
-	//
-	void GraphicsView::_init( void )
-	{
-	}
-	
-	//
-	//  GraphicsView::_clear -- clear data
-	//
-	//  Inputs
-	//  none
-	//
-	//  Outputs
-	//  none
-	//
-	void GraphicsView::_clear( void )
-	{
-	}
-
 	
 	//------------------------------------------------------------------------------
 	//	Protected functions
@@ -73,19 +47,21 @@ namespace Ui {
 	//
 	GraphicsView::GraphicsView( QWidget *parent )
 			: QGraphicsView( parent ) {
+		
 		//------------------------------------------------------------------------------
 		// configuration file
 		//------------------------------------------------------------------------------
-//			string configFilePath = qApp->applicationDirPath().toStdString() + "/config/MainWindow.conf";
+//			string configFilePath = qApp->applicationDirPath().toStdString() + "/../config/MainWindow.conf";
 //			Base::Config conf( configFilePath );
 		_basePtr = nullptr;
 		_scenePtr = new QGraphicsScene;
         _scenePtr->setSceneRect( -KeiRo::Base::Common::getMainwidgetWidth() / 2.0, -KeiRo::Base::Common::getMainwidgetHeight() / 2.0,
                                  KeiRo::Base::Common::getMainwidgetWidth(), KeiRo::Base::Common::getMainwidgetHeight() );  // x, y, w, h
+#ifdef DEBUG
 		cerr << "mainwidget_width = " << KeiRo::Base::Common::getMainwidgetWidth() << endl;
 		cerr << "mainwidget_height = " << KeiRo::Base::Common::getMainwidgetHeight() << endl;
 		cerr << "dockwidget_width = " << KeiRo::Base::Common::getDockWidgetWidth() << endl;
-
+#endif // DEBUG
 		this->setScene( _scenePtr );
 	}
 	
@@ -102,7 +78,7 @@ namespace Ui {
 		QKeyEvent eventR( QEvent::KeyRelease, key, Qt::NoModifier );
 		QApplication::sendEvent( this, &eventR );
 	}
-	
+/*
 	//
 	//  GraphicsView::keyPressEvent -- key press event
 	//
@@ -236,6 +212,7 @@ namespace Ui {
 			 << "_middle_button_pressed = " << _middle_button_pressed << endl;
 #endif // GRAPHICSVIEW_DEBUG
 	}
+*/
 	
 	//
 	//  GraphicsView::exportPNG -- export png

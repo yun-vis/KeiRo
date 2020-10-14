@@ -1,60 +1,46 @@
 cmake_minimum_required( VERSION 3.8 )
-PROJECT( FileIO VERSION 1.0 DESCRIPTION "The FileIO module of the KeiRo package")
-set( Target_Name KeiRoFileIO )
-set(CMAKE_MACOSX_RPATH OFF)
+PROJECT( Composite VERSION 1.0 DESCRIPTION "The Composite module of the KeiRo package")
+set( Target_Name KeiRoComposite )
 
 #include(GNUInstallDirs)
-#message( "GNUInstallDirs: " ${GNUInstallDirs} )
+message( "GNUInstallDirs: " ${GNUInstallDirs} )
 
 set( MAIN_PROJECT_ROOT "${CMAKE_SOURCE_DIR}/.." )
 
 add_library(${Target_Name} SHARED
-#add_library(${Target_Name} STATIC
-#        src/sbgn.cpp
-#        src/sbml.cpp
-        src/svg.cpp
+        src/Grid2.cpp
+        src/Compression.cpp
         )
 
 set_target_properties(${Target_Name} PROPERTIES
         VERSION ${PROJECT_VERSION}
         SOVERSION 1
-#        PUBLIC_HEADER "src/sbgn.h;src/sbml.h;src/svg.h"
-        PUBLIC_HEADER "src/svg.h"
+        PUBLIC_HEADER "src/Grid2.h;src/Composite.h"
         )
 
 #----------------------------------------------------------------------
 # path setting
 #----------------------------------------------------------------------
-#set(THIRD_PARTY_INCLUDE ${CMAKE_SOURCE_DIR}/third_party/libSBGN2/src/ )
-#set(THIRD_PARTY_LIB ${CMAKE_SOURCE_DIR}/third_party/ )
 
 target_include_directories(${Target_Name}
         PUBLIC
         ${CMAKE_SOURCE_DIR}/Base/src/
         ${CMAKE_SOURCE_DIR}/Graph/src/
-        ${CMAKE_SOURCE_DIR}/Composite/src/
-#        ${CMAKE_SOURCE_DIR}/third_party/libSBGN2/build/install/include/
-        #${THIRD_PARTY_INCLUDE}
         )
-message(${CMAKE_SOURCE_DIR}/third_party/libSBGN2/build/install/lib/)
+
 target_link_directories(${Target_Name}
         PUBLIC
         ${CMAKE_BINARY_DIR}/Base/
         ${CMAKE_BINARY_DIR}/Graph/
-        ${CMAKE_BINARY_DIR}/Composite/
-#        ${CMAKE_SOURCE_DIR}/third_party/libSBGN2/build/install/lib/
         )
-set( CUSTOM_LIBRARIES "-lKeiRoBase -lKeiRoGraph -lKeiRoComposite")
-target_link_libraries(${Target_Name} PUBLIC ${CUSTOM_LIBRARIES}
-#        /opt/local/lib/libsbgn-static.a
-#        ${CMAKE_SOURCE_DIR}/third_party/libSBGN2/build/install/lib/libsbgn-static.a
-        )
+set( CUSTOM_LIBRARIES "-lKeiRoBase -lKeiRoGraph")
+target_link_libraries(${Target_Name} PUBLIC ${CUSTOM_LIBRARIES})
 
 #----------------------------------------------------------------------
 # QT
 #----------------------------------------------------------------------
 message(STATUS "-- Linking qt")
-set(QT_REQUIRED_COMPONENTS Core Gui Svg Widgets OpenGL Xml)
+set(QT_REQUIRED_COMPONENTS Core Gui Svg Widgets OpenGL)
 find_package(Qt5 COMPONENTS ${QT_REQUIRED_COMPONENTS} REQUIRED)
 
 # Add components to the target
@@ -72,7 +58,6 @@ set_target_properties(${Target_Name}
         AUTOUIC ON
         AUTORCC ON
         )
-
 
 #----------------------------------------------------------------------
 # install setting
@@ -92,4 +77,4 @@ install(TARGETS ${Target_Name}
         )
 
 #install(FILES ${CMAKE_BINARY_DIR}/mylib.pc
-#        DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig)
+#

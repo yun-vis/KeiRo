@@ -64,8 +64,9 @@ namespace Graph {
 
         int                         color;                  // color type
         bool                        flag;                   // flag
-
-        // Ui::Vector::GraphicsBallItem * itemPtr;
+	
+	    unsigned int                itemID;                 // item ID for graphics
+	    // Ui::Vector::GraphicsBallItem * itemPtr;
 
         //------------------------------------------------------------------------------
         //	Constructors & Destructors

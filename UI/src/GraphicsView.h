@@ -64,10 +64,6 @@ namespace Ui{
 
     private:
 
-        // picking testing
-//        QPainterPath                    _selectionArea;
-
-
         //------------------------------------------------------------------------------
         //	UI
         //------------------------------------------------------------------------------
@@ -81,10 +77,14 @@ namespace Ui{
         //------------------------------------------------------------------------------
         //	Special functions
         //------------------------------------------------------------------------------
-        void _init              ( void );
-        void _clear             ( void );
+//        virtual void _init              ( void ) = 0;
+//	    virtual void _clear             ( void ) = 0;
 
     protected:
+	
+	    // picking testing
+	    QPainterPath                    _selectionArea;
+	    unsigned int                    _test;
 	
 	    //------------------------------------------------------------------------------
 	    //	Data
@@ -96,12 +96,12 @@ namespace Ui{
 	    //------------------------------------------------------------------------------
         //	Event handlers
         //------------------------------------------------------------------------------
-        void keyPressEvent      ( QKeyEvent *event )    Q_DECL_OVERRIDE;
-        void mousePressEvent    ( QMouseEvent *event )  Q_DECL_OVERRIDE;
-        void mouseMoveEvent     ( QMouseEvent *event )  Q_DECL_OVERRIDE;
-        void mouseReleaseEvent  ( QMouseEvent *event )  Q_DECL_OVERRIDE;
-
-        //------------------------------------------------------------------------------
+//	    void keyPressEvent      ( QKeyEvent *event )    Q_DECL_OVERRIDE;
+//	    void mousePressEvent    ( QMouseEvent *event )  Q_DECL_OVERRIDE;
+//	    void mouseMoveEvent     ( QMouseEvent *event )  Q_DECL_OVERRIDE;
+//	    void mouseReleaseEvent  ( QMouseEvent *event )  Q_DECL_OVERRIDE;
+	
+	    //------------------------------------------------------------------------------
         //	Drawing functions
         //------------------------------------------------------------------------------
 
@@ -137,16 +137,12 @@ namespace Ui{
         //------------------------------------------------------------------------------
         //	    Special functions
         //------------------------------------------------------------------------------
-        void init               ( KeiRo::Base::Base *__b_ptr ) {
-	        _basePtr = __b_ptr;
-            _init();
-        }
-
-        void simulateKey        ( Qt::Key key );
-
+	
+	    virtual void init               ( KeiRo::Base::Base *__b_ptr ) = 0;
         virtual void initSceneItems     ( void ) = 0;
         virtual void updateSceneItems   ( void ) = 0;
-
+	
+	    void simulateKey        ( Qt::Key key );
         void exportPNG ( double x, double y, double w, double h );
         void exportSVG ( double x, double y, double w, double h );
 
@@ -159,9 +155,11 @@ namespace Ui{
         friend istream &	operator >> ( istream & s, GraphicsView & m );
         // class name
         virtual const char * className( void ) const { return "GraphicsView"; }
-
+        
     Q_SIGNALS:
-
+    	
+	    virtual void dataChanged() = 0;
+     
     public Q_SLOTS:
 
     };

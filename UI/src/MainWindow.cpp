@@ -17,8 +17,6 @@
 #include "MainWindow.h"
 
 namespace Ui {
-
-
 	
 	//------------------------------------------------------------------------------
     //	Private functions
@@ -110,9 +108,8 @@ namespace Ui {
 
         QAction *aboutQtAct = helpMenu->addAction(tr("About &Qt"), qApp, &QApplication::aboutQt );
         aboutQtAct->setStatusTip(tr("Show the Qt library's About box"));
-
-
-        // connect( _mainGV, SIGNAL( dataChanged() ), this, SLOT( _updateAllDocks() ) );
+        
+         connect( _mainGV, SIGNAL( dataChanged() ), this, SLOT( _updateAllDocks() ) );
     }
 
     //
@@ -267,7 +264,6 @@ namespace Ui {
         //------------------------------------------------------------------------------
         // configuration file
         //------------------------------------------------------------------------------
-       
         string configFilePath = qApp->applicationDirPath().toStdString() + "/../config/MainWindow.conf";
         KeiRo::Base::Config conf( configFilePath );
 
@@ -306,14 +302,14 @@ namespace Ui {
 						   KeiRo::Base::Common::getMainwidgetHeight() + KeiRo::Base::Common::getMenubarHeight() ) );
 
 	    
-//#ifdef DEBUG
+#ifdef DEBUG
         cerr << "mainwidget_width = " << KeiRo::Base::Common::getMainwidgetWidth() << endl;
         cerr << "mainwidget_height = " << KeiRo::Base::Common::getMainwidgetHeight() << endl;
         cerr << "dockwidget_width = " << KeiRo::Base::Common::getDockWidgetWidth() << endl;
         cerr << "icon_width = " << icon_width << endl;
         cerr << "icon_height = " << icon_height << endl;
 	    cerr << "win_width = " << width() << " win_height = " << height() << endl;
-//#endif // DEBUG
+#endif // DEBUG
     }
     
 

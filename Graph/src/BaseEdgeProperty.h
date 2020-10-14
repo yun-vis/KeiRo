@@ -56,6 +56,7 @@ namespace Graph {
         bool                        isBack;
         bool                        isShow;
 
+        unsigned int                itemID;             // item ID for graphics
         //Ui::Vector::GraphicsEdgeItem * itemPtr;
 
         //------------------------------------------------------------------------------

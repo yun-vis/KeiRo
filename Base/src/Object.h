@@ -48,6 +48,9 @@ namespace Base {
         unsigned int            _parentPolygonID;
         // string                  _parent;
         bool                    _isVisible;
+	
+	    // graphics item id
+	    unsigned int            _itemID;
 
         //------------------------------------------------------------------------------
         //	Special functions
@@ -98,8 +101,12 @@ namespace Base {
         // is visible
         bool &	                    isVisible( void )       { return _isVisible; }
         const bool &	            isVisible( void ) const { return _isVisible; }
-
-        //------------------------------------------------------------------------------
+	
+	    // reference to itemID
+	    unsigned int &	                itemID( void )	                { return _itemID; }
+	    const unsigned int &            itemID( void ) const            { return _itemID; }
+	
+	    //------------------------------------------------------------------------------
         //	Special functions
         //------------------------------------------------------------------------------
 
