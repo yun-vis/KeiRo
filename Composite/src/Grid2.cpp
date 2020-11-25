@@ -29,7 +29,7 @@ using namespace std;
     //	Protected Functions
     //------------------------------------------------------------------------------
     //
-    //  Grid2::_init --	initialize Grid2
+    //  Grid2::_init --	initialize Grid2
     //
     //  Inputs
     //	none

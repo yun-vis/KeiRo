@@ -10,12 +10,13 @@ set( MAIN_PROJECT_ROOT "${CMAKE_SOURCE_DIR}/.." )
 add_library(${Target_Name} SHARED
         src/Grid2.cpp
         src/Compression.cpp
+        src/Contour2.cpp
         )
 
 set_target_properties(${Target_Name} PROPERTIES
         VERSION ${PROJECT_VERSION}
         SOVERSION 1
-        PUBLIC_HEADER "src/Grid2.h;src/Composite.h"
+        PUBLIC_HEADER "src/Grid2.h;src/Composite.h;src/Contour2.h"
         )
 
 #----------------------------------------------------------------------
@@ -33,7 +34,7 @@ target_link_directories(${Target_Name}
         ${CMAKE_BINARY_DIR}/Base/
         ${CMAKE_BINARY_DIR}/Graph/
         )
-set( CUSTOM_LIBRARIES "-lKeiRoBase -lKeiRoGraph")
+set( CUSTOM_LIBRARIES "-lKeiRoBase -lKeiRoGraph -lcgal -lgmp -lmpfr")
 target_link_libraries(${Target_Name} PUBLIC ${CUSTOM_LIBRARIES})
 
 #----------------------------------------------------------------------

@@ -23,6 +23,7 @@ namespace Base {
 	double Common::_mainwidget_height = 600;
 	double Common::_dockwidget_width = 60;
 	double Common::_menubar_height = 60;
+	string Common::_batch_str = "0";
 	
 	//------------------------------------------------------------------------------
 	//	Private Functions
@@ -84,6 +85,14 @@ namespace Base {
 	void Common::setMenubarHeight( double menubarHeight ) {
 		_menubar_height = menubarHeight;
 	}
-
+	
+	const std::string &Common::getBatchStr( void ) {
+		return _batch_str;
+	}
+	
+	void Common::setBatchStr( const std::string &batchStr ) {
+		_batch_str = batchStr;
+	}
+	
 } // namespace Base
 } // namespace KeiRo

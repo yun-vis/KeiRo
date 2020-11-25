@@ -24,9 +24,41 @@ add_library(${Target_Name} SHARED
 set_target_properties(${Target_Name} PROPERTIES
         VERSION ${PROJECT_VERSION}
         SOVERSION 1
-        PUBLIC_HEADER "src/Base.h;src/Color.h;src/Common.h;src/Config.h;src/Coord2.h;src/Line2.h;src/Object.h;src/Timer.h"
+        PUBLIC_HEADER "src/Base.h;src/Color.h;src/Common.h;src/Config.h;src/Coord2.h;src/Line2.h;src/Polygon2.h;src/Object.h;src/Timer.h"
         )
 
+#----------------------------------------------------------------------
+# path setting
+#----------------------------------------------------------------------
+
+target_include_directories(${Target_Name}
+        PUBLIC
+        /opt/local/include/
+        )
+
+target_link_directories(${Target_Name}
+        PUBLIC
+        /opt/local/lib/
+        )
+set( CUSTOM_LIBRARIES "-lboost_thread-mt -lgmp -lcgal -lmpfr")
+target_link_libraries(${Target_Name} PUBLIC ${CUSTOM_LIBRARIES})
+
+#----------------------------------------------------------------------
+# CGAL
+#----------------------------------------------------------------------
+set(CGAL_DO_NOT_WARN_ABOUT_CMAKE_BUILD_TYPE TRUE)
+find_package(CGAL REQUIRED COMPONENTS Core)
+#set( CMAKE_BUILD_TYPE Release)
+
+if(CGAL_FOUND)
+    message(STATUS "-- LinkingCGAL")
+    include_directories(${CGAL_INCLUDE_DIRS})
+    target_link_libraries(${Target_Name} ${CGAL_LIBRARIES})
+endif()
+
+#----------------------------------------------------------------------
+# install setting
+#----------------------------------------------------------------------
 set( INSTALL_LIBDIR ${CMAKE_SOURCE_DIR}/lib )
 set( INSTALL_INCLUDEDIR ${CMAKE_SOURCE_DIR}/lib )
 

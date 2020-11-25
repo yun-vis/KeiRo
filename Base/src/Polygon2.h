@@ -21,6 +21,16 @@
 
 using namespace std;
 
+#define CGAL_DO_NOT_USE_BOOST_MP
+
+#include <CGAL/Exact_predicates_exact_constructions_kernel.h>
+#include <CGAL/Polygon_2.h>
+
+typedef CGAL::Exact_predicates_exact_constructions_kernel K;
+typedef CGAL::Polygon_2< K >::Vertex_circulator Vertex_circulator;
+
+using CGAL::ORIGIN;
+
 #include "Object.h"
 #include "Coord2.h"
 #include "Line2.h"
@@ -42,24 +52,24 @@ namespace Base {
 
     protected:
 
-        //double              _area;
-        //Coord2              _center;        // average of the elements
-        //Coord2              _centroid;      // centroid of the elements
+        double              _area;          // polygon area size
+        Coord2              _center;        // average of the elements
+        Coord2              _centroid;      // centroid of the elements
         //Polygon2 original coordinates of end points
 
-        vector< KeiRo::Base::Coord2 >        _fixedElements;
+        vector< KeiRo::Base::Coord2 >       _fixedElements;
         // Polygon2 sample points
-        vector< KeiRo::Base::Coord2 >        _elements;
+        vector< KeiRo::Base::Coord2 >       _elements;
         // Polygon2 sample id
-        vector< unsigned int >  _idElements;
-        vector< double >        _targetEdgeAngles;
+        vector< unsigned int >              _idElements;
+        vector< double >                    _targetEdgeAngles;
 
         // width and height of the bounding box
         KeiRo::Base::Coord2                  _boundingBox;
         // left-top of the bounding box
         KeiRo::Base::Coord2                  _boxLeftTop;
         // initial bounding box size
-        double                  _initArea;
+        double                               _initArea;
 
         //------------------------------------------------------------------------------
         //	Attribute
@@ -107,16 +117,16 @@ namespace Base {
         //------------------------------------------------------------------------------
 
         // area
-        //double &	                area( void )	        { return _area; }
-        //const double &	            area( void ) const	    { return _area; }
+        double &	                area( void )	        { return _area; }
+        const double &	            area( void ) const	    { return _area; }
 
         // barycenter
-        //Coord2 &	                center( void )	        { return _center; }
-        //const Coord2 &	            center( void ) const	{ return _center; }
+        Coord2 &	                center( void )	        { return _center; }
+        const Coord2 &	            center( void ) const	{ return _center; }
 
         // centroid
-        //Coord2 &	                centroid( void )	    { return _centroid; }
-        //const Coord2 &	            centroid( void ) const	{ return _centroid; }
+        Coord2 &	                centroid( void )	    { return _centroid; }
+        const Coord2 &	            centroid( void ) const	{ return _centroid; }
 
         // reference to a vector of coordinates
         vector< KeiRo::Base::Coord2 > &	            elements( void )	            { return _elements; }
@@ -135,11 +145,11 @@ namespace Base {
         const vector< double > &        targetEdgeAngles( void ) const  { return _targetEdgeAngles; }
 
         // width and height of the bounding box
-        KeiRo::Base::Coord2 &	                    boundingBox( void )	            { return _boundingBox; }
-        const KeiRo::Base::Coord2 &	                boundingBox( void ) const	    { return _boundingBox; }
+        KeiRo::Base::Coord2 &	        boundingBox( void )	            { return _boundingBox; }
+        const KeiRo::Base::Coord2 &	    boundingBox( void ) const	    { return _boundingBox; }
 
-        const double 	                area( void ) const	            { return _boundingBox.x() * _boundingBox.y(); }
-        const double &	                initArea( void ) const	        { return _initArea; }
+        const double 	                bbArea( void ) const	        { return _boundingBox.x() * _boundingBox.y(); }
+         const double &	                initArea( void ) const	        { return _initArea; }
 
         // center of the bounding box
         KeiRo::Base::Coord2 &	                    boxLeftTop( void )	            { return _boxLeftTop; }
@@ -168,16 +178,22 @@ namespace Base {
         void init( unsigned int __id, vector< KeiRo::Base::Coord2 > __elements ) {
             _init( __id, __elements );
         }
+	    void update( void ) {
+		    computeBoundingBox();
+		    computeCenter();
+        }
         // clear the object
         void clear( void ) { _clear(); }
 
         void computeBoundingBox( void );
+	    void computeCenter( void );
         void updateCentroid( void );
         void updateOrientation( void );
         bool inPolygon( const KeiRo::Base::Coord2 &cood );
         double minDistToPolygon( const KeiRo::Base::Coord2 &cood );
         double maxRadiusInPolygon( const KeiRo::Base::Coord2 &coord );
-        void cleanPolygon( void );
+	    bool isSimple( void );
+	    void cleanPolygon( void );
 
         //------------------------------------------------------------------------------
         //	Friend functions

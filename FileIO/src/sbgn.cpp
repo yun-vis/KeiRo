@@ -289,7 +289,7 @@ namespace FileIO {
             _polygonVec[i].fixedElements() = _polygonVec[i].elements();
 
             // normalize boundingBox
-            _polygonVec[i].computeBoundingBox();
+            _polygonVec[i].update();
         }
 
         // normalize polylines

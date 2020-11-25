@@ -12,6 +12,10 @@ add_library(${Target_Name} SHARED
         src/BaseEdgeProperty.cpp
         src/BaseGraphProperty.cpp
         src/BaseUndirectedGraph.cpp
+        src/BoundaryVertexProperty.cpp
+        src/BoundaryEdgeProperty.cpp
+        src/BoundaryGraphProperty.cpp
+        src/BoundaryGraph.cpp
         src/GridEdgeProperty.cpp
         src/GridVertexProperty.cpp
         src/GridGraphProperty.cpp
@@ -21,7 +25,7 @@ add_library(${Target_Name} SHARED
 set_target_properties(${Target_Name} PROPERTIES
         VERSION ${PROJECT_VERSION}
         SOVERSION 1
-        PUBLIC_HEADER "src/BaseVertexProperty.h;src/BaseEdgeProperty.h;src/BaseGraphProperty.h;src/BaseUndirectedGraph.h;src/GridVertexProperty.h;src/GridEdgeProperty.h;src/GridGraphProperty.h;src/GridGraph.h"
+        PUBLIC_HEADER "src/BaseVertexProperty.h;src/BaseEdgeProperty.h;src/BaseGraphProperty.h;src/BaseUndirectedGraph.h;src/GridVertexProperty.h;src/GridEdgeProperty.h;src/GridGraphProperty.h;src/GridGraph.h;src/BoundaryVertexProperty.h;src/BoundaryEdgeProperty.h;src/BoundaryGraphProperty.h;src/BoundaryGraph.h"
         )
 
 #----------------------------------------------------------------------

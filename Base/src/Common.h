@@ -163,6 +163,7 @@
 //#define DOI_MAX         (8.0)
 
 #define TIMER_STEP      (100)
+#define MIN_VERTEX_DISTANCE (0.5)
 
 enum METROTYPE{ GEOGRAPHY, SMOOTH, OCTILINEAR };
 enum OPTTYPE{ LEAST_SQUARE, CONJUGATE_GRADIENT };
@@ -207,7 +208,8 @@ namespace Base {
 		static double _mainwidget_height;
 		static double _dockwidget_width;
 		static double _menubar_height;
-	
+		static std::string _batch_str;
+		
 	protected:
 	
 	public:
@@ -247,6 +249,10 @@ namespace Base {
 		static const double getMenubarHeight();
 		
 		static void setMenubarHeight( double _menubarHeight );
+		
+		static const std::string &getBatchStr( void );
+		
+		static void setBatchStr( const std::string &batchStr );
 		
 		//------------------------------------------------------------------------------
 		//	Special functions
