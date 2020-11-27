@@ -17,8 +17,9 @@ message( "CMAKE_SOURCE_DIR: " ${CMAKE_SOURCE_DIR} )
 
 # basic library configuration
 add_subdirectory( Base )
-add_subdirectory( Composite )
 add_subdirectory( Graph )
+add_subdirectory( Optimization )
+add_subdirectory( Composite )
 add_subdirectory( Geometry )
 add_subdirectory( FileIO )
 add_subdirectory( UI )

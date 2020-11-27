@@ -34,7 +34,7 @@ namespace Graph {
 //	Defining Classes
 //------------------------------------------------------------------------------
 	
-	class BoundaryEdgeProperty : public BaseEdgeProperty {
+	class SchematicEdgeProperty : public BaseEdgeProperty {
 	
 	protected:
 		
@@ -46,12 +46,12 @@ namespace Graph {
 //------------------------------------------------------------------------------
 //	Constructors
 //------------------------------------------------------------------------------
-		BoundaryEdgeProperty();                // constructor (default)
-		BoundaryEdgeProperty( const BoundaryEdgeProperty &e ) {
+		SchematicEdgeProperty();                // constructor (default)
+		SchematicEdgeProperty( const SchematicEdgeProperty &e ) {
 			id = e.id;
 			weight = e.weight;
 		}                    // copy constructor
-		virtual ~BoundaryEdgeProperty() {}        // destructor
+		virtual ~SchematicEdgeProperty() {}        // destructor
 
 //------------------------------------------------------------------------------
 //	Assignment operators
@@ -87,10 +87,10 @@ namespace Graph {
 //------------------------------------------------------------------------------
 //	I/O functions
 //------------------------------------------------------------------------------
-		friend ostream &operator<<( ostream &s, const BoundaryEdgeProperty &v );
+		friend ostream &operator<<( ostream &s, const SchematicEdgeProperty &v );
 		
 		// Output
-		friend istream &operator>>( istream &s, BoundaryEdgeProperty &v );
+		friend istream &operator>>( istream &s, SchematicEdgeProperty &v );
 		
 		// Input
 		virtual const char *className( void ) const { return "BoundaryEdgeProperty"; }

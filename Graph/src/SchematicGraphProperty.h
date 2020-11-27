@@ -1,5 +1,5 @@
 //******************************************************************************
-// BoundaryVertexProperty.h
+// BoundaryGraphProperty.h
 //	: header file for 2D coordinaes
 //
 //------------------------------------------------------------------------------
@@ -8,22 +8,21 @@
 //
 //******************************************************************************
 
-#ifndef _BoundaryVertexProperty_H
-#define _BoundaryVertexProperty_H
+#ifndef _BoundaryGraphProperty_H
+#define _BoundaryGraphProperty_H
 
 //------------------------------------------------------------------------------
 //	Including Header Files
 //------------------------------------------------------------------------------
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
 #include "Coord2.h"
 #include "Common.h"
-#include "BaseVertexProperty.h"
-//#include "ui/GraphicsVertexItem.h"
+#include "BaseGraphProperty.h"
 
+namespace Graph {
 //------------------------------------------------------------------------------
 //	Defining Macros
 //------------------------------------------------------------------------------
@@ -32,22 +31,22 @@ using namespace std;
 //------------------------------------------------------------------------------
 //	Defining Classes
 //------------------------------------------------------------------------------
-namespace Graph {
-	class BoundaryVertexProperty : public BaseVertexProperty {
+	
+	class SchematicGraphProperty : public BaseGraphProperty {
 	
 	protected:
 		
-		void _init( void );
+		void _init( double &width, double &height );
 	
 	public:
 
 //------------------------------------------------------------------------------
 //	Constructors
 //------------------------------------------------------------------------------
-		BoundaryVertexProperty();                // constructor (default)
-		BoundaryVertexProperty( const BoundaryVertexProperty &v ) {
+		SchematicGraphProperty();                // constructor (default)
+		SchematicGraphProperty( const SchematicGraphProperty &v ) {
 		}                    // copy constructor
-		virtual ~BoundaryVertexProperty() {}        // destructor
+		virtual ~SchematicGraphProperty() {}        // destructor
 
 //------------------------------------------------------------------------------
 //	Assignment operators
@@ -56,19 +55,10 @@ namespace Graph {
 //------------------------------------------------------------------------------
 //	Reference to elements
 //------------------------------------------------------------------------------
-		unsigned int initID;
-		bool isFixed;
-		
-		KeiRo::Base::Coord2 *geoPtr;         // initial position
-		KeiRo::Base::Coord2 *smoothPtr;
-		KeiRo::Base::Coord2 *centroidPtr;
-//		GraphicsVertexItem *itemPtr;
 
 //------------------------------------------------------------------------------
 //	Special functions
 //------------------------------------------------------------------------------
-		
-		void init( void ) { _init(); }
 
 //------------------------------------------------------------------------------
 //	Intersection check
@@ -82,16 +72,15 @@ namespace Graph {
 //------------------------------------------------------------------------------
 //	I/O functions
 //------------------------------------------------------------------------------
-		
-		friend ostream &operator<<( ostream &s, const BoundaryVertexProperty &v );
+		friend ostream &operator<<( ostream &s, const SchematicGraphProperty &v );
 		
 		// Output
-		friend istream &operator>>( istream &s, BoundaryVertexProperty &v );
+		friend istream &operator>>( istream &s, SchematicGraphProperty &v );
 		
 		// Input
-		virtual const char *className( void ) const { return "BoundaryVertexProperty"; }
+		virtual const char *className( void ) const { return "BoundaryGraphProperty"; }
 		// class name
 		
 	};
 }
-#endif // _BoundaryVertexProperty_H
+#endif // _BoundaryGraphProperty_H

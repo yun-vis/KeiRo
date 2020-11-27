@@ -20,7 +20,7 @@
 
 using namespace std;
 
-#include "BoundaryEdgeProperty.h"
+#include "SchematicEdgeProperty.h"
 
 namespace Graph {
 //------------------------------------------------------------------------------
@@ -41,7 +41,7 @@ namespace Graph {
 //  Outputs
 //  none
 //
-	void BoundaryEdgeProperty::_init( void ) {
+	void SchematicEdgeProperty::_init( void ) {
 		id = 0;
 		weight = 1.0;
 		visitedTimes = -1;
@@ -64,7 +64,7 @@ namespace Graph {
 //  Outputs
 //  none
 //
-	BoundaryEdgeProperty::BoundaryEdgeProperty() {
+	SchematicEdgeProperty::SchematicEdgeProperty() {
 		_init();
 	}
 
@@ -89,7 +89,7 @@ namespace Graph {
 //  Outputs
 //	reference to output stream
 //
-	ostream &operator<<( ostream &stream, const BoundaryEdgeProperty &obj ) {
+	ostream &operator<<( ostream &stream, const SchematicEdgeProperty &obj ) {
 		// set the output formatting
 		stream << setiosflags( ios::showpoint );
 		stream << setprecision( 8 );
@@ -109,7 +109,7 @@ namespace Graph {
 //  Outputs
 //	reference to input stream
 //
-	istream &operator>>( istream &stream, BoundaryEdgeProperty &obj ) {
+	istream &operator>>( istream &stream, SchematicEdgeProperty &obj ) {
 		return stream;
 	}
 	

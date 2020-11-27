@@ -4,7 +4,7 @@
 //
 //==============================================================================
 
-#include "BoundaryGraph.h"
+#include "SchematicGraph.h"
 
 namespace Graph {
 //------------------------------------------------------------------------------
@@ -22,10 +22,10 @@ namespace Graph {
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-//	Customized BoundaryGraph Functions
+//	Customized SchematicGraph Functions
 //------------------------------------------------------------------------------
 //
-//  BoundaryGraph::resetVisitedTimes -- reset edge visitedTimes values.
+//  SchematicGraph::resetVisitedTimes -- reset edge visitedTimes values.
 //
 //  Inputs
 //  g   : object of Graph
@@ -33,8 +33,8 @@ namespace Graph {
 //  Outputs
 //  none
 //
-	void resetVisitedTimes( BoundaryGraph &graph ) {
-		BGL_FORALL_EDGES( ed, graph, BoundaryGraph )
+	void resetVisitedTimes( SchematicGraph &graph ) {
+		BGL_FORALL_EDGES( ed, graph, SchematicGraph )
 		{
 			
 			graph[ ed ].visitedTimes = -1;
@@ -42,7 +42,7 @@ namespace Graph {
 	}
 
 //
-//  BoundaryGraph::printGraph -- print the graph.
+//  SchematicGraph::printGraph -- print the graph.
 //
 //  Inputs
 //  g   : object of Graph
@@ -50,17 +50,17 @@ namespace Graph {
 //  Outputs
 //  none
 //
-	void printGraph( const BoundaryGraph &graph ) {
-		cerr << "Printing BoundaryGraph..." << endl;
+	void printGraph( const SchematicGraph &graph ) {
+		cerr << "Printing SchematicGraph..." << endl;
 		cerr << "num_vertices = " << num_vertices( graph ) << endl;
 		cerr << "num_edges = " << num_edges( graph ) << endl;
 
 //#ifdef  DEBUG
 		// print vertex information
-		BGL_FORALL_VERTICES( vd, graph, BoundaryGraph )
+		BGL_FORALL_VERTICES( vd, graph, SchematicGraph )
 		{
 			
-			BoundaryGraph::degree_size_type degrees = out_degree( vd, graph );
+			SchematicGraph::degree_size_type degrees = out_degree( vd, graph );
 			cerr << "id = " << graph[ vd ].id << endl;
 			//cerr << "initID = " << graph[ vd ].initID << endl;
 			//cerr << "lineID.size() = " << graph[ vd ].lineID.size() << endl;
@@ -75,11 +75,11 @@ namespace Graph {
 
 //#ifdef  DEBUG
 		// print edge information
-		BGL_FORALL_EDGES( ed, graph, BoundaryGraph )
+		BGL_FORALL_EDGES( ed, graph, SchematicGraph )
 		{
 			
-			BoundaryGraph::vertex_descriptor vdS = source( ed, graph );
-			BoundaryGraph::vertex_descriptor vdT = target( ed, graph );
+			SchematicGraph::vertex_descriptor vdS = source( ed, graph );
+			SchematicGraph::vertex_descriptor vdT = target( ed, graph );
 			
 			cerr << "eid = " << graph[ ed ].id << " ( " << graph[ vdS ].id << " == " << graph[ vdT ].id << " ) "
 			     << endl;
@@ -93,7 +93,7 @@ namespace Graph {
 	}
 
 //
-//  BoundaryGraph::clearGraph -- clear the graph.
+//  SchematicGraph::clearGraph -- clear the graph.
 //
 //  Inputs
 //  g   : object of Grpah
@@ -101,9 +101,9 @@ namespace Graph {
 //  Outputs
 //  none
 //
-	void clearGraph( BoundaryGraph &graph ) {
+	void clearGraph( SchematicGraph &graph ) {
 		// clear edges
-		BoundaryGraph::edge_iterator ei, ei_end, e_next;
+		SchematicGraph::edge_iterator ei, ei_end, e_next;
 		tie( ei, ei_end ) = edges( graph );
 		for( e_next = ei; ei != ei_end; ei = e_next ) {
 			e_next++;
@@ -118,9 +118,9 @@ namespace Graph {
 #endif  // SKIP
 		
 		// clear vertices
-		pair <BoundaryGraph::vertex_iterator, BoundaryGraph::vertex_iterator> vp;
+		pair <SchematicGraph::vertex_iterator, SchematicGraph::vertex_iterator> vp;
 		for( vp = vertices( graph ); vp.first != vp.second; ) {
-			BoundaryGraph::vertex_descriptor vd = ( *vp.first );
+			SchematicGraph::vertex_descriptor vd = ( *vp.first );
 			++vp.first;
 			clear_vertex( vd, graph );
 			remove_vertex( vd, graph );

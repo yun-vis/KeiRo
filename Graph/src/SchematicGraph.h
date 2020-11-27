@@ -30,28 +30,28 @@ using namespace boost;
 
 #include "Coord2.h"
 //#include "Grid2.h"
-#include "BoundaryGraphProperty.h"
-#include "BoundaryVertexProperty.h"
-#include "BoundaryEdgeProperty.h"
+#include "SchematicGraphProperty.h"
+#include "SchematicVertexProperty.h"
+#include "SchematicEdgeProperty.h"
 
 namespace Graph {
 	
 	typedef adjacency_list< listS, listS, undirectedS,
-			BoundaryVertexProperty, BoundaryEdgeProperty,
-			BoundaryGraphProperty > BoundaryGraph;
+			SchematicVertexProperty, SchematicEdgeProperty,
+			SchematicGraphProperty > SchematicGraph;
 	
-	typedef pair< BoundaryGraph::vertex_descriptor,
-			BoundaryGraph::edge_descriptor > VEPair;
+	typedef pair< SchematicGraph::vertex_descriptor,
+			SchematicGraph::edge_descriptor > VEPair;
 //	typedef map< Grid2, VEPair > VEMap;
 
 //------------------------------------------------------------------------------
 //	Customized BaseGraph Functions
 //------------------------------------------------------------------------------
 	
-	void printGraph( const BoundaryGraph &g );
+	void printGraph( const SchematicGraph &g );
 	
-	void clearGraph( BoundaryGraph &g );
+	void clearGraph( SchematicGraph &g );
 	
-	void resetVisitedTimes( BoundaryGraph &g );
+	void resetVisitedTimes( SchematicGraph &g );
 }
 #endif  // _BoundaryGraph_H

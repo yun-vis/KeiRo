@@ -20,7 +20,7 @@
 
 using namespace std;
 
-#include "BoundaryGraphProperty.h"
+#include "SchematicGraphProperty.h"
 
 namespace Graph {
 //------------------------------------------------------------------------------
@@ -41,7 +41,7 @@ namespace Graph {
 //  Outputs
 //  none
 //
-	void BoundaryGraphProperty::_init( double &width, double &height ) {
+	void SchematicGraphProperty::_init( double &width, double &height ) {
 		BaseGraphProperty::_init( width, height );
 	}
 
@@ -62,7 +62,7 @@ namespace Graph {
 //  Outputs
 //  none
 //
-	BoundaryGraphProperty::BoundaryGraphProperty() {
+	SchematicGraphProperty::SchematicGraphProperty() {
 		// BaseGraphProperty::_init( width, height );
 	}
 
@@ -87,7 +87,7 @@ namespace Graph {
 //  Outputs
 //	reference to output stream
 //
-	ostream &operator<<( ostream &stream, const BoundaryGraphProperty &obj ) {
+	ostream &operator<<( ostream &stream, const SchematicGraphProperty &obj ) {
 		// set the output formatting
 		stream << setiosflags( ios::showpoint );
 		stream << setprecision( 8 );
@@ -107,7 +107,7 @@ namespace Graph {
 //  Outputs
 //	reference to input stream
 //
-	istream &operator>>( istream &stream, BoundaryGraphProperty &obj ) {
+	istream &operator>>( istream &stream, SchematicGraphProperty &obj ) {
 		return stream;
 	}
 }

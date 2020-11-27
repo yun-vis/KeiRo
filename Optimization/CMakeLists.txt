@@ -1,6 +1,6 @@
 cmake_minimum_required( VERSION 3.8 )
-PROJECT( Graph VERSION 1.0 DESCRIPTION "The Graph module of the KeiRo package")
-set( Target_Name KeiRoGraph )
+PROJECT( Optimization VERSION 1.0 DESCRIPTION "The Optimization module of the KeiRo package")
+set( Target_Name KeiRoOptimization )
 
 #include(GNUInstallDirs)
 message( "GNUInstallDirs: " ${GNUInstallDirs} )
@@ -8,25 +8,14 @@ message( "GNUInstallDirs: " ${GNUInstallDirs} )
 set( MAIN_PROJECT_ROOT "${CMAKE_SOURCE_DIR}/.." )
 
 add_library(${Target_Name} SHARED
-        src/BaseVertexProperty.cpp
-        src/BaseEdgeProperty.cpp
-        src/BaseGraphProperty.cpp
-        src/BaseUndirectedGraph.cpp
-        src/SchematicVertexProperty.cpp
-        src/SchematicEdgeProperty.cpp
-        src/SchematicGraphProperty.cpp
-        src/SchematicGraph.cpp
-        src/GridEdgeProperty.cpp
-        src/GridVertexProperty.cpp
-        src/GridGraphProperty.cpp
-        src/GridGraph.cpp
+        src/Schematization.cpp
+        src/LaplacianOptimization.cpp
         )
 
 set_target_properties(${Target_Name} PROPERTIES
         VERSION ${PROJECT_VERSION}
         SOVERSION 1
-        PUBLIC_HEADER "src/BaseVertexProperty.h;src/BaseEdgeProperty.h;src/BaseGraphProperty.h;src/BaseUndirectedGraph.h;src/GridVertexProperty.h;src/GridEdgeProperty.h;src/GridGraphProperty.h;src/GridGraph.h;src/SchematicVertexProperty.h;src/SchematicEdgeProperty.h;src/SchematicGraphProperty.h;src/SchematicGraph.h"
-        )
+        PUBLIC_HEADER "src/LaplacianOptimization.h;src/Schematization.h")
 
 #----------------------------------------------------------------------
 # path setting
@@ -35,28 +24,39 @@ set_target_properties(${Target_Name} PROPERTIES
 target_include_directories(${Target_Name}
         PUBLIC
         ${CMAKE_SOURCE_DIR}/Base/src/
+        ${CMAKE_SOURCE_DIR}/Graph/src/
         )
 
 target_link_directories(${Target_Name}
         PUBLIC
         ${CMAKE_BINARY_DIR}/Base/
+        ${CMAKE_BINARY_DIR}/Graph/
         )
-set( CUSTOM_LIBRARIES "-lKeiRoBase")
+set( CUSTOM_LIBRARIES "-lKeiRoBase -lKeiRoGraph")
 target_link_libraries(${Target_Name} PUBLIC ${CUSTOM_LIBRARIES})
 
 #----------------------------------------------------------------------
-# Boost
+# QT
 #----------------------------------------------------------------------
-set(Boost_USE_STATIC_LIBS OFF)
-set(Boost_USE_MULTITHREADED ON)
-set(Boost_USE_STATIC_RUNTIME OFF)
-find_package(Boost)
+message(STATUS "-- Linking qt")
+set(QT_REQUIRED_COMPONENTS Core Gui Svg Widgets OpenGL)
+find_package(Qt5 COMPONENTS ${QT_REQUIRED_COMPONENTS} REQUIRED)
 
-if(Boost_FOUND)
-    message(STATUS "-- Linking boost")
-    include_directories(${Boost_INCLUDE_DIRS})
-    target_link_libraries(${Target_Name} ${Boost_LIBRARIES})
-endif()
+# Add components to the target
+foreach(component ${QT_REQUIRED_COMPONENTS})
+    target_link_libraries(${Target_Name}
+            PUBLIC
+            Qt5::${component}
+            )
+endforeach()
+
+# Enable automoc/uic/rcc
+set_target_properties(${Target_Name}
+        PROPERTIES
+        AUTOMOC ON
+        AUTOUIC ON
+        AUTORCC ON
+        )
 
 #----------------------------------------------------------------------
 # install setting
@@ -76,4 +76,4 @@ install(TARGETS ${Target_Name}
         )
 
 #install(FILES ${CMAKE_BINARY_DIR}/mylib.pc
-#        DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig)
+#
