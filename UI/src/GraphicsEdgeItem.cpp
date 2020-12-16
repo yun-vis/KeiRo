@@ -24,7 +24,20 @@ namespace Vector {
     //------------------------------------------------------------------------------
     //	Protected functions
     //------------------------------------------------------------------------------
-
+	//
+	//  GraphicsEdgeItem::init -- initialization
+	//
+	//  Inputs
+	//  none
+	//
+	//  Outputs
+	//  none
+	//
+	void GraphicsEdgeItem::_init( void )
+	{
+		GraphicsBase::_init();
+	}
+	
     //------------------------------------------------------------------------------
     //	Public functions
     //------------------------------------------------------------------------------
@@ -49,11 +62,8 @@ namespace Vector {
 
         //pen().setJoinStyle( Qt::MiterJoin );
         pen().setJoinStyle( Qt::RoundJoin );
-
-        _id = 0;
-        _weight = 0;
-        _text = "";
-        _textOn = false;
+	
+	    GraphicsBase::_init();
     }
 
     //
@@ -68,19 +78,6 @@ namespace Vector {
     GraphicsEdgeItem::GraphicsEdgeItem( const QPainterPath &path, QGraphicsItem *parent )
     {
         if ( !path.isEmpty() ) setPath( path );
-    }
-
-    //
-    //  GraphicsBallItem::init -- initialization
-    //
-    //  Inputs
-    //  none
-    //
-    //  Outputs
-    //  none
-    //
-    void GraphicsEdgeItem::init( void )
-    {
     }
 
     //
@@ -117,8 +114,8 @@ namespace Vector {
 
         // draw text
         if( _textOn == true ){
-            painter->setPen( pen() );
-            painter->setFont( QFont( "Arial", 12, QFont::Bold, false ) );
+            painter->setPen( _textpen );
+            painter->setFont( _font );
             painter->drawText( path().boundingRect().x()+0.5*( path().boundingRect().width() ),
                                path().boundingRect().y()+0.5*( path().boundingRect().height() ),
                                _text );

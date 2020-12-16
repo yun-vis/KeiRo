@@ -12,7 +12,7 @@
 //	Including Header Files
 //------------------------------------------------------------------------------
 
-#include "GraphicsBallItem.h"
+#include "GraphicsCellItem.h"
 #include "GraphicsEdgeItem.h"
 #include "GraphicsView.h"
 

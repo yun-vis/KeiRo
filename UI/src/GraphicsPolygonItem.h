@@ -31,14 +31,13 @@ using namespace std;
 
 #include <QtWidgets/QGraphicsScene>
 #include <QtWidgets/QGraphicsItem>
-#include <QtGui/QPainter>
-#include <QtCore/QString>
-#include <QtWidgets/QGraphicsSceneMouseEvent>
+//#include <QtGui/QPainter>
+//#include <QtCore/QString>
+//#include <QtWidgets/QGraphicsSceneMouseEvent>
 
-//#ifndef Q_MOC_RUN
-//#include "base/Common.h"
-//#include "base/Config.h"
-//#endif // Q_MOC_RUN
+#ifndef Q_MOC_RUN
+#include "GraphicsBase.h"
+#endif // Q_MOC_RUN
 
 namespace Ui {
 namespace Vector {
@@ -46,20 +45,19 @@ namespace Vector {
     //------------------------------------------------------------------------------
     //	Class definition
     //------------------------------------------------------------------------------
-    class GraphicsPolygonItem : public QGraphicsPolygonItem
-    {
+    class GraphicsPolygonItem : public QGraphicsPolygonItem, public GraphicsBase {
+    
     private:
 
-        unsigned int    _id;
-        QString         _text;
-        bool            _textOn;
-
-        int             _font_size;
-        QFont           _font;
         QRect           _bbox;
 
     protected:
-
+    	
+	    //------------------------------------------------------------------------------
+	    //	Special functions
+	    //------------------------------------------------------------------------------
+	    void            _init( void );
+	    
     public:
 
         //------------------------------------------------------------------------------
@@ -92,22 +90,13 @@ namespace Vector {
         //      Reference to elements
         //------------------------------------------------------------------------------
 
-        unsigned int &	        id( void ) 	        { return _id; }
-        const unsigned int &	id( void ) const	{ return _id; }
-
-        QString &	            text( void )        { return _text; }
-        const QString &	        text( void ) const	{ return _text; }
-
-        bool &	                textOn( void ) 	    { return _textOn; }
-        const bool &	        textOn( void ) const{ return _textOn; }
-
         QRect &	                bbox( void )        { return _bbox; }
         const QRect &	        bbox( void ) const	{ return _bbox; }
-
-        //------------------------------------------------------------------------------
-        //	Special functions
-        //------------------------------------------------------------------------------
-
+	
+	    //------------------------------------------------------------------------------
+	    //	Special functions
+	    //------------------------------------------------------------------------------
+	    void init( void ) { _init(); }
     };
 
 } // namespace Vector

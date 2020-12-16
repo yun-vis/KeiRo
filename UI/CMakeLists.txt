@@ -6,7 +6,8 @@ set( Target_Name KeiRoUI )
 #message( "GNUInstallDirs: " ${GNUInstallDirs} )
 
 add_library(${Target_Name} SHARED
-        src/GraphicsBallItem.cpp
+        src/GraphicsBase.cpp
+        src/GraphicsCellItem.cpp
         src/GraphicsEdgeItem.cpp
         src/GraphicsPolygonItem.cpp
         src/GraphicsVertexItem.cpp
@@ -17,7 +18,7 @@ add_library(${Target_Name} SHARED
 set_target_properties(${Target_Name} PROPERTIES
         VERSION ${PROJECT_VERSION}
         SOVERSION 1
-        PUBLIC_HEADER "src/GraphicsBallItem.h;src/GraphicsEdgeItem.h;src/GraphicsPolygonItem.h;src/GraphicsVertexItem.h;src/GraphicsView.h;src/MainWindow.h;"
+        PUBLIC_HEADER "src/GraphicsBase.h;src/GraphicsCellItem.h;src/GraphicsEdgeItem.h;src/GraphicsPolygonItem.h;src/GraphicsVertexItem.h;src/GraphicsView.h;src/MainWindow.h;"
         )
 
 #----------------------------------------------------------------------

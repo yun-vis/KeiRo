@@ -31,12 +31,12 @@ using namespace std;
 
 #include <QtWidgets/QGraphicsScene>
 #include <QtWidgets/QGraphicsItem>
-#include <QtGui/QPainter>
-#include <QtCore/QString>
-#include <QtWidgets/QGraphicsSceneMouseEvent>
+//#include <QtGui/QPainter>
+//#include <QtCore/QString>
+//#include <QtWidgets/QGraphicsSceneMouseEvent>
 
 #ifndef Q_MOC_RUN
-//#include "Base/Common.h"
+#include "GraphicsBase.h"
 #endif // Q_MOC_RUN
 
 namespace Ui {
@@ -45,17 +45,17 @@ namespace Vector {
     //------------------------------------------------------------------------------
     //	Class definition
     //------------------------------------------------------------------------------
-    class GraphicsEdgeItem : public  QGraphicsPathItem
-    {
+    class GraphicsEdgeItem : public  QGraphicsPathItem, public GraphicsBase {
+    
     private:
 
-        unsigned int    _id;
-        double          _weight;
-        QString         _text;
-        bool            _textOn;
-
     protected:
-
+	    
+    	//------------------------------------------------------------------------------
+	    //	Special functions
+	    //------------------------------------------------------------------------------
+	    void            _init( void );
+	    
     public:
 
         //------------------------------------------------------------------------------
@@ -88,22 +88,11 @@ namespace Vector {
         //      Reference to elements
         //------------------------------------------------------------------------------
 
-        unsigned int &	        id( void ) 	        { return _id; }
-        const unsigned int &	id( void ) const	{ return _id; }
-
-        double &	            weight( void ) 	    { return _weight; }
-        const double &	        weight( void ) const{ return _weight; }
-
-        QString &	            text( void )        { return _text; }
-        const QString &	        text( void ) const	{ return _text; }
-
-        bool &	                textOn( void ) 	    { return _textOn; }
-        const bool &	        textOn( void ) const{ return _textOn; }
-
-        //------------------------------------------------------------------------------
-        //	Special functions
-        //------------------------------------------------------------------------------
-        void    init      ( void );
+	
+	    //------------------------------------------------------------------------------
+	    //	Special functions
+	    //------------------------------------------------------------------------------
+	    void init( void ) { _init(); }
 
     };
 

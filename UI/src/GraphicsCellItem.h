@@ -1,5 +1,5 @@
 //******************************************************************************
-// GraphicsVertexItem.h
+// GraphicsCellItem.h
 //	: header file for vertex items
 //
 //------------------------------------------------------------------------------
@@ -8,8 +8,8 @@
 //
 //******************************************************************************
 
-#ifndef Ui_Vector_GraphicsVertexItem_H
-#define Ui_Vector_GraphicsVertexItem_H
+#ifndef Ui_Vector_GraphicsCellItem_H
+#define Ui_Vector_GraphicsCellItem_H
 
 //------------------------------------------------------------------------------
 //	Including Header Files
@@ -31,6 +31,7 @@ using namespace std;
 
 #include <QtWidgets/QGraphicsScene>
 #include <QtWidgets/QGraphicsItem>
+#include <QtCore/QObject>
 
 #ifndef Q_MOC_RUN
 #include "GraphicsBase.h"
@@ -43,12 +44,15 @@ namespace Vector {
     //------------------------------------------------------------------------------
     //	Class definition
     //------------------------------------------------------------------------------
-    class GraphicsVertexItem : public  QGraphicsRectItem, public GraphicsBase {
-    
-    private:
+    class GraphicsCellItem : public QObject, public  QGraphicsRectItem, public GraphicsBase {
 
-        double          _radius;
-        bool            _isSimple;
+    Q_OBJECT
+    Q_PROPERTY( QRectF geometry READ geometry WRITE setGeometry )
+    Q_INTERFACES( QGraphicsItem )
+    private:
+	
+	    QRectF   _sourceRect;
+    	QRectF   _targetRect;
 
     protected:
 	    
@@ -63,13 +67,13 @@ namespace Vector {
         //	Constructors & Destructors
         //------------------------------------------------------------------------------
         // default constructor
-        explicit GraphicsVertexItem( QGraphicsItem *parent = Q_NULLPTR );
+        explicit GraphicsCellItem( QGraphicsItem *parent = Q_NULLPTR );
         // parameterized constructor
-        explicit GraphicsVertexItem( qreal x, qreal y, qreal w, qreal h, QGraphicsItem *parent = Q_NULLPTR );
+        explicit GraphicsCellItem( qreal x, qreal y, qreal w, qreal h, QGraphicsItem *parent = Q_NULLPTR );
         // copy constructor
-        explicit GraphicsVertexItem( const QRectF &rect, QGraphicsItem *parent = Q_NULLPTR );
+        explicit GraphicsCellItem( const QRectF &rect, QGraphicsItem *parent = Q_NULLPTR );
         // destructor
-        ~GraphicsVertexItem( void ) {}
+        ~GraphicsCellItem( void ) {}
 
         // source from the qt library
         //QRectF rect() const;
@@ -94,14 +98,30 @@ namespace Vector {
         //------------------------------------------------------------------------------
         //      Reference to elements
         //------------------------------------------------------------------------------
-        bool &isSimple( void ) { return _isSimple; }
+        QRectF &sourceRect( void ) { return _sourceRect; }
 	
-	    const bool &isSimple( void ) const { return _isSimple; }
-	    
+	    const QRectF &sourceRect( void ) const { return _sourceRect; }
+	
+	    QRectF &targetRect( void ) { return _targetRect; }
+	
+	    const QRectF &targetRect( void ) const { return _targetRect; }
+
 	    //------------------------------------------------------------------------------
 	    //	Special functions
 	    //------------------------------------------------------------------------------
 	    void init( void ) { _init(); }
+
+	    QRectF geometry( void ) const {
+        	return _sourceRect;
+        }
+
+	    void setGeometry( const QRectF &value ) {
+      
+		    if( _sourceRect != value ){
+			    _sourceRect = value;
+			    update();
+		    }
+        }
 
     private:
 
@@ -110,4 +130,4 @@ namespace Vector {
 } // namespace Vector
 } // namespace Ui
 
-#endif // Ui_Vector_GraphicsVertexItem_H
+#endif // Ui_Vector_GraphicsCellItem_H

@@ -14,6 +14,7 @@ add_library(${Target_Name} SHARED
         src/Config.cpp
         src/Coord2.cpp
         src/Line2.cpp
+        src/Rectangle2.cpp
         src/Polygon2.cpp
         src/Object.cpp
 #        src/Label.cpp
@@ -24,7 +25,7 @@ add_library(${Target_Name} SHARED
 set_target_properties(${Target_Name} PROPERTIES
         VERSION ${PROJECT_VERSION}
         SOVERSION 1
-        PUBLIC_HEADER "src/Base.h;src/Color.h;src/Common.h;src/Config.h;src/Coord2.h;src/Line2.h;src/Polygon2.h;src/Object.h;src/Timer.h"
+        PUBLIC_HEADER "src/Base.h;src/Color.h;src/Common.h;src/Config.h;src/Coord2.h;src/Line2.h;src/Rectangle2.h;src/Polygon2.h;src/Object.h;src/Timer.h"
         )
 
 #----------------------------------------------------------------------

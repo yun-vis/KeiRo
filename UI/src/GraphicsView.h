@@ -45,7 +45,7 @@ using namespace std;
 #include "Base.h"
 #include "Common.h"
 #include "GraphicsVertexItem.h"
-#include "GraphicsBallItem.h"
+#include "GraphicsCellItem.h"
 #include "GraphicsEdgeItem.h"
 #endif // Q_MOC_RUN
 
@@ -109,7 +109,7 @@ namespace Ui{
         //------------------------------------------------------------------------------
         //	Special functions
         //------------------------------------------------------------------------------
-        virtual void readInputData( void ) = 0;
+        virtual void _readInputData( void ) = 0;
         
     public:
 
