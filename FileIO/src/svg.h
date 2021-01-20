@@ -34,7 +34,7 @@ namespace FileIO {
     class SVG : public  KeiRo::Base::Object {
 
     private:
-
+	
         // glyphs in SVG
         vector<  KeiRo::Base::Polygon2 >    _polygonVec;
         // arcs in SVG
@@ -81,7 +81,7 @@ namespace FileIO {
         //	Special functions
         //------------------------------------------------------------------------------
         void init( Grid2 * __gridPtr, double __x, double __y, int __width, int __height ) {
-            _init( __gridPtr, __x, __y, __width, __height );
+	        _init( __gridPtr, __x, __y, __width, __height );
         }
 
         // handle vg file

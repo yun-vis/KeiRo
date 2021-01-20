@@ -89,10 +89,10 @@ namespace Base {
     //
     Rectangle2::Rectangle2( double x, double y, double w, double h )
     {
-        _elements[0]        = x;
-	    _elements[1]        = y;
-	    _elements[2]        = w;
-	    _elements[3]        = h;
+    	_leftTop.x()    = x;
+	    _leftTop.y()    = y;
+	    _width          = w;
+	    _height         = h;
     }
 
     //
@@ -110,9 +110,9 @@ namespace Base {
         _gid                = v._gid;
         _name               = v._name;
 
-        for( unsigned i = 0; i < 4; i++ ){
-	        _elements[i]        = v._elements[i];
-        }
+        _leftTop            = v._leftTop;
+        _width              = v._width;
+        _height             = v._height;
     }
 
     //------------------------------------------------------------------------------
@@ -150,8 +150,8 @@ namespace Base {
 
         int width = 8;
         // print out the elements
-        stream << setw( width ) << "x = " << obj._elements[0] << ", y = " << obj._elements[1] << ", ";
-	    stream << setw( width ) << "w = " << obj._elements[0] << ", h = " << obj._elements[1] << endl;
+        stream << setw( width ) << "x = " << obj._leftTop.x() << ", y = " << obj._leftTop.y() << ", ";
+	    stream << setw( width ) << "w = " << obj._width << ", h = " << obj._height << endl;
         stream << endl;
 
         return stream;

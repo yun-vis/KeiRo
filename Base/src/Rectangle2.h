@@ -38,8 +38,9 @@ namespace Base {
     protected:
 
         // Rectangle2 original coordinates of end points
-        double		_elements[ 4 ];	// x, y coordinates & width & height
-
+        Coord2      _leftTop;
+        double      _width;
+        double      _height;
 
         //------------------------------------------------------------------------------
         //	Attribute
@@ -74,18 +75,15 @@ namespace Base {
         //	Reference to elements
         //------------------------------------------------------------------------------
 
-        // reference to a vector of coordinates
-        void 	            setX( double x )	        { _elements[0] = x; }
-	    const double &	    getX( void ) const	        { return _elements[0]; }
+        // left-top corner
+        Coord2 &	        leftTop( void )	            { return _leftTop; }
+	    const Coord2 &	    leftTop( void ) const	    { return _leftTop; }
+
+	    double &	        width( void )	            { return _width; }
+	    const double &	    width( void ) const	        { return _width; }
 	
-	    void 	            setY( double y )	        { _elements[1] = y; }
-	    const double &	    getY( void ) const	        { return _elements[1]; }
-	
-	    void 	            setWidth( double w )	    { _elements[2] = w; }
-	    const double &	    getWidth( void ) const	    { return _elements[2]; }
-	
-	    void 	            setHeight( double h )	    { _elements[3] = h; }
-	    const double &	    getHeight( void ) const	    { return _elements[3]; }
+	    double &	        height( void )	            { return _height; }
+	    const double &	    height( void ) const	    { return _height; }
 	    
         //------------------------------------------------------------------------------
         //	Special functions

@@ -43,10 +43,10 @@ namespace Base {
 
         unsigned int            _id;
         unsigned int            _gid;
+        unsigned int            _level;
         string                  _name;
         Common::IDPair          _parentFileID;
         unsigned int            _parentPolygonID;
-        // string                  _parent;
         bool                    _isVisible;
 	
 	    // graphics item id
@@ -86,6 +86,9 @@ namespace Base {
         // name
         string &	                name( void )	        { return _name; }
         const string &	            name( void ) const	    { return _name; }
+	    // level
+	    unsigned int &	            level( void )	            { return _level; }
+	    const unsigned int &	    level( void ) const	    { return _level; }
 
         // parent file id
         Common::IDPair &	        parentFileID( void )	        { return _parentFileID; }

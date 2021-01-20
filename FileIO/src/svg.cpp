@@ -923,7 +923,7 @@ namespace FileIO {
             _polylineVec[i].fixedElements() = _polylineVec[i].elements();
         }
     }
-
+	
     //
     //  SVG::readSVG --	read SVG file
     //
