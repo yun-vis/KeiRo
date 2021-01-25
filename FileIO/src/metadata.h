@@ -20,7 +20,6 @@ using namespace std;
 #ifndef Q_MOC_RUN
 #include "Object.h"
 #include "Rectangle2.h"
-#include "data.h"
 #include "svg.h"
 #endif // Q_MOC_RUN
 
@@ -37,9 +36,7 @@ namespace FileIO {
     private:
     	
         // data
-//        Data< SVG >                 *_dataPtr;
 	    vector< vector< SVG* > >       _svgPtr;
-	    vector< vector< unique_ptr< SVG > > > uptr;
 	    
     protected:
 

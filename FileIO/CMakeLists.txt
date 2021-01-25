@@ -13,7 +13,6 @@ add_library(${Target_Name} SHARED
 #        src/sbgn.cpp
 #        src/sbml.cpp
         src/svg.cpp
-        src/data.cpp
         src/metadata.cpp
         )
 
@@ -21,7 +20,7 @@ set_target_properties(${Target_Name} PROPERTIES
         VERSION ${PROJECT_VERSION}
         SOVERSION 1
 #        PUBLIC_HEADER "src/sbgn.h;src/sbml.h;src/svg.h"
-        PUBLIC_HEADER "src/svg.h;src/metadata.h;src/data.h"
+        PUBLIC_HEADER "src/svg.h;src/metadata.h"
         )
 
 #----------------------------------------------------------------------

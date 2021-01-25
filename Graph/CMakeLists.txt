@@ -20,12 +20,16 @@ add_library(${Target_Name} SHARED
         src/GridVertexProperty.cpp
         src/GridGraphProperty.cpp
         src/GridGraph.cpp
+        src/TreeEdgeProperty.cpp
+        src/TreeVertexProperty.cpp
+        src/TreeGraphProperty.cpp
+        src/TreeGraph.cpp
         )
 
 set_target_properties(${Target_Name} PROPERTIES
         VERSION ${PROJECT_VERSION}
         SOVERSION 1
-        PUBLIC_HEADER "src/BaseVertexProperty.h;src/BaseEdgeProperty.h;src/BaseGraphProperty.h;src/BaseUndirectedGraph.h;src/GridVertexProperty.h;src/GridEdgeProperty.h;src/GridGraphProperty.h;src/GridGraph.h;src/SchematicVertexProperty.h;src/SchematicEdgeProperty.h;src/SchematicGraphProperty.h;src/SchematicGraph.h"
+        PUBLIC_HEADER "src/BaseVertexProperty.h;src/BaseEdgeProperty.h;src/BaseGraphProperty.h;src/BaseUndirectedGraph.h;src/GridVertexProperty.h;src/GridEdgeProperty.h;src/GridGraphProperty.h;src/GridGraph.h;src/SchematicVertexProperty.h;src/SchematicEdgeProperty.h;src/SchematicGraphProperty.h;src/SchematicGraph.h;src/TreeEdgeProperty.h;src/TreeVertexProperty.h;src/TreeGraphProperty.h;src/TreeGraph.h"
         )
 
 #----------------------------------------------------------------------

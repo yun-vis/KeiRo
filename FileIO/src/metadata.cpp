@@ -105,7 +105,6 @@ namespace FileIO {
 		QDomNodeList objectList = doc.elementsByTagName( "object" );
 		
 		_svgPtr.resize( maxLevel );
-		uptr.resize( maxLevel );
 		
 #ifdef DEBUG
 		cerr << "maxlevel = " << maxLevel << endl;
