@@ -26,6 +26,7 @@ Vienna, Austria. The c++ library was developed by [Hsiang-Yun Wu][yw].
 - [libsbml 5.17][sbml]
 - [libSBGN 2.0][sbgn]
 - [Eigen3 3.3][eigen]
+- [CGAL 4 4.14.3][cgal]
 
 ### Build
 
@@ -65,6 +66,7 @@ through project [VRG11-010][vrg11].
 [sbml]: https://sbml.org/
 [sbgn]: https://github.com/fbergmann/libSBGN2/
 [eigen]: http://eigen.tuxfamily.org/
+[cgal]: https://www.cgal.org/
 
 [rucg]: https://www.cg.tuwien.ac.at/
 [tuwien]: https://www.tuwien.ac.at/
