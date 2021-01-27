@@ -183,8 +183,8 @@ extern double           routing_margin;
 extern double           label_margin;
 extern int              window_height;
 extern int              window_width;
-extern int		grid_size;
-extern int      	min_grid_size;
+extern int		        grid_size;
+extern int      	    min_grid_size;
 extern int              magnified_radius;
 extern int              rng_samples;
 extern int              doi_max;
@@ -258,6 +258,15 @@ namespace Base {
 		//	Special functions
 		//------------------------------------------------------------------------------
 		static double stringToDouble( std::string str );
+		
+		template <typename T>
+		static std::string to_string_with_precision( const T a_value, const int n = 20 )
+		{
+			std::ostringstream out;
+			out.precision(n);
+			out << std::fixed << a_value;
+			return out.str();
+		}
 		
 		//------------------------------------------------------------------------------
 		//	Friend functions

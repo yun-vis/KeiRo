@@ -39,14 +39,14 @@ class Compression {
 
 private:
 
-    double                                  _min_point_distance;
+    double                                              _min_point_distance;
 
-    vector< KeiRo::Base::Coord2 >                        _fixedSamples;
-    vector< KeiRo::Base::Coord2 >                        _samples;
+    vector< KeiRo::Base::Coord2 >                       _fixedSamples;
+    vector< KeiRo::Base::Coord2 >                       _samples;
 
     vector< KeiRo::Base::Polygon2 >                     *_polygonVecPtr;
     vector< KeiRo::Base::Line2 >                        *_polylineVecPtr;
-    Grid2                                  *_gridPtr;
+    Grid2                                               *_gridPtr;
 
     bool        _closeToSamples( KeiRo::Base::Coord2 &coord, unsigned int &index );
 

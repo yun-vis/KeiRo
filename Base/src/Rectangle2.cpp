@@ -123,7 +123,23 @@ namespace Base {
     //------------------------------------------------------------------------------
     //	Special functions
     //------------------------------------------------------------------------------
-
+    //
+    //  Polygon2::isInside -- check if the vertex inside the rectangle
+    //
+    //  Inputs
+    //  Coord2 c
+    //
+    //  Outputs
+    //  none
+    //
+    bool Rectangle2::isInside( Coord2 c )
+    {
+    	if ( (_leftTop.x() < c.x()) && (c.x() < _leftTop.x() + _width) &&
+			 (_leftTop.y() > c.y()) && (c.y() > _leftTop.y() - _height) )
+    		return true;
+    	return false;
+    }
+    
     //------------------------------------------------------------------------------
     //	Friend functions
     //------------------------------------------------------------------------------
