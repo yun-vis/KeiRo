@@ -299,13 +299,14 @@ namespace Ui {
 							KeiRo::Base::Common::getMainwidgetWidth()+KeiRo::Base::Common::getDockWidgetWidth(),
 							KeiRo::Base::Common::getMainwidgetHeight() + KeiRo::Base::Common::getMenubarHeight() ) );
 	    setMinimumSize(QSize( KeiRo::Base::Common::getMainwidgetWidth()+KeiRo::Base::Common::getDockWidgetWidth(),
-						   KeiRo::Base::Common::getMainwidgetHeight() + KeiRo::Base::Common::getMenubarHeight() ) );
-
+						   KeiRo::Base::Common::getMainwidgetHeight() + KeiRo::Base::Common::getMenubarHeight()
+						   + icon_height ) );
 	    
 #ifdef DEBUG
         cerr << "mainwidget_width = " << KeiRo::Base::Common::getMainwidgetWidth() << endl;
         cerr << "mainwidget_height = " << KeiRo::Base::Common::getMainwidgetHeight() << endl;
         cerr << "dockwidget_width = " << KeiRo::Base::Common::getDockWidgetWidth() << endl;
+        cerr << "menubar_height = " << KeiRo::Base::Common::getMenubarHeight() << endl;
         cerr << "icon_width = " << icon_width << endl;
         cerr << "icon_height = " << icon_height << endl;
 	    cerr << "win_width = " << width() << " win_height = " << height() << endl;

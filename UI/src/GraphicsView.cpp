@@ -54,10 +54,17 @@ namespace Ui {
 //			string configFilePath = qApp->applicationDirPath().toStdString() + "/../config/MainWindow.conf";
 //			Base::Config conf( configFilePath );
 		_basePtr = nullptr;
+		
+		setGeometry( QRect( 0, 0,
+		                    KeiRo::Base::Common::getMainwidgetWidth(), KeiRo::Base::Common::getMainwidgetHeight() ) );
+		setMinimumSize(QSize( KeiRo::Base::Common::getMainwidgetWidth(), KeiRo::Base::Common::getMainwidgetHeight() ) );
+		
 		_scenePtr = new QGraphicsScene;
         _scenePtr->setSceneRect( -KeiRo::Base::Common::getMainwidgetWidth() / 2.0, -KeiRo::Base::Common::getMainwidgetHeight() / 2.0,
                                  KeiRo::Base::Common::getMainwidgetWidth(), KeiRo::Base::Common::getMainwidgetHeight() );  // x, y, w, h
+                                 
 #ifdef DEBUG
+		cerr << "w = " << width() << ", h = " << height() << endl;
 		cerr << "mainwidget_width = " << KeiRo::Base::Common::getMainwidgetWidth() << endl;
 		cerr << "mainwidget_height = " << KeiRo::Base::Common::getMainwidgetHeight() << endl;
 		cerr << "dockwidget_width = " << KeiRo::Base::Common::getDockWidgetWidth() << endl;
