@@ -54,7 +54,7 @@ elseif( UNIX )
 #            ${QT5_PATH_DIR}/include/
             )
 
-    target_link_directories( ${Target_Name}
+    link_directories( ${Target_Name}
             PUBLIC
 #            /opt/local/lib/
 #            /usr/lib/
@@ -65,7 +65,8 @@ elseif( UNIX )
             )
 endif()
 
-set( CUSTOM_LIBRARIES "-lKeiRoBase")
+set( CUSTOM_LIBRARIES "")
+#set( CUSTOM_LIBRARIES "-lKeiRoBase")
 target_link_libraries(${Target_Name} PRIVATE ${CUSTOM_LIBRARIES}
         )
 #${THIRD_PARTY_LIB}/libSBGN2/build/src/sbgn/libsbgn-static.a
@@ -133,13 +134,13 @@ set_target_properties(${Target_Name}
 #----------------------------------------------------------------------
 # OpenCV
 #----------------------------------------------------------------------
-message(STATUS "-- Linking OpenCV")
-find_package( OpenCV )
+#message(STATUS "-- Linking OpenCV")
+#find_package( OpenCV )
 
-target_link_libraries(${Target_Name}
-        PUBLIC
-        ${OpenCV_LIBS}
-)
+#target_link_libraries(${Target_Name}
+#        PUBLIC
+#        ${OpenCV_LIBS}
+#)
 
 #----------------------------------------------------------------------
 # install setting

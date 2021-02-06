@@ -27,12 +27,14 @@ target_include_directories(${Target_Name}
         ${CMAKE_SOURCE_DIR}/Base/src/
         )
 
-target_link_directories(${Target_Name}
+link_directories(${Target_Name}
         PUBLIC
         /opt/local/lib/
         ${CMAKE_BINARY_DIR}/Base/
         )
-set( CUSTOM_LIBRARIES "-lKeiRoBase -lboost_thread-mt -lgmp -lcgal -lmpfr")
+set( CUSTOM_LIBRARIES "")
+set( CUSTOM_LIBRARIES "-lmpfr")
+#set( CUSTOM_LIBRARIES "-lKeiRoBase -lboost_thread-mt -lgmp -lcgal -lmpfr")
 target_link_libraries(${Target_Name} PUBLIC ${CUSTOM_LIBRARIES})
 
 #----------------------------------------------------------------------

@@ -35,13 +35,13 @@ set_target_properties(${Target_Name} PROPERTIES
 target_include_directories(${Target_Name}
         PUBLIC
         /opt/local/include/
-        )
-
-target_link_directories(${Target_Name}
+  	)
+link_directories(${Target_Name}
         PUBLIC
         /opt/local/lib/
         )
-set( CUSTOM_LIBRARIES "-lboost_thread-mt -lgmp -lcgal -lmpfr")
+set( CUSTOM_LIBRARIES "-lgmp -lCGAL -lmpfr")
+#set( CUSTOM_LIBRARIES "-lboost_thread-mt -lgmp -lcgal -lmpfr")
 target_link_libraries(${Target_Name} PUBLIC ${CUSTOM_LIBRARIES})
 
 #----------------------------------------------------------------------

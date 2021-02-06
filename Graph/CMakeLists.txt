@@ -41,11 +41,11 @@ target_include_directories(${Target_Name}
         ${CMAKE_SOURCE_DIR}/Base/src/
         )
 
-target_link_directories(${Target_Name}
+link_directories(${Target_Name}
         PUBLIC
         ${CMAKE_BINARY_DIR}/Base/
         )
-set( CUSTOM_LIBRARIES "-lKeiRoBase")
+#set( CUSTOM_LIBRARIES "-lKeiRoBase")
 target_link_libraries(${Target_Name} PUBLIC ${CUSTOM_LIBRARIES})
 
 #----------------------------------------------------------------------

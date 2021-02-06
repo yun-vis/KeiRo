@@ -55,13 +55,13 @@ typedef CGAL::Exact_predicates_exact_constructions_kernel K;
 //typedef CGAL::Exact_predicates_inexact_constructions_kernel KI;
 
 #ifdef __linux__
-typedef CGAL::Regular_triangulation_filtered_traits_2<K>  Traits;
-typedef CGAL::Regular_triangulation_2<Traits> RT2;
+//typedef CGAL::Regular_triangulation_filtered_traits_2<K>  Traits;
+//typedef CGAL::Regular_triangulation_2<Traits> RT2;
 #endif  // __linux__
 
-#ifdef __APPLE__
+//#ifdef __APPLE__
 typedef CGAL::Regular_triangulation_2< K > RT2;
-#endif  // __MAC__
+//#endif  // __MAC__
 
 typedef CGAL::Regular_triangulation_adaptation_traits_2< RT2 > AT;
 typedef CGAL::Regular_triangulation_degeneracy_removal_policy_2< RT2 > DRP;

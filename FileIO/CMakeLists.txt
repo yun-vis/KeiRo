@@ -38,14 +38,15 @@ target_include_directories(${Target_Name}
         #${THIRD_PARTY_INCLUDE}
         )
 message(${CMAKE_SOURCE_DIR}/third_party/libSBGN2/build/install/lib/)
-target_link_directories(${Target_Name}
+link_directories(${Target_Name}
         PUBLIC
         ${CMAKE_BINARY_DIR}/Base/
         ${CMAKE_BINARY_DIR}/Graph/
         ${CMAKE_BINARY_DIR}/Composite/
 #        ${CMAKE_SOURCE_DIR}/third_party/libSBGN2/build/install/lib/
         )
-set( CUSTOM_LIBRARIES "-lKeiRoBase -lKeiRoGraph -lKeiRoComposite -lcgal")
+set( CUSTOM_LIBRARIES "")
+#set( CUSTOM_LIBRARIES "-lKeiRoBase -lKeiRoGraph -lKeiRoComposite -lcgal")
 target_link_libraries(${Target_Name} PUBLIC ${CUSTOM_LIBRARIES}
 #        /opt/local/lib/libsbgn-static.a
 #        ${CMAKE_SOURCE_DIR}/third_party/libSBGN2/build/install/lib/libsbgn-static.a

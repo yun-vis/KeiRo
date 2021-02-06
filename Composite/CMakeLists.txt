@@ -29,12 +29,12 @@ target_include_directories(${Target_Name}
         ${CMAKE_SOURCE_DIR}/Graph/src/
         )
 
-target_link_directories(${Target_Name}
+link_directories(${Target_Name}
         PUBLIC
         ${CMAKE_BINARY_DIR}/Base/
         ${CMAKE_BINARY_DIR}/Graph/
         )
-set( CUSTOM_LIBRARIES "-lKeiRoBase -lKeiRoGraph -lcgal -lgmp -lmpfr")
+#set( CUSTOM_LIBRARIES "-lKeiRoBase -lKeiRoGraph -lcgal -lgmp -lmpfr")
 target_link_libraries(${Target_Name} PUBLIC ${CUSTOM_LIBRARIES})
 
 #----------------------------------------------------------------------
