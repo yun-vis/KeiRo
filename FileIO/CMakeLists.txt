@@ -38,15 +38,26 @@ target_include_directories(${Target_Name}
         #${THIRD_PARTY_INCLUDE}
         )
 message(${CMAKE_SOURCE_DIR}/third_party/libSBGN2/build/install/lib/)
-link_directories(${Target_Name}
-        PUBLIC
-        ${CMAKE_BINARY_DIR}/Base/
-        ${CMAKE_BINARY_DIR}/Graph/
-        ${CMAKE_BINARY_DIR}/Composite/
-#        ${CMAKE_SOURCE_DIR}/third_party/libSBGN2/build/install/lib/
-        )
-set( CUSTOM_LIBRARIES "")
-#set( CUSTOM_LIBRARIES "-lKeiRoBase -lKeiRoGraph -lKeiRoComposite -lcgal")
+
+if( APPLE )
+    target_link_directories(${Target_Name}
+            PUBLIC
+            ${CMAKE_BINARY_DIR}/Base/
+            ${CMAKE_BINARY_DIR}/Graph/
+            ${CMAKE_BINARY_DIR}/Composite/
+            #        ${CMAKE_SOURCE_DIR}/third_party/libSBGN2/build/install/lib/
+            )
+    set( CUSTOM_LIBRARIES "-lKeiRoBase -lKeiRoGraph -lKeiRoComposite -lcgal")
+elseif( UNIX )
+    link_directories(${Target_Name}
+            PUBLIC
+            ${CMAKE_BINARY_DIR}/Base/
+            ${CMAKE_BINARY_DIR}/Graph/
+            ${CMAKE_BINARY_DIR}/Composite/
+            #        ${CMAKE_SOURCE_DIR}/third_party/libSBGN2/build/install/lib/
+            )
+    #set( CUSTOM_LIBRARIES "-lgmp -lCGAL -lmpfr")
+endif()
 target_link_libraries(${Target_Name} PUBLIC ${CUSTOM_LIBRARIES}
 #        /opt/local/lib/libsbgn-static.a
 #        ${CMAKE_SOURCE_DIR}/third_party/libSBGN2/build/install/lib/libsbgn-static.a

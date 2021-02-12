@@ -35,10 +35,13 @@ namespace FileIO {
 
     private:
 	
+	    unsigned int                _id, _attributeID;
+
         // glyphs in SVG
         vector<  KeiRo::Base::Polygon2 >    _polygonVec;
         // arcs in SVG
-        vector< KeiRo::Base::Line2 >       _polylineVec;
+        vector< KeiRo::Base::Line2 >        _polylineVec;
+        
         Grid2                       *_gridPtr;
 
         int                         _x, _y, _width, _height;
@@ -69,8 +72,15 @@ namespace FileIO {
         //------------------------------------------------------------------------------
         //	Reference to elements
         //------------------------------------------------------------------------------
+        unsigned int &	                            id( void ) 	                { return _id; }
+	    const unsigned int &	                    id( void ) const	        { return _id; }
+	
+	    unsigned int &	                            attributeID( void ) 	    { return _attributeID; }
+	    const unsigned int &	                    attributeID( void ) const	{ return _attributeID; }
+
         vector< KeiRo::Base::Polygon2 > &	        polygonVec( void ) 	        { return _polygonVec; }
         const vector< KeiRo::Base::Polygon2 > &	    polygonVec( void ) const	{ return _polygonVec; }
+
         vector< KeiRo::Base::Line2 > &	            polylineVec( void ) 	    { return _polylineVec; }
         const vector< KeiRo::Base::Line2 > &	    polylineVec( void ) const	{ return _polylineVec; }
 

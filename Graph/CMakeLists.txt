@@ -24,12 +24,17 @@ add_library(${Target_Name} SHARED
         src/TreeVertexProperty.cpp
         src/TreeGraphProperty.cpp
         src/TreeGraph.cpp
+        src/TreeDirectedGraph.cpp
         )
 
 set_target_properties(${Target_Name} PROPERTIES
         VERSION ${PROJECT_VERSION}
         SOVERSION 1
-        PUBLIC_HEADER "src/BaseVertexProperty.h;src/BaseEdgeProperty.h;src/BaseGraphProperty.h;src/BaseUndirectedGraph.h;src/GridVertexProperty.h;src/GridEdgeProperty.h;src/GridGraphProperty.h;src/GridGraph.h;src/SchematicVertexProperty.h;src/SchematicEdgeProperty.h;src/SchematicGraphProperty.h;src/SchematicGraph.h;src/TreeEdgeProperty.h;src/TreeVertexProperty.h;src/TreeGraphProperty.h;src/TreeGraph.h"
+        PUBLIC_HEADER "src/BaseVertexProperty.h;src/BaseEdgeProperty.h;src/BaseGraphProperty.h;
+        src/BaseUndirectedGraph.h;src/GridVertexProperty.h;src/GridEdgeProperty.h;src/GridGraphProperty.h;
+        src/GridGraph.h;src/SchematicVertexProperty.h;src/SchematicEdgeProperty.h;src/SchematicGraphProperty.h;
+        src/SchematicGraph.h;src/TreeEdgeProperty.h;src/TreeVertexProperty.h;src/TreeGraphProperty.h;src/TreeGraph.h;
+        src/TreeDirectedGraph.h"
         )
 
 #----------------------------------------------------------------------
@@ -41,11 +46,19 @@ target_include_directories(${Target_Name}
         ${CMAKE_SOURCE_DIR}/Base/src/
         )
 
-link_directories(${Target_Name}
-        PUBLIC
-        ${CMAKE_BINARY_DIR}/Base/
-        )
-#set( CUSTOM_LIBRARIES "-lKeiRoBase")
+if( APPLE )
+    target_link_directories(${Target_Name}
+            PUBLIC
+            ${CMAKE_BINARY_DIR}/Base/
+            )
+    set( CUSTOM_LIBRARIES "-lKeiRoBase")
+elseif( UNIX )
+    link_directories(${Target_Name}
+            PUBLIC
+            ${CMAKE_BINARY_DIR}/Base/
+            )
+#    set( CUSTOM_LIBRARIES "-lmpfr")
+endif()
 target_link_libraries(${Target_Name} PUBLIC ${CUSTOM_LIBRARIES})
 
 #----------------------------------------------------------------------

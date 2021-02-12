@@ -1,4 +1,4 @@
-# ubuntu 16.04 LTS
+# ubuntu 18.04 LTS
 
 ## intstall libsbml
 

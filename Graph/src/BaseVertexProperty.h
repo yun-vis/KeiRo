@@ -56,8 +56,9 @@ namespace Graph {
         double *                    namePixelHeightPtr;     // pixel height of the name
 
         double                      weight;
-
-        KeiRo::Base::Coord2 *              coordPtr;               // center coordinates
+		double                      aspectRatio;            // aspect ratio of the vertex
+        
+        KeiRo::Base::Coord2 *       coordPtr;               // center coordinates
         double *                    widthPtr;               // vertex width
         double *                    heightPtr;              // vertex height
         double *                    areaPtr;                // vertex area

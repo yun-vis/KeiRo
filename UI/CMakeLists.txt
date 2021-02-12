@@ -65,8 +65,12 @@ elseif( UNIX )
             )
 endif()
 
-set( CUSTOM_LIBRARIES "")
-#set( CUSTOM_LIBRARIES "-lKeiRoBase")
+if( APPLE )
+    set( CUSTOM_LIBRARIES "-lKeiRoBase")
+elseif( UNIX )
+    set( CUSTOM_LIBRARIES "")
+    #    set( CUSTOM_LIBRARIES "-lmpfr")
+endif()
 target_link_libraries(${Target_Name} PRIVATE ${CUSTOM_LIBRARIES}
         )
 #${THIRD_PARTY_LIB}/libSBGN2/build/src/sbgn/libsbgn-static.a

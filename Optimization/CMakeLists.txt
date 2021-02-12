@@ -27,12 +27,21 @@ target_include_directories(${Target_Name}
         ${CMAKE_SOURCE_DIR}/Graph/src/
         )
 
-link_directories(${Target_Name}
-        PUBLIC
-        ${CMAKE_BINARY_DIR}/Base/
-        ${CMAKE_BINARY_DIR}/Graph/
-        )
-#set( CUSTOM_LIBRARIES "-lKeiRoBase -lKeiRoGraph")
+if( APPLE )
+    target_link_directories(${Target_Name}
+            PUBLIC
+            ${CMAKE_BINARY_DIR}/Base/
+            ${CMAKE_BINARY_DIR}/Graph/
+            )
+    set( CUSTOM_LIBRARIES "-lKeiRoBase -lKeiRoGraph")
+elseif( UNIX )
+    link_directories(${Target_Name}
+            PUBLIC
+            ${CMAKE_BINARY_DIR}/Base/
+            ${CMAKE_BINARY_DIR}/Graph/
+            )
+    #    set( CUSTOM_LIBRARIES "-lmpfr")
+endif()
 target_link_libraries(${Target_Name} PUBLIC ${CUSTOM_LIBRARIES})
 
 #----------------------------------------------------------------------

@@ -1,5 +1,5 @@
 //******************************************************************************
-// TreeGraph.cpp
+// TreeDirectedGraph.cpp
 //	: program file for tree graph
 //
 //------------------------------------------------------------------------------
@@ -11,7 +11,7 @@
 //------------------------------------------------------------------------------
 //	Including Header Files
 //------------------------------------------------------------------------------
-#include "TreeGraph.h"
+#include "TreeDirectedGraph.h"
 
 namespace Graph {
 
@@ -31,7 +31,7 @@ namespace Graph {
     //	Special functions
     //------------------------------------------------------------------------------
     //
-    //  TreeGraph::printGraph -- print the graph.
+    //  TreeDirectedGraph::printGraph -- print the graph.
     //
     //  Inputs
     //  g   : object of Grpah
@@ -39,28 +39,28 @@ namespace Graph {
     //  Outputs
     //  none
     //
-    void printGraph( const TreeGraph & graph )
+    void printGraph( const TreeDirectedGraph & graph )
     {
-    	cerr << "TreeGraph:" << endl;
+    	cerr << "TreeDirectedGraph:" << endl;
         cerr << "num_vertices = " << num_vertices( graph ) << endl;
         cerr << "num_edges = " << num_edges( graph ) << endl;
 
 //    #ifdef  DEBUG
         // print vertex information
-        BGL_FORALL_VERTICES( vd, graph, TreeGraph ) {
+        BGL_FORALL_VERTICES( vd, graph, TreeDirectedGraph ) {
 
-            TreeGraph::degree_size_type      degrees         = out_degree( vd, graph );
+            TreeDirectedGraph::degree_size_type      out_degrees         = out_degree( vd, graph );
             cerr << "vid = " << graph[vd].id << " level = " << graph[vd].level
-                 << " childSize = " << graph[vd].childVec.size() << " ?= " << degrees << endl;
+                 << " childSize = " << graph[vd].childVec.size() << " ?= " << out_degrees << endl;
         }
 //    #endif  // DEBUG
 
     #ifdef  DEBUG
         // print edge information
-        BGL_FORALL_EDGES( ed, graph, TreeGraph ) {
+        BGL_FORALL_EDGES( ed, graph, TreeDirectedGraph ) {
 
-            TreeGraph::vertex_descriptor vdS = source( ed, graph );
-            TreeGraph::vertex_descriptor vdT = target( ed, graph );
+            TreeDirectedGraph::vertex_descriptor vdS = source( ed, graph );
+            TreeDirectedGraph::vertex_descriptor vdT = target( ed, graph );
 
             cerr << "eid = " << graph[ ed ].id << " ( " << graph[ vdS ].id << " == " << graph[ vdT ].id << " ) " << endl;
         }
@@ -68,7 +68,7 @@ namespace Graph {
     }
 
     //
-    //  TreeGraph::clearGraph -- clear the graph.
+    //  TreeDirectedGraph::clearGraph -- clear the graph.
     //
     //  Inputs
     //  g   : object of Grpah
@@ -76,10 +76,10 @@ namespace Graph {
     //  Outputs
     //  none
     //
-    void clearGraph( TreeGraph & graph )
+    void clearGraph( TreeDirectedGraph & graph )
     {
         // clear edges
-        TreeGraph::edge_iterator ei, ei_end, e_next;
+        TreeDirectedGraph::edge_iterator ei, ei_end, e_next;
         tie( ei, ei_end ) = edges( graph );
         for ( e_next = ei; ei != ei_end; ei = e_next ) {
             e_next++;
@@ -94,9 +94,9 @@ namespace Graph {
     #endif  // SKIP
 
         // clear vertices
-        pair< TreeGraph::vertex_iterator, TreeGraph::vertex_iterator > vp;
+        pair< TreeDirectedGraph::vertex_iterator, TreeDirectedGraph::vertex_iterator > vp;
         for ( vp = vertices( graph ); vp.first != vp.second;  ) {
-            TreeGraph::vertex_descriptor vd = (*vp.first);
+            TreeDirectedGraph::vertex_descriptor vd = (*vp.first);
             ++vp.first;
             clear_vertex( vd, graph );
             remove_vertex( vd, graph );

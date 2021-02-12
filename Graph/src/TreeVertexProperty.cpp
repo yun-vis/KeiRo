@@ -44,7 +44,7 @@ namespace Graph {
     {
         BaseVertexProperty::_init();
 
-        leafID              = -1;
+        // leafID              = -1;
         meanCoord.x()       = 0.0;
         meanCoord.y()       = 0.0;
         // leafVec.clear();

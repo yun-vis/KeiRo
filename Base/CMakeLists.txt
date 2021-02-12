@@ -36,12 +36,20 @@ target_include_directories(${Target_Name}
         PUBLIC
         /opt/local/include/
   	)
-link_directories(${Target_Name}
-        PUBLIC
-        /opt/local/lib/
-        )
-set( CUSTOM_LIBRARIES "-lgmp -lCGAL -lmpfr")
-#set( CUSTOM_LIBRARIES "-lboost_thread-mt -lgmp -lcgal -lmpfr")
+
+if( APPLE )
+    target_link_directories(${Target_Name}
+            PUBLIC
+            /opt/local/lib/
+            )
+    set( CUSTOM_LIBRARIES "-lboost_thread-mt -lgmp -lcgal -lmpfr")
+elseif( UNIX )
+    link_directories(${Target_Name}
+            PUBLIC
+            /opt/local/lib/
+            )
+    set( CUSTOM_LIBRARIES "-lgmp -lCGAL -lmpfr")
+endif()
 target_link_libraries(${Target_Name} PUBLIC ${CUSTOM_LIBRARIES})
 
 #----------------------------------------------------------------------

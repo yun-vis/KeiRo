@@ -20,6 +20,7 @@ using namespace std;
 #ifndef Q_MOC_RUN
 #include "Object.h"
 #include "Rectangle2.h"
+#include "TreeDirectedGraph.h"
 #include "svg.h"
 #endif // Q_MOC_RUN
 
@@ -35,8 +36,11 @@ namespace FileIO {
 
     private:
     	
-        // data
-	    vector< vector< SVG* > >       _svgPtr;
+        // tree structure data
+        unsigned int                                    _maxLevel;
+        vector< SVG * >                                 _svgPtrVec;
+	    Graph::TreeDirectedGraph                        _svgTree;
+	    Graph::TreeDirectedGraph::vertex_descriptor     _svgTreeRoot;
 	    
     protected:
 
@@ -60,10 +64,19 @@ namespace FileIO {
         //------------------------------------------------------------------------------
         //	Reference to elements
         //------------------------------------------------------------------------------
-        vector< vector< SVG* > > 	            svgData( void ) 	    { return _svgPtr; }
-	    const vector< vector< SVG* > > 	        svgData( void ) const	{ return _svgPtr; }
+        unsigned int &	                        maxLevel( void ) 	    { return _maxLevel; }
+	    const unsigned int &	                maxLevel( void ) const	{ return _maxLevel; }
 
-        //------------------------------------------------------------------------------
+	    vector< SVG* > &	                    svgPtrVec( void ) 	    { return _svgPtrVec; }
+	    const vector< SVG* > &	                svgPtrVec( void ) const	{ return _svgPtrVec; }
+	
+	    Graph::TreeDirectedGraph &	            svgTree( void ) 	    { return _svgTree; }
+	    const Graph::TreeDirectedGraph &  	    svgTree( void ) const	{ return _svgTree; }
+	
+	    Graph::TreeDirectedGraph::vertex_descriptor &	    svgTreeRoot( void ) 	    { return _svgTreeRoot; }
+	    const Graph::TreeDirectedGraph::vertex_descriptor &	svgTreeRoot( void ) const	{ return _svgTreeRoot; }
+	    
+	    //------------------------------------------------------------------------------
         //	Special functions
         //------------------------------------------------------------------------------
         void init( void ) {

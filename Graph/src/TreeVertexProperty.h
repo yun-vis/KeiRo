@@ -50,15 +50,15 @@ namespace Graph {
 
     public:
 
-        int                         leafID;
-        unsigned int                level;      // hierarchical level
+        unsigned int                level;          // hierarchical level
+        unsigned int                attributeID;    // external attribute ID
 	
 	    KeiRo::Base::Coord2         meanCoord;
 	    KeiRo::Base::Coord2         *leftTopCoordPtr;
 	    KeiRo::Base::Coord2         *rightBottomCoordPtr;
 
-        vector< unsigned int >      leafIDVec;  // id in samples
-        vector< unsigned int >      child;      // vid of children in TreeGraph
+        vector< unsigned int >      leafIDVec;      // id in samples
+        vector< unsigned int >      childVec;       // vid of children in TreeGraph
 
         //------------------------------------------------------------------------------
         //	Constructors & Destructors

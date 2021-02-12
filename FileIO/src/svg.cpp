@@ -587,7 +587,6 @@ namespace FileIO {
 #endif // SVG_DEBUG
                 }
             }
-
             // element coordinates
             SVGTAGTYPE tag;
             vector< KeiRo::Base::Coord2 > coordElements;
@@ -603,25 +602,39 @@ namespace FileIO {
 
 #ifdef SVG_DEBUG
                 cerr << "origin = " << origin;
-                cerr << dList.at( j ).toStdString() << endl;
+	            cerr << "dList.size() = " << dList.size() << endl;
+                cerr << "j = " << j << " str = " << dList.at( j ).toStdString() << endl;
 #endif // SVG_DEBUG
 
 
                 QStringList coords = dList.at( j ).split( "," );
-
                 if( coords.size() == 1 ){
                     // check if c exists
-                    if ( coords.at( 0 ).toStdString() == "m" ) tag = SVGTAGTYPE_m;
-                    if ( coords.at( 0 ).toStdString() == "c" ) tag = SVGTAGTYPE_c;
-                    if ( coords.at( 0 ).toStdString() == "v" ) tag = SVGTAGTYPE_v;
-                    if ( coords.at( 0 ).toStdString() == "h" ) tag = SVGTAGTYPE_h;
-                    if ( coords.at( 0 ).toStdString() == "l" ) tag = SVGTAGTYPE_l;
+                    if ( coords.at( 0 ).toStdString() == "m" ) {
+                    	tag = SVGTAGTYPE_m;
+	                    j++;
+	                    coords = dList.at( j ).split( "," );
+                    }
+                    if ( coords.at( 0 ).toStdString() == "c" ) {
+                    	tag = SVGTAGTYPE_c;
+	                    j++;
+	                    coords = dList.at( j ).split( "," );
+                    }
+                    if ( coords.at( 0 ).toStdString() == "v" ) {
+                    	tag = SVGTAGTYPE_v;
+                    }
+                    if ( coords.at( 0 ).toStdString() == "h" ) {
+                    	tag = SVGTAGTYPE_h;
+                    }
+                    if ( coords.at( 0 ).toStdString() == "l" ) {
+                    	tag = SVGTAGTYPE_l;
+	                    j++;
+	                    coords = dList.at( j ).split( "," );
+                    }
                     if ( coords.at( 0 ).toStdString() == "z" ) {
                         tag = SVGTAGTYPE_z;
                         break;
                     }
-                    j++;
-                    coords = dList.at( j ).split( "," );
                 }
 #ifdef SVG_DEBUG
                 cerr << "j = " << j << ", coords.size() = " << coords.size() << ", tag = " << tag << endl;
@@ -935,22 +948,23 @@ namespace FileIO {
     //
     bool SVG::readSVG( const QString fileName )
     {
-        cerr << "fileName = " << fileName.toStdString() << endl;
-
         if ( fileName.isEmpty() ){
             cerr << "something is wrong here... at " << __LINE__ << " in " << __FILE__ << endl;
             return false;
         }
 
         QRectF canvas = getCanvasSize( fileName );
-        cerr << "canvas( " << canvas.x() << ", " << canvas.y() << ", " << canvas.width() << ", " << canvas.height() << " )" << endl;
 
         getPolygonElements( fileName );
         getRectangleElements( fileName );
         getPathElements( fileName );
         getCircleElements( fileName );
         normalize();
-
+	
+	    cerr << "fileName = " << fileName.toStdString() << endl;
+	    cerr << "canvas( " << canvas.x() << ", " << canvas.y() << ", " << canvas.width() << ", " << canvas.height() << " )" << endl;
+        cerr << "_polygonVec.size() = " << _polygonVec.size() << endl;
+	    cerr << "_polylineVec.size() = " << _polylineVec.size() << endl;
         // create compression
         _compression.init( _gridPtr, &_polygonVec, &_polylineVec );
         _compression.createCompression();

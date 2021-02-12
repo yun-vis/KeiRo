@@ -84,13 +84,15 @@ namespace FileIO {
 	//
 	bool MetaData::readMetaData( const QString filePath, const QString folderName, Grid2 *gridPtr )
 	{
+    	// initialization
 		QString fileName = filePath + QString( "/metadata.xml" );
 		cerr << "metadata fileName = " << fileName.toStdString() << endl;
-		// uptr = unique_ptr< vector< vector< SVG > > >(new vector< vector< SVG > > );
+		_svgPtrVec.clear();
 		
 		// Open your SVG-file
 		QFile file( fileName );
 		QDomDocument doc;
+		unsigned int svgIndex = 0;
 		
 		// If it is not opened, or have failed to transmit the contents in QDocDocument
 		if ( !file.open( QIODevice::ReadOnly ) || !doc.setContent( &file ) ) {
@@ -101,15 +103,16 @@ namespace FileIO {
 		
 		// get rectangles
 		QDomNodeList objects = doc.elementsByTagName( "objects" );
-		int maxLevel = objects.item(0).toElement().attribute( "maxlevel" ).toInt();
+		_maxLevel = objects.item(0).toElement().attribute( "maxlevel" ).toInt();
 		QDomNodeList objectList = doc.elementsByTagName( "object" );
 		
-		_svgPtr.resize( maxLevel );
+		// _svgPtr.resize( _maxLevel );
 		
-#ifdef DEBUG
-		cerr << "maxlevel = " << maxLevel << endl;
+//#ifdef METADATA_DEBUG
+		cerr << "_maxlevel = " << _maxLevel << endl;
 		cerr << "objectList.size() = " << objectList.size() << endl;
-#endif // DEBUG
+//#endif // METADATA_DEBUG
+
 		for( unsigned int i = 0; i < objectList.size(); i++ ) {
 
 			// Select from the node list
@@ -120,82 +123,86 @@ namespace FileIO {
 			unsigned int level = gElement.attribute( "level" ).toInt();
 			QString file = gElement.attribute( "file" );
 
-#ifdef METADATA_DEBUG
+//#ifdef METADATA_DEBUG
 			cerr << "i = " << i << ", id = " << id
 				 << ", level = " << level
 				 << ", file = " << file.toStdString()
 				 << ", filename.size() = " << file.toStdString().size() << endl;
-#endif // METADATA_DEBUG
-			
+//#endif // METADATA_DEBUG
+
 			SVG *s = new SVG;
-			_svgPtr[ level ].push_back( s );
-			unsigned int len = _svgPtr[ level ].size() - 1;
-			
-			
+			s->id() = svgIndex;
+			_svgPtrVec.push_back( s );
+			// unsigned int len = _svgPtr[ level ].size() - 1;
+
 			QString name = file;
 			name.remove( 0, 8 );
 			name.truncate( name.lastIndexOf( '.' ) );
-#ifdef METADATA_DEBUG
-			cerr << "name = " << name.toStdString() << ", len = " << len << endl;
-#endif // METADATA_DEBUG
+//#ifdef METADATA_DEBUG
+			cerr << "name = " << name.toStdString() << endl;
+//#endif // METADATA_DEBUG
+			
+			double x = 0.0, y = 0.0, w = 0.0, h = 0.0;
+			Graph::TreeDirectedGraph::vertex_descriptor vd = add_vertex( _svgTree );
+			if( svgIndex == 0 ){
 
-			if( level == 0 ) {
+				_svgTreeRoot = vd;
+				
+				w = KeiRo::Base::Common::getMainwidgetWidth();
+				h = KeiRo::Base::Common::getMainwidgetHeight();
 				
 				// read svg
-				_svgPtr[ level ][len]->init( gridPtr, 0.0, 0.0,
-				            KeiRo::Base::Common::getMainwidgetWidth(),
-				            KeiRo::Base::Common::getMainwidgetHeight() );
-				_svgPtr[ level ][len]->level() = level;
-				_svgPtr[ level ][len]->name() = name.toStdString();
-				_svgPtr[ level ][len]->readSVG( filePath + file );
+				_svgPtrVec[ svgIndex ]->init( gridPtr, 0.0, 0.0, w, h );
+				_svgPtrVec[ svgIndex ]->level() = level;
+				_svgPtrVec[ svgIndex ]->name() = name.toStdString();
+				_svgPtrVec[ svgIndex ]->readSVG( filePath + file );
 				
-				vector<  KeiRo::Base::Polygon2 > &polygonVec = _svgPtr[ level ][len]->polygonVec();
-				// cerr << "name = " << name.toStdString() << endl;
-				// cerr << "s.polygonVec().size() = " << ( *_svgPtr )[ level ][0].polygonVec().size() << endl;
+				// set svgTree
+				_svgTree[ vd ].id           = s->id();
+				_svgTree[ vd ].attributeID  = s->id();
+				_svgTree[ vd ].level        = level;
 			}
 			else {
-
-				double  x = 0.0, y = 0.0, w = 0.0, h = 0.0;
-
+				
 				// find object width and height at the previous level
 				bool isFound = false;
-				// string parent = "parent";
-				QString objName = QString( "obj" ) + name.right(5 );
+				QString objName = QString( "obj" ) + name.right( 5 );
 #ifdef METADATA_DEBUG
 				cerr << "objName = " << objName.toStdString() << endl;
 #endif // METADATA_DEBUG
 				unsigned int parentPolygonID = 0;
 				
+				
 				KeiRo::Base::Common::UIDPair parentFileID;
-				for( unsigned int m = 0; m < _svgPtr[ level - 1 ].size(); m++ ) {
-					for( unsigned int n = 0; n < _svgPtr[ level - 1 ][ m ]->polygonVec().size(); n++ ) {
+				for( unsigned int m = 0; m < _svgPtrVec.size(); m++ ) {
+					for( unsigned int n = 0; n < _svgPtrVec[ m ]->polygonVec().size(); n++ ) {
 #ifdef METADATA_DEBUG
-						cerr << "(*_svgPtr)[level-1][m].polygonVec()[n].name() = " << (*_svgPtr)[level-1][m].polygonVec()[n].name()
-								 << " ?= name.toStdString() = " << name.toStdString() << endl;
-						cerr << "m = " << m << ", n = " << n << endl;
+						cerr << "_svgPtr[" << m << "]->polygonVec()[" << n << "].name() = " << _svgPtrVec[ m
+						]->polygonVec()[ n ].name()
+						     << " ?= objName.toStdString() = " << objName.toStdString() << endl;
+						// cerr << "m = " << m << ", n = " << n << endl;
 #endif // METADATA_DEBUG
-						if( _svgPtr[ level - 1 ][ m ]->polygonVec()[ n ].name() == objName.toStdString() ) {
-
-							x = _svgPtr[ level - 1 ][ m ]->polygonVec()[ n ].boxLeftTop().x();
-							y = _svgPtr[ level - 1 ][ m ]->polygonVec()[ n ].boxLeftTop().y();
-							w = _svgPtr[ level - 1 ][ m ]->polygonVec()[ n ].boundingBox().x();
-							h = _svgPtr[ level - 1 ][ m ]->polygonVec()[ n ].boundingBox().y();
+						if( _svgPtrVec[ m ]->polygonVec()[ n ].name() == objName.toStdString() ) {
+							
+							x = _svgPtrVec[ m ]->polygonVec()[ n ].boxLeftTop().x();
+							y = _svgPtrVec[ m ]->polygonVec()[ n ].boxLeftTop().y();
+							w = _svgPtrVec[ m ]->polygonVec()[ n ].boundingBox().x();
+							h = _svgPtrVec[ m ]->polygonVec()[ n ].boundingBox().y();
 #ifdef METADATA_DEBUG
-							cerr << "m = " << m << " name = " << _svgPtr[level-1][m]->polygonVec()[n].name()
-									 << " objName = " << objName.toStdString() << endl;
-								cerr << "x = " << x << " y = " << y
-									 << " w = " << w << " h = " << h << endl;
+							cerr << "m = " << m << " name = " << _svgPtr[m]->polygonVec()[n].name()
+								 << " objName = " << objName.toStdString() << endl;
+							cerr << "x = " << x << " y = " << y
+								 << " w = " << w << " h = " << h << endl;
 #endif // METADATA_DEBUG
 							isFound = true;
-							// parent = name.toStdString();
-							parentFileID.first = level - 1;
+							parentFileID.first = level-1;
 							parentFileID.second = m;
 							parentPolygonID = n;
 #ifdef METADATA_DEBUG
 							cerr << "obj = " << objName.toStdString() << ", level-1 = " << parentFileID.first << ", m = " << m
 									 << ", n = " << n << endl;
 #endif // METADATA_DEBUG
-							 break;
+							break;
 						}
 					}
 				}
@@ -205,37 +212,236 @@ namespace FileIO {
 					cerr << "name = " << name.toStdString() << endl;
 					assert( isFound );
 				}
-				
+
 #ifdef METADATA_DEBUG
-				cerr << "level = " << level << ", len = " << len << endl;
+				cerr << "level = " << level << endl;
+				cerr << "parentFileID.first = " << parentFileID.first << endl;
+				cerr << "parentFileID.second = " << parentFileID.second << endl;
+				cerr << "parentPolygonID  = " << parentPolygonID << endl;
 #endif // METADATA_DEBUG
-				_svgPtr[ level ][ len ]->init( gridPtr, x + 0.5 * ( double ) w, y + 0.5 * ( double ) h,
-				                             w, h );
-				_svgPtr[ level ][ len ]->name() = name.toStdString();
-				_svgPtr[ level ][ len ]->readSVG( filePath + file );
-
-				for( unsigned int n = 0; n < _svgPtr[ level ][ len ]->polygonVec().size(); n++ ) {
-
-					_svgPtr[ level ][ len ]->polygonVec()[ n ].parentFileID().first = parentFileID.first;
-					_svgPtr[ level ][ len ]->polygonVec()[ n ].parentFileID().second = parentFileID.second;
-					_svgPtr[ level ][ len ]->polygonVec()[ n ].parentPolygonID() = parentPolygonID;
+				_svgPtrVec[ svgIndex ]->init( gridPtr, x + 0.5 * w, y + 0.5 * h, w, h );
+				_svgPtrVec[ svgIndex ]->level() = level;
+				_svgPtrVec[ svgIndex ]->name() = name.toStdString();
+				_svgPtrVec[ svgIndex ]->readSVG( filePath + file );
+				
+				for( unsigned int n = 0; n < _svgPtrVec[ svgIndex ]->polygonVec().size(); n++ ) {
+					
+					_svgPtrVec[ svgIndex ]->polygonVec()[ n ].parentFileID().first = parentFileID.first;
+					_svgPtrVec[ svgIndex ]->polygonVec()[ n ].parentFileID().second = parentFileID.second;
+					_svgPtrVec[ svgIndex ]->polygonVec()[ n ].parentPolygonID() = parentPolygonID;
 				}
+				
+				// set svgTree
+				KeiRo::Base::Polygon2 &p = _svgPtrVec[ parentFileID.second ]->polygonVec()[parentPolygonID];
+				_svgTree[ vd ].id           = s->id();
+				_svgTree[ vd ].attributeID  = s->id();
+				_svgTree[ vd ].level        = level;
+				_svgTree[ vd ].widthPtr     = &p.boundingBox().x();
+				_svgTree[ vd ].heightPtr    = &p.boundingBox().y();
+				_svgTree[ vd ].meanCoord    = p.center();
+				
+				cerr << "parentFileID.second = " << parentFileID.second << endl;
+				cerr << "parentPolygonID = " << parentPolygonID << endl;
+				cerr << "p = " << p << endl;
+				cerr << "_svgTree[ vd ].widthPtr = " << *_svgTree[ vd ].widthPtr << endl;
+				cerr << "_svgTree[ vd ].heightPtr = " << *_svgTree[ vd ].heightPtr << endl;
+				
+				// add the child vd to the parent vertex
+				Graph::TreeDirectedGraph::vertex_descriptor parentVD= vertex( parentFileID.second, _svgTree );
+				_svgTree[ parentVD ].childVec.push_back( s->id() );
+				
+				// add a directed edge from parent vertex to the child vertex
+				pair< Graph::TreeDirectedGraph::edge_descriptor, unsigned int > foreE = add_edge( parentVD, vd, _svgTree );
+				Graph::TreeDirectedGraph::edge_descriptor foreED = foreE.first;
+				_svgTree[ foreED ].id = num_edges( _svgTree ) - 1;
 			}
-			cerr << endl << endl;
+			svgIndex++;
 		}
 		
 		// check
+#ifdef METADATA_DEBUG
 		for( unsigned int m = 0; m < _svgPtr.size(); m++ ) {
 			for( unsigned int n = 0; n < _svgPtr[ m ].size(); n++ ) {
 				
-#ifdef METADATA_DEBUG
 				cerr << "m = " << m << ", n = " << n << endl;
 				cerr << "name = " << _svgPtr[m][n]->name() << " isVisible = " << _svgPtr[m][n]->isVisible() << endl;
 				cerr << "size = " << _svgPtr[m][n]->polygonVec().size() << endl;
-#endif // METADATA_DEBUG
 			}
 		}
+#endif // METADATA_DEBUG
+		
+		printGraph( _svgTree );
+		
 		return true;
 	}
-    
+	
+//	//
+//	//  MetaData::readMetaData --	read MetaData file
+//	//
+//	//  Inputs
+//	//	string filename
+//	//
+//	//  Outputs
+//	//	bool
+//	//
+//	bool MetaData::readMetaData( const QString filePath, const QString folderName, Grid2 *gridPtr )
+//	{
+//		QString fileName = filePath + QString( "/metadata.xml" );
+//		cerr << "metadata fileName = " << fileName.toStdString() << endl;
+//		// uptr = unique_ptr< vector< vector< SVG > > >(new vector< vector< SVG > > );
+//
+//		// Open your SVG-file
+//		QFile file( fileName );
+//		QDomDocument doc;
+//		unsigned int svgIndex = 0;
+//
+//		// If it is not opened, or have failed to transmit the contents in QDocDocument
+//		if ( !file.open( QIODevice::ReadOnly ) || !doc.setContent( &file ) ) {
+//			// the refund list, but empty
+//			cerr << "something is wrong here... at " << __LINE__ << " in " << __FILE__ << endl;
+//			return false;
+//		}
+//
+//		// get rectangles
+//		QDomNodeList objects = doc.elementsByTagName( "objects" );
+//		int maxLevel = objects.item(0).toElement().attribute( "maxlevel" ).toInt();
+//		QDomNodeList objectList = doc.elementsByTagName( "object" );
+//
+//		_svgPtr.resize( maxLevel );
+//
+//#ifdef METADATA_DEBUG
+//		cerr << "maxlevel = " << maxLevel << endl;
+//		cerr << "objectList.size() = " << objectList.size() << endl;
+//#endif // METADATA_DEBUG
+//		for( unsigned int i = 0; i < objectList.size(); i++ ) {
+//
+//			// Select from the node list
+//			QDomNode gNode = objectList.item( i );
+//			// QDomElement rectangle = gNode.firstChildElement("rect" );
+//			QDomElement gElement = gNode.toElement();
+//			unsigned int id = gElement.attribute( "id" ).toInt();
+//			unsigned int level = gElement.attribute( "level" ).toInt();
+//			QString file = gElement.attribute( "file" );
+//
+//#ifdef METADATA_DEBUG
+//			cerr << "i = " << i << ", id = " << id
+//				 << ", level = " << level
+//				 << ", file = " << file.toStdString()
+//				 << ", filename.size() = " << file.toStdString().size() << endl;
+//#endif // METADATA_DEBUG
+//
+//			SVG *s = new SVG;
+//			s->id() = svgIndex;
+//			svgIndex++;
+//			_svgPtr[ level ].push_back( s );
+//			unsigned int len = _svgPtr[ level ].size() - 1;
+//
+//			QString name = file;
+//			name.remove( 0, 8 );
+//			name.truncate( name.lastIndexOf( '.' ) );
+////#ifdef METADATA_DEBUG
+//			cerr << "name = " << name.toStdString() << ", len = " << len << endl;
+////#endif // METADATA_DEBUG
+//
+//			if( level == 0 ) {
+//
+//				// read svg
+//				_svgPtr[ level ][len]->init( gridPtr, 0.0, 0.0,
+//				                             KeiRo::Base::Common::getMainwidgetWidth(),
+//				                             KeiRo::Base::Common::getMainwidgetHeight() );
+//				_svgPtr[ level ][len]->level() = level;
+//				_svgPtr[ level ][len]->name() = name.toStdString();
+//				_svgPtr[ level ][len]->readSVG( filePath + file );
+//
+//				vector<  KeiRo::Base::Polygon2 > &polygonVec = _svgPtr[ level ][len]->polygonVec();
+//				// cerr << "name = " << name.toStdString() << endl;
+//				// cerr << "s.polygonVec().size() = " << ( *_svgPtr )[ level ][0].polygonVec().size() << endl;
+//			}
+//			else {
+//
+//				double  x = 0.0, y = 0.0, w = 0.0, h = 0.0;
+//
+//				// find object width and height at the previous level
+//				bool isFound = false;
+//				// string parent = "parent";
+//				QString objName = QString( "obj" ) + name.right(5 );
+////#ifdef METADATA_DEBUG
+//				cerr << "objName = " << objName.toStdString() << endl;
+////#endif // METADATA_DEBUG
+//				unsigned int parentPolygonID = 0;
+//
+//				KeiRo::Base::Common::UIDPair parentFileID;
+//				for( unsigned int m = 0; m < _svgPtr[ level - 1 ].size(); m++ ) {
+//					for( unsigned int n = 0; n < _svgPtr[ level - 1 ][ m ]->polygonVec().size(); n++ ) {
+////#ifdef METADATA_DEBUG
+//						cerr << "_svgPtr[level-1][m]->polygonVec()[n].name() = " << _svgPtr[level-1][m]->polygonVec()
+//						[n].name()
+//						     << " ?= name.toStdString() = " << name.toStdString() << endl;
+//						cerr << "m = " << m << ", n = " << n << endl;
+////#endif // METADATA_DEBUG
+//						if( _svgPtr[ level - 1 ][ m ]->polygonVec()[ n ].name() == objName.toStdString() ) {
+//
+//							x = _svgPtr[ level - 1 ][ m ]->polygonVec()[ n ].boxLeftTop().x();
+//							y = _svgPtr[ level - 1 ][ m ]->polygonVec()[ n ].boxLeftTop().y();
+//							w = _svgPtr[ level - 1 ][ m ]->polygonVec()[ n ].boundingBox().x();
+//							h = _svgPtr[ level - 1 ][ m ]->polygonVec()[ n ].boundingBox().y();
+//#ifdef METADATA_DEBUG
+//							cerr << "m = " << m << " name = " << _svgPtr[level-1][m]->polygonVec()[n].name()
+//									 << " objName = " << objName.toStdString() << endl;
+//								cerr << "x = " << x << " y = " << y
+//									 << " w = " << w << " h = " << h << endl;
+//#endif // METADATA_DEBUG
+//							isFound = true;
+//							// parent = name.toStdString();
+//							parentFileID.first = level - 1;
+//							parentFileID.second = m;
+//							parentPolygonID = n;
+//#ifdef METADATA_DEBUG
+//							cerr << "obj = " << objName.toStdString() << ", level-1 = " << parentFileID.first << ", m = " << m
+//									 << ", n = " << n << endl;
+//#endif // METADATA_DEBUG
+//							break;
+//						}
+//					}
+//				}
+//
+//				if( isFound == false ) {
+//					cerr << "cannot find the corresponding files at " << __LINE__ << " in " << __FILE__ << endl;
+//					cerr << "name = " << name.toStdString() << endl;
+//					assert( isFound );
+//				}
+//
+////#ifdef METADATA_DEBUG
+//				cerr << "level = " << level << ", len = " << len << endl;
+////#endif // METADATA_DEBUG
+//				_svgPtr[ level ][ len ]->init( gridPtr, x + 0.5 * ( double ) w, y + 0.5 * ( double ) h,
+//				                               w, h );
+//				_svgPtr[ level ][ len ]->name() = name.toStdString();
+//				_svgPtr[ level ][ len ]->readSVG( filePath + file );
+//
+//				for( unsigned int n = 0; n < _svgPtr[ level ][ len ]->polygonVec().size(); n++ ) {
+//
+//					_svgPtr[ level ][ len ]->polygonVec()[ n ].parentFileID().first = parentFileID.first;
+//					_svgPtr[ level ][ len ]->polygonVec()[ n ].parentFileID().second = parentFileID.second;
+//					_svgPtr[ level ][ len ]->polygonVec()[ n ].parentPolygonID() = parentPolygonID;
+//				}
+//			}
+//			cerr << endl << endl;
+//		}
+//
+//		// check
+//#ifdef METADATA_DEBUG
+//		for( unsigned int m = 0; m < _svgPtr.size(); m++ ) {
+//			for( unsigned int n = 0; n < _svgPtr[ m ].size(); n++ ) {
+//
+//				cerr << "m = " << m << ", n = " << n << endl;
+//				cerr << "name = " << _svgPtr[m][n]->name() << " isVisible = " << _svgPtr[m][n]->isVisible() << endl;
+//				cerr << "size = " << _svgPtr[m][n]->polygonVec().size() << endl;
+//			}
+//		}
+//#endif // METADATA_DEBUG
+//
+//		return true;
+//	}
+//
 } // namespace FileIO
