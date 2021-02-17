@@ -108,10 +108,10 @@ namespace FileIO {
 		
 		// _svgPtr.resize( _maxLevel );
 		
-//#ifdef METADATA_DEBUG
+#ifdef METADATA_DEBUG
 		cerr << "_maxlevel = " << _maxLevel << endl;
 		cerr << "objectList.size() = " << objectList.size() << endl;
-//#endif // METADATA_DEBUG
+#endif // METADATA_DEBUG
 
 		for( unsigned int i = 0; i < objectList.size(); i++ ) {
 
@@ -123,12 +123,12 @@ namespace FileIO {
 			unsigned int level = gElement.attribute( "level" ).toInt();
 			QString file = gElement.attribute( "file" );
 
-//#ifdef METADATA_DEBUG
+#ifdef METADATA_DEBUG
 			cerr << "i = " << i << ", id = " << id
 				 << ", level = " << level
 				 << ", file = " << file.toStdString()
 				 << ", filename.size() = " << file.toStdString().size() << endl;
-//#endif // METADATA_DEBUG
+#endif // METADATA_DEBUG
 
 			SVG *s = new SVG;
 			s->id() = svgIndex;
@@ -138,9 +138,9 @@ namespace FileIO {
 			QString name = file;
 			name.remove( 0, 8 );
 			name.truncate( name.lastIndexOf( '.' ) );
-//#ifdef METADATA_DEBUG
+#ifdef METADATA_DEBUG
 			cerr << "name = " << name.toStdString() << endl;
-//#endif // METADATA_DEBUG
+#endif // METADATA_DEBUG
 			
 			double x = 0.0, y = 0.0, w = 0.0, h = 0.0;
 			Graph::TreeDirectedGraph::vertex_descriptor vd = add_vertex( _svgTree );

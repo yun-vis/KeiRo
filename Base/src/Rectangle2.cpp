@@ -168,7 +168,7 @@ namespace Base {
         // print out the elements
         stream << setw( width ) << "x = " << obj._leftTop.x() << ", y = " << obj._leftTop.y() << ", ";
 	    stream << setw( width ) << "w = " << obj._width << ", h = " << obj._height << endl;
-        stream << endl;
+//        stream << endl;
 
         return stream;
     }

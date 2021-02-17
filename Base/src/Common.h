@@ -238,9 +238,13 @@ namespace Base {
 		
 		static void setMainwidgetWidth( double _mainwidgetWidth );
 		
+		static double &  mainwidgetWidth( void ) { return _mainwidget_width; };
+		
 		static const double &getMainwidgetHeight();
 		
 		static void setMainwidgetHeight( double _mainwidgetHeight );
+
+		static double &  mainwidgetHeight( void ) { return _mainwidget_height; };
 		
 		static const double getDockWidgetWidth();
 		
