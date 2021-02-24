@@ -34,6 +34,7 @@ using namespace std;
 //#include <QtGui/QPainter>
 //#include <QtCore/QString>
 //#include <QtWidgets/QGraphicsSceneMouseEvent>
+#include <QPropertyAnimation>
 
 #ifndef Q_MOC_RUN
 #include "GraphicsBase.h"
@@ -45,12 +46,16 @@ namespace Vector {
     //------------------------------------------------------------------------------
     //	Class definition
     //------------------------------------------------------------------------------
-    class GraphicsPolygonItem : public QGraphicsPolygonItem, public GraphicsBase {
-    
+    class GraphicsPolygonItem : public QObject, public QGraphicsPolygonItem, public GraphicsBase {
+
+	    Q_OBJECT
+	    Q_PROPERTY( QPolygonF polygon READ getPolygon WRITE setPolygon )
+
     private:
 
         QRect           _bbox;
-
+//	    QPolygonF       _polygon;
+	    
     protected:
     	
 	    //------------------------------------------------------------------------------
@@ -93,6 +98,13 @@ namespace Vector {
         QRect &	                bbox( void )        { return _bbox; }
         const QRect &	        bbox( void ) const	{ return _bbox; }
 	
+//	    void                    setPolygon( QPolygonF polygon ) {
+//		    _polygon = polygon;
+//        }
+	    QPolygonF               getPolygon() const {
+            return polygon();
+        }
+	    
 	    //------------------------------------------------------------------------------
 	    //	Special functions
 	    //------------------------------------------------------------------------------

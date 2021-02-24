@@ -97,11 +97,11 @@ public:
 //------------------------------------------------------------------------------
 	double LeastSquare( void ){
 		_LeastSquare();
-	}
+	};
 	
 	double ConjugateGradient( void ){
 		_ConjugateGradient();
-	}
+	};
 
 //------------------------------------------------------------------------------
 //      Initialization functions

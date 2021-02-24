@@ -46,6 +46,7 @@ namespace Base {
 //
 void Coord2::_init( void )
 {
+	_oldElement[ 0 ] = _oldElement[ 1 ] = 0.0;
     _element[ 0 ] = _element[ 1 ] = 0.0;
 }
 
@@ -83,8 +84,8 @@ Coord2::Coord2()
 //
 Coord2::Coord2( const double x, const double y )
 {
-    _element[ 0 ]	= x;
-    _element[ 1 ]	= y;
+	_oldElement[ 0 ] = _element[ 0 ]	= x;
+	_oldElement[ 1 ] = _element[ 1 ]	= y;
 }
 
 //
@@ -98,6 +99,8 @@ Coord2::Coord2( const double x, const double y )
 //
 Coord2::Coord2( const Coord2 & v )
 {
+	_oldElement[ 0 ]	= v._oldElement[ 0 ];
+	_oldElement[ 1 ]	= v._oldElement[ 1 ];
     _element[ 0 ]	= v._element[ 0 ];
     _element[ 1 ]	= v._element[ 1 ];
  }
@@ -119,8 +122,10 @@ Coord2::Coord2( const Coord2 & v )
 Coord2 & Coord2::operator = ( const Coord2 & v )
 {
     if ( this != &v ) {
-	_element[ 0 ]	= v._element[ 0 ];
-	_element[ 1 ]	= v._element[ 1 ];
+	    _oldElement[ 0 ]	= v._oldElement[ 0 ];
+	    _oldElement[ 1 ]	= v._oldElement[ 1 ];
+		_element[ 0 ]	= v._element[ 0 ];
+		_element[ 1 ]	= v._element[ 1 ];
     } 
     return *this;
 }
@@ -325,7 +330,20 @@ Coord2 Coord2::unit( void ) const
     return ret;
 }
 
-
+//
+//  Coord2::unit --	compute the unit vector
+//
+//  Inputs
+//	none
+//
+//  Outputs
+//	return the unit vector
+//
+void Coord2::updateOldElement( void )
+{
+	_oldElement[0] = _element[0];
+	_oldElement[1] = _element[1];
+}
 
 
 //

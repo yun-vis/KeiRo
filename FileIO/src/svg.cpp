@@ -961,10 +961,13 @@ namespace FileIO {
         getCircleElements( fileName );
         normalize();
 	
+#ifdef SVG_DEBUG
 	    cerr << "fileName = " << fileName.toStdString() << endl;
 	    cerr << "canvas( " << canvas.x() << ", " << canvas.y() << ", " << canvas.width() << ", " << canvas.height() << " )" << endl;
         cerr << "_polygonVec.size() = " << _polygonVec.size() << endl;
 	    cerr << "_polylineVec.size() = " << _polylineVec.size() << endl;
+#endif // SVG_DEBUG
+	    
         // create compression
         _compression.init( _gridPtr, &_polygonVec, &_polylineVec );
         _compression.createCompression();

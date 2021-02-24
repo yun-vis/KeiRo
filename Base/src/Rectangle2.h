@@ -36,9 +36,14 @@ namespace Base {
     class Rectangle2 : public Object {
 
     protected:
-
-        // Rectangle2 original coordinates of end points
-        Coord2      _leftTop;
+	
+	    // Rectangle2 old coordinates of end points
+        Coord2      _oldLeftBottom;
+	    double      _oldWidth;
+	    double      _oldHeight;
+	
+	    // Rectangle2 original coordinates of end points
+        Coord2      _leftBottom;
         double      _width;
         double      _height;
 
@@ -76,22 +81,33 @@ namespace Base {
         //------------------------------------------------------------------------------
 
         // left-top corner
-        Coord2 &	        leftTop( void )	            { return _leftTop; }
-	    const Coord2 &	    leftTop( void ) const	    { return _leftTop; }
+        Coord2 &	        oldLeftBottom( void )       { return _oldLeftBottom; }
+	    const Coord2 &	    oldLeftBottom( void ) const	{ return _oldLeftBottom; }
 
+	    double &	        oldWidth( void )	        { return _oldWidth; }
+	    const double &	    oldWidth( void ) const	    { return _oldWidth; }
+	
+	    double &	        oldHeight( void )	        { return _oldHeight; }
+	    const double &	    oldHeight( void ) const	    { return _oldHeight; }
+	
+	    // left-top corner
+	    Coord2 &	        leftBottom( void )	        { return _leftBottom; }
+	    const Coord2 &	    leftBottom( void ) const	{ return _leftBottom; }
+	
 	    double &	        width( void )	            { return _width; }
 	    const double &	    width( void ) const	        { return _width; }
 	
 	    double &	        height( void )	            { return _height; }
 	    const double &	    height( void ) const	    { return _height; }
-	    
-        //------------------------------------------------------------------------------
+	
+	    //------------------------------------------------------------------------------
         //	Special functions
         //------------------------------------------------------------------------------
         // initialization
         void init( void ) { _init(); }
         bool isInside( Coord2 c );
-
+	    void        updateOldElement( void );
+	    
         //------------------------------------------------------------------------------
         //	Friend functions
         //------------------------------------------------------------------------------

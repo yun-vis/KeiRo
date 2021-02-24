@@ -20,6 +20,7 @@
 using namespace std;
 
 #include "Coord2.h"
+#include "Rectangle2.h"
 #include "Common.h"
 #include "BaseVertexProperty.h"
 
@@ -54,8 +55,7 @@ namespace Graph {
         unsigned int                attributeID;    // external attribute ID
 	
 	    KeiRo::Base::Coord2         meanCoord;
-	    KeiRo::Base::Coord2         *leftTopCoordPtr;
-	    KeiRo::Base::Coord2         *rightBottomCoordPtr;
+	    KeiRo::Base::Coord2         *leftBottomCoordPtr;  // area of the tree cell
 
         vector< unsigned int >      leafIDVec;      // id in samples
         vector< unsigned int >      childVec;       // vid of children in TreeGraph

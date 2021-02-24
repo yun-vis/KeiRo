@@ -33,11 +33,28 @@ namespace Vector {
     //  Outputs
     //  none
     //
-    void GraphicsPolygonItem::_init( void ) {
-	
+    void GraphicsPolygonItem::_init( void )
+    {
 	    GraphicsBase::_init();
     }
-    
+	
+	QVariant polygonInterpolator(const QPolygonF &start, const QPolygonF &end, qreal progress)
+	{
+//    	cerr << "progress = " << progress << endl;
+//		cerr << "0 x = " << end[0].x() << " y = " << end[0].y() << endl;
+//		cerr << "1 x = " << end[1].x() << " y = " << end[1].y() << endl;
+		QPolygonF poly;
+		for( unsigned int i = 0; i < start.size(); i++ ){
+			QPointF p;
+			p.setX( progress * end[i].x() + (1.0-progress) * start[i].x() );
+			p.setY( progress * end[i].y() + (1.0-progress) * start[i].y() );
+			poly.append( p );
+		}
+
+//		cerr << "size = " << poly.size() << endl;
+		return poly;
+	}
+	
     //------------------------------------------------------------------------------
     //	Public functions
     //------------------------------------------------------------------------------
@@ -55,6 +72,8 @@ namespace Vector {
     //
     GraphicsPolygonItem::GraphicsPolygonItem( QGraphicsItem *parent )
     {
+	    qRegisterAnimationInterpolator< QPolygonF >( polygonInterpolator );
+    	
         setFlag( QGraphicsItem::ItemIsSelectable );
         setFlag( QGraphicsItem::ItemIsMovable );
         setFlag( QGraphicsItem::ItemSendsGeometryChanges );
@@ -63,7 +82,7 @@ namespace Vector {
         //pen().setJoinStyle( Qt::MiterJoin );
         pen().setJoinStyle( Qt::RoundJoin );
     }
-
+    
     //
     //  GraphicsPolygonItem::boundingRect -- find bounding box
     //
@@ -108,10 +127,18 @@ namespace Vector {
         painter->setRenderHints( QPainter::Antialiasing );
         painter->setPen( pen() );
         painter->setBrush( brush() );
-        painter->drawPolygon( polygon() );
+	    painter->drawPolygon( polygon() );
 
-        const QPolygonF &p = polygon();
-
+	    double minX = INFINITY, maxX = -INFINITY;
+	    double minY = INFINITY, maxY = -INFINITY;
+	    for( unsigned int i = 0; i < polygon().size(); i++ ){
+			if( minX > polygon()[i].x() ) minX = polygon()[i].x();
+		    if( maxX < polygon()[i].x() ) maxX = polygon()[i].x();
+		    if( minY > polygon()[i].y() ) minY = polygon()[i].y();
+		    if( maxY < polygon()[i].y() ) maxY = polygon()[i].y();
+	    }
+	    
+	    QPointF p( 0.5*(minX+maxX), 0.5*(minY+maxY) );
         if( _textOn == true ){
 
             painter->setPen( _textpen );
@@ -121,12 +148,12 @@ namespace Vector {
             }
 #endif // SKIP
 
-            // painter->drawText( p.at(0).x(), p.at(0).y(), _text );
-            painter->drawText(
-                    _bbox.x() + 0.5 * _bbox.width() - 0.5 * sx,
-                    -_bbox.y() - 0.5 * _bbox.height() + 0.5 * sy,
-                    _text
-                    );
+	        painter->drawText( p.x() - 0.5 * sx, p.y() + 0.5 * sy, _text );
+//            painter->drawText(
+//                    _bbox.x() + 0.5 * _bbox.width() - 0.5 * sx,
+//                    -_bbox.y() - 0.5 * _bbox.height() + 0.5 * sy,
+//                    _text
+//                    );
         }
 
         //cerr << "paint x = " << pos().x() << " y = " << pos().y() << endl;

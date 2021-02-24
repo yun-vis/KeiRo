@@ -89,8 +89,8 @@ namespace Base {
     //
     Rectangle2::Rectangle2( double x, double y, double w, double h )
     {
-	    _leftTop.x()    = x;
-	    _leftTop.y()    = y;
+	    _leftBottom.x()    = x;
+	    _leftBottom.y()    = y;
 	    _width          = w;
 	    _height         = h;
     }
@@ -109,8 +109,8 @@ namespace Base {
         _id                 = v._id;
         _gid                = v._gid;
         _name               = v._name;
-
-        _leftTop            = v._leftTop;
+	
+	    _leftBottom            = v._leftBottom;
         _width              = v._width;
         _height             = v._height;
     }
@@ -134,12 +134,19 @@ namespace Base {
     //
     bool Rectangle2::isInside( Coord2 c )
     {
-    	if ( (_leftTop.x() < c.x()) && (c.x() < _leftTop.x() + _width) &&
-			 (_leftTop.y() > c.y()) && (c.y() > _leftTop.y() - _height) )
+    	if ( ( _leftBottom.x() < c.x()) && ( c.x() < _leftBottom.x() + _width) &&
+	         ( _leftBottom.y() < c.y()) && ( c.y() < _leftBottom.y() + _height) )
     		return true;
     	return false;
     }
-    
+	
+	void Rectangle2::updateOldElement( void )
+	{
+		_oldLeftBottom  = _leftBottom;
+		_oldWidth       = _width;
+		_oldHeight      = _height;
+	}
+	
     //------------------------------------------------------------------------------
     //	Friend functions
     //------------------------------------------------------------------------------
@@ -166,7 +173,7 @@ namespace Base {
 
         int width = 8;
         // print out the elements
-        stream << setw( width ) << "x = " << obj._leftTop.x() << ", y = " << obj._leftTop.y() << ", ";
+        stream << setw( width ) << "x = " << obj._leftBottom.x() << ", y = " << obj._leftBottom.y() << ", ";
 	    stream << setw( width ) << "w = " << obj._width << ", h = " << obj._height << endl;
 //        stream << endl;
 
