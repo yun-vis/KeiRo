@@ -32,6 +32,7 @@ typedef CGAL::Polygon_2< K >::Vertex_circulator Vertex_circulator;
 using CGAL::ORIGIN;
 
 #include "Object.h"
+#include "Rectangle2.h"
 #include "Coord2.h"
 #include "Line2.h"
 //#include "GraphicsPolygonItem.h"
@@ -63,13 +64,12 @@ namespace Base {
         // Polygon2 sample id
         vector< unsigned int >              _idElements;
         vector< double >                    _targetEdgeAngles;
-
+	
         // width and height of the bounding box
-        KeiRo::Base::Coord2                  _boundingBox;
-        // left-top of the bounding box
-        KeiRo::Base::Coord2                  _boxLeftTop;
+//        KeiRo::Base::Rectangle2             _oldBoundingBox;
+        KeiRo::Base::Rectangle2             _boundingBox;
         // initial bounding box size
-        double                               _initArea;
+        double                              _initArea;
 
         //------------------------------------------------------------------------------
         //	Attribute
@@ -81,6 +81,7 @@ namespace Base {
         vector< unsigned int >  _stroke;
         // fill color
         vector< unsigned int >  _fill;
+	    double                  _strokeWidth;
 
         // graphics item pointer
 //        Ui::Vector::GraphicsPolygonItem * _itemPtr;
@@ -115,7 +116,6 @@ namespace Base {
         //------------------------------------------------------------------------------
         //	Reference to elements
         //------------------------------------------------------------------------------
-
         // area
         double &	                area( void )	        { return _area; }
         const double &	            area( void ) const	    { return _area; }
@@ -143,17 +143,17 @@ namespace Base {
         // reference to an array of coordinate pointers
         vector< double > &	            targetEdgeAngles( void )	    { return _targetEdgeAngles; }
         const vector< double > &        targetEdgeAngles( void ) const  { return _targetEdgeAngles; }
+	
+	    // bounding box
+//	    KeiRo::Base::Rectangle2 &	        oldBoundingBox( void )	        { return _oldBoundingBox; }
+//	    const KeiRo::Base::Rectangle2 &	    oldBoundingBox( void ) const	{ return _oldBoundingBox; }
+	
+	    // bounding box
+        KeiRo::Base::Rectangle2 &	        boundingBox( void )	            { return _boundingBox; }
+        const KeiRo::Base::Rectangle2 &	    boundingBox( void ) const	    { return _boundingBox; }
 
-        // width and height of the bounding box
-        KeiRo::Base::Coord2 &	        boundingBox( void )	            { return _boundingBox; }
-        const KeiRo::Base::Coord2 &	    boundingBox( void ) const	    { return _boundingBox; }
-
-        const double 	                bbArea( void ) const	        { return _boundingBox.x() * _boundingBox.y(); }
-         const double &	                initArea( void ) const	        { return _initArea; }
-
-        // center of the bounding box
-        KeiRo::Base::Coord2 &	                    boxLeftTop( void )	            { return _boxLeftTop; }
-        const KeiRo::Base::Coord2 &	                boxLeftTop( void ) const	    { return _boxLeftTop; }
+        const double 	                bbArea( void ) const	        { return _boundingBox.width() * _boundingBox.height(); }
+        const double &	                initArea( void ) const	        { return _initArea; }
 
         // select flag
         bool &	                        isSelected( void )	            { return _isSelected; }
@@ -162,12 +162,15 @@ namespace Base {
         // reference to stroke
         vector< unsigned int > &	    stroke( void )	                { return _stroke; }
         const vector< unsigned int > &  stroke( void ) const            { return _stroke; }
+	
+	    double &	                    strokeWidth( void )	            { return _strokeWidth; }
+	    const double &                  strokeWidth( void ) const       { return _strokeWidth; }
 
         // reference to fill
         vector< unsigned int > &	    fill( void )	                { return _fill; }
         const vector< unsigned int > &  fill( void ) const              { return _fill; }
-
-        // graphics item
+	
+	    // graphics item
 //        void setItemPtr( Ui::Vector::GraphicsPolygonItem * ptr )	    { _itemPtr = ptr; }
 //        Ui::Vector::GraphicsPolygonItem * getItemPtr( void )            { return _itemPtr; }
 
@@ -194,6 +197,7 @@ namespace Base {
         double maxRadiusInPolygon( const KeiRo::Base::Coord2 &coord );
 	    bool isSimple( void );
 	    void cleanPolygon( void );
+	    void normalization( Rectangle2 &r );
 
         //------------------------------------------------------------------------------
         //	Friend functions

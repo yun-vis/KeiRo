@@ -125,7 +125,6 @@ namespace Ui {
 			painter->setPen( pen() );
 			painter->setBrush( brush() );
 			painter->drawRect( _sourceRect );
-//			painter->drawRect( rect() );
 			
 			if( _textOn == true ) {
 				

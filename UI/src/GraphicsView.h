@@ -157,7 +157,8 @@ namespace Ui{
         virtual const char * className( void ) const { return "GraphicsView"; }
         
     Q_SIGNALS:
-    	
+	
+	    virtual void dataInitialized() = 0;
 	    virtual void dataChanged() = 0;
      
     public Q_SLOTS:

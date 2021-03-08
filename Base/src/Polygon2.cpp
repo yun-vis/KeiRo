@@ -54,8 +54,8 @@ namespace Base {
 
         _center.zero();        // average of the elements
         _centroid.zero();      // centroid of the elements
-        _boundingBox.zero();        // width and height of the bounding box
-        _boxLeftTop.zero();         // left-top corner of the bounding box
+        _boundingBox.clear();        // width and height of the bounding box
+//        _boxLeftTop.zero();         // left-top corner of the bounding box
     }
 
     //
@@ -75,8 +75,8 @@ namespace Base {
 	
 	    _center.zero();             // average of the elements
 	    _centroid.zero();           // centroid of the elements
-	    _boundingBox.zero();        // width and height of the bounding box
-	    _boxLeftTop.zero();         // left-top corner of the bounding box
+	    _boundingBox.clear();        // bounding box
+//	    _oldBoundingBox.clear();     // old bounding box
 
 	    _area               = 0.0;
 	    _isSelected         = false;// select flag is set to false by default
@@ -111,6 +111,7 @@ namespace Base {
         _fill.resize( 4 );
         _fill[0] = _fill[1] = _fill[2] = 200;
         _fill[3] = 255;
+        _strokeWidth = 0.0;
     }
 
     //
@@ -152,10 +153,11 @@ namespace Base {
         _fixedElements      = v._fixedElements;
         _idElements         = v._idElements;
         _boundingBox        = v._boundingBox;
-        _boxLeftTop         = v._boxLeftTop;
+//	    _oldBoundingBox     = v._oldBoundingBox;
         _isSelected         = v._isSelected;
         _fill               = v._fill;
         _stroke             = v._stroke;
+	    _strokeWidth        = v._strokeWidth;
         _initArea           = v._initArea;
     }
 
@@ -185,10 +187,11 @@ namespace Base {
             _fixedElements      = p._fixedElements;
             _idElements         = p._idElements;
             _boundingBox        = p._boundingBox;
-            _boxLeftTop         = p._boxLeftTop;
+//	        _oldBoundingBox     = p._oldBoundingBox;
             _isSelected         = p._isSelected;
             _fill               = p._fill;
             _stroke             = p._stroke;
+	        _strokeWidth        = p._strokeWidth;
             _initArea           = p._initArea;
         }
 
@@ -217,13 +220,15 @@ namespace Base {
             if( maxY < _elements[i].y() ) maxY = _elements[i].y();
         }
 
-        _boxLeftTop.x() = minX;
-        _boxLeftTop.y() = minY;
-        _boundingBox.x() = maxX - minX;
-        _boundingBox.y() = maxY - minY;
+//        _boxLeftTop.x() = minX;
+//        _boxLeftTop.y() = minY;
+	    _boundingBox.leftBottom().x() = minX;
+	    _boundingBox.leftBottom().y() = minY;
+        _boundingBox.width() = maxX - minX;
+        _boundingBox.height() = maxY - minY;
 
         // compute the initial area
-        if( _initArea == 0.0 ) _initArea = _boundingBox.x() * _boundingBox.y();
+        if( _initArea == 0.0 ) _initArea = _boundingBox.width() * _boundingBox.height();
     }
 	
 	//
@@ -556,6 +561,37 @@ namespace Base {
 			cerr << "(clean)::_polygon = " << endl << *this << endl;
 	}
 	
+	//
+	//  Polygon2::normalization --    normalize the polygon based on input boundary
+	//
+	//  Inputs
+	//  r   : boundary rectangle
+	//
+	//  Outputs
+	//  none
+	//
+	void Polygon2::normalization( Rectangle2 &r )
+	{
+		_boundingBox.leftBottom().x() = _boundingBox.oldLeftBottom().x() = r.leftBottom().x();
+		_boundingBox.leftBottom().y() = _boundingBox.oldLeftBottom().y() = r.leftBottom().y();
+		_boundingBox.width()   = _boundingBox.width()     = r.width();
+		_boundingBox.height()  = _boundingBox.height()    = r.height();
+
+		double minX = INFINITY, minY = INFINITY, maxX = -INFINITY, maxY = -INFINITY;
+		for( unsigned int i = 0; i < _elements.size(); i++ ){
+			if( _elements[i].x() <= minX ) minX = _elements[i].x();
+			if( _elements[i].x() >= maxX ) maxX = _elements[i].x();
+			if( _elements[i].y() <= minY ) minY = _elements[i].y();
+			if( _elements[i].y() >= maxY ) maxY = _elements[i].y();
+		}
+		
+		// normalize
+		for( unsigned int i = 0; i < _elements.size(); i++ ) {
+			_elements[i].x() = ( _elements[i].x() - minX ) * r.width() / ( maxX - minX ) + r.leftBottom().x();
+			_elements[i].y() = ( _elements[i].y() - minY ) * r.height() / ( maxY - minY ) + r.leftBottom().y();
+		}
+    }
+    
     //------------------------------------------------------------------------------
     //	Friend functions
     //------------------------------------------------------------------------------

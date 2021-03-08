@@ -334,8 +334,8 @@ namespace FileIO {
             polygon.name() = id.toStdString();
             polygon.fill() = fill;
             polygon.stroke() = stroke;
-            polygon.boxLeftTop().x() = x-r;
-            polygon.boxLeftTop().y() = y-r;
+            polygon.boundingBox().leftBottom().x() = x-r;
+            polygon.boundingBox().leftBottom().y() = y-r;
 
             // add polygon contour
             const int nDiv = 10;
@@ -398,11 +398,8 @@ namespace FileIO {
 
             // element style -- InkScape
             vector< unsigned int > fill( 4 );
-            fill[0] = fill[1] = fill[2] = 200;
-            fill[3] = 255;
             vector< unsigned int > stroke( 4 );
-            stroke[0] = stroke[1] = stroke[2] = 100;
-            stroke[3] = 255;
+	        double strokeWidth = 0.0;
             QStringList styles = gElement.attribute( "style" ).split( ";" );
             for( unsigned int j = 0; j < styles.size(); j++ ){
 
@@ -412,12 +409,16 @@ namespace FileIO {
                     fill[0] = c.red();
                     fill[1] = c.green();
                     fill[2] = c.blue();
-                    fill[3] = 255;
 #ifdef SVG_DEBUG
                     cerr << "color = " << c.red() << ", " << c.green() << ", " << c.blue() << endl;
-                    cerr << "fill = " << fill[0] << ", "<< fill[1] << ", " << fill[2] << ", " << fill[3] << endl;
 #endif // SVG_DEBUG
                 }
+	            if( type.at(0).toStdString() == "fill-opacity" ){
+		            fill[3] = 255.0 * type.at(1).toDouble();
+#ifdef SVG_DEBUG
+		            cerr << "fill = " << fill[0] << ", "<< fill[1] << ", " << fill[2] << ", " << fill[3] << endl;
+#endif // SVG_DEBUG
+	            }
                 if( type.at(0).toStdString() == "stroke" ){
                     QColor c( type.at(1) );
                     stroke[0] = c.red();
@@ -429,40 +430,46 @@ namespace FileIO {
                     cerr << "stroke = " << stroke[0] << ", "<< stroke[1] << ", " << stroke[2] << ", " << stroke[3] << endl;
 #endif // SVG_DEBUG
                 }
+	            if( type.at(0).toStdString() == "stroke-width" ){
+		            strokeWidth = type.at(1).toDouble();
+#ifdef SVG_DEBUG
+		            cerr << "stroke-width = " << strokeWidth << endl;
+#endif // SVG_DEBUG
+                }
             }
 
-            // element style -- illustrator
-            QString strFill = gElement.attribute( "fill" );
-            if( strFill == "" ){
-                // cerr << "no AI fill information" << endl;
-            }
-            else if( strFill.size() > 0 ){
-                QColor c( strFill );
-                fill[0] = c.red();
-                fill[1] = c.green();
-                fill[2] = c.blue();
-                fill[3] = 255;
-#ifdef SVG_DEBUG
-                cerr << "strFill = " << strFill.toStdString() << endl;
-                cerr << "fill = " << fill[0] << ", "<< fill[1] << ", " << fill[2] << ", " << fill[3] << endl;
-#endif // SVG_DEBUG
-            }
-
-            QString strStroke = gElement.attribute( "stroke" );
-            if( strStroke.size() == 0 ){
-                // cerr << "no AI stroke information" << endl;
-            }
-            else if( strStroke.size() > 0 ){
-                QColor c( strStroke );
-                stroke[0] = c.red();
-                stroke[1] = c.green();
-                stroke[2] = c.blue();
-                stroke[3] = 255;
-#ifdef SVG_DEBUG
-                cerr << "strStroke = " << strStroke.toStdString() << endl;
-                cerr << "stroke = " << stroke[0] << ", "<< stroke[1] << ", " << stroke[2] << ", " << stroke[3] << endl;
-#endif // SVG_DEBUG
-            }
+//            // element style -- illustrator
+//            QString strFill = gElement.attribute( "fill" );
+//            if( strFill == "" ){
+//                // cerr << "no AI fill information" << endl;
+//            }
+//            else if( strFill.size() > 0 ){
+//                QColor c( strFill );
+//                fill[0] = c.red();
+//                fill[1] = c.green();
+//                fill[2] = c.blue();
+//                fill[3] = 255;
+//#ifdef SVG_DEBUG
+//                cerr << "strFill = " << strFill.toStdString() << endl;
+//                cerr << "fill = " << fill[0] << ", "<< fill[1] << ", " << fill[2] << ", " << fill[3] << endl;
+//#endif // SVG_DEBUG
+//            }
+//
+//            QString strStroke = gElement.attribute( "stroke" );
+//            if( strStroke.size() == 0 ){
+//                // cerr << "no AI stroke information" << endl;
+//            }
+//            else if( strStroke.size() > 0 ){
+//                QColor c( strStroke );
+//                stroke[0] = c.red();
+//                stroke[1] = c.green();
+//                stroke[2] = c.blue();
+//                stroke[3] = 255;
+//#ifdef SVG_DEBUG
+//                cerr << "strStroke = " << strStroke.toStdString() << endl;
+//                cerr << "stroke = " << stroke[0] << ", "<< stroke[1] << ", " << stroke[2] << ", " << stroke[3] << endl;
+//#endif // SVG_DEBUG
+//            }
 
             // element position, width, and height
             double w = gElement.attribute( "width" ).toDouble();
@@ -475,11 +482,16 @@ namespace FileIO {
             polygon.name() = id.toStdString();
             polygon.fill() = fill;
             polygon.stroke() = stroke;
-            polygon.boxLeftTop().x() = x;
-            polygon.boxLeftTop().y() = y;
-            polygon.boundingBox().x() = w;
-            polygon.boundingBox().y() = h;
-
+	        polygon.strokeWidth() = strokeWidth;
+            polygon.boundingBox().leftBottom().x() = x;
+            polygon.boundingBox().leftBottom().y() = y;
+            polygon.boundingBox().width() = w;
+            polygon.boundingBox().height() = h;
+	        polygon.boundingBox().updateOldElement();
+//	        polygon.boundingBox().oldLeftBottom() = polygon.boundingBox().leftBottom();
+//	        polygon.boundingBox().oldWidth() = polygon.boundingBox().width();
+//	        polygon.boundingBox().oldHeight() = polygon.boundingBox().height();
+	        		
             // add polygon contour
             polygon.elements().push_back( KeiRo::Base::Coord2( x, y-h ) );
             polygon.elements().push_back( KeiRo::Base::Coord2( x, y ) );
@@ -555,12 +567,9 @@ namespace FileIO {
 
             // element style
             vector< unsigned int > fill( 4 );
-            fill[0] = fill[1] = fill[2] = 200;
-            fill[3] = 255;
             vector< unsigned int > stroke( 4 );
-            stroke[0] = stroke[1] = stroke[2] = 100;
-            stroke[3] = 255;
-            QStringList styles = gElement.attribute( "style" ).split( ";" );
+	        double strokeWidth = 1.0;
+	        QStringList styles = gElement.attribute( "style" ).split( ";" );
             for( unsigned int j = 0; j < styles.size(); j++ ){
 
                 QStringList type = styles.at( j ).split( ":" );
@@ -569,13 +578,18 @@ namespace FileIO {
                     fill[0] = c.red();
                     fill[1] = c.green();
                     fill[2] = c.blue();
-                    fill[3] = 255;
 #ifdef SVG_DEBUG
                     cerr << "color = " << c.red() << ", " << c.green() << ", " << c.blue() << endl;
                     cerr << "fill = " << fill[0] << ", "<< fill[1] << ", " << fill[2] << ", " << fill[3] << endl;
 #endif // SVG_DEBUG
                 }
-                if( type.at(0).toStdString() == "stroke" ){
+	            if( type.at(0).toStdString() == "fill-opacity" ){
+		            fill[3] = 255.0 * type.at(1).toDouble();
+#ifdef SVG_DEBUG
+		            cerr << "fill = " << fill[0] << ", "<< fill[1] << ", " << fill[2] << ", " << fill[3] << endl;
+#endif // SVG_DEBUG
+	            }
+	            if( type.at(0).toStdString() == "stroke" ){
                     QColor c( type.at(1) );
                     stroke[0] = c.red();
                     stroke[1] = c.green();
@@ -586,6 +600,12 @@ namespace FileIO {
                     cerr << "stroke = " << stroke[0] << ", "<< stroke[1] << ", " << stroke[2] << ", " << stroke[3] << endl;
 #endif // SVG_DEBUG
                 }
+	            if( type.at(0).toStdString() == "stroke-width" ){
+		            strokeWidth = type.at(1).toDouble();
+//#ifdef SVG_DEBUG
+		            cerr << "stroke-width = " << strokeWidth << endl;
+//#endif // SVG_DEBUG
+	            }
             }
             // element coordinates
             SVGTAGTYPE tag;
@@ -610,6 +630,11 @@ namespace FileIO {
                 QStringList coords = dList.at( j ).split( "," );
                 if( coords.size() == 1 ){
                     // check if c exists
+	                if ( coords.at( 0 ).toStdString() == "M" ) {
+		                tag = SVGTAGTYPE_M;
+		                j++;
+		                coords = dList.at( j ).split( "," );
+	                }
                     if ( coords.at( 0 ).toStdString() == "m" ) {
                     	tag = SVGTAGTYPE_m;
 	                    j++;
@@ -641,6 +666,17 @@ namespace FileIO {
 #endif // SVG_DEBUG
 
                 switch( tag ){
+	                case SVGTAGTYPE_M:
+	                {
+		                origin.x() = coords.at(0).toDouble();
+		                origin.y() = -coords.at(1).toDouble();
+	#ifdef SVG_DEBUG
+		                cerr << "coord = " << origin << endl;
+	#endif // SVG_DEBUG
+		                coordElements.push_back( origin );
+		                tag = SVGTAGTYPE_DEFAULT;
+	                }
+		                break;
                     case SVGTAGTYPE_m:
                     {
                         origin.x() = coords.at(0).toDouble();
@@ -750,9 +786,12 @@ namespace FileIO {
                         if( coords.size() == 2 ){
 
                             QStringList coords = dList.at( j ).split( "," );
-                            // relative path
-	                        KeiRo::Base::Coord2 coord( origin.x() + coords.at(0).toDouble(),
-                                                origin.y() - coords.at(1).toDouble() );
+	                        // absolute path
+	                        KeiRo::Base::Coord2 coord( coords.at(0).toDouble(),
+	                                                   -coords.at(1).toDouble() );
+//                            // relative path
+//	                        KeiRo::Base::Coord2 coord( origin.x() + coords.at(0).toDouble(),
+//                                                origin.y() - coords.at(1).toDouble() );
                             if ( origin != coord ) coordElements.push_back( coord );
                             origin = coord;
 #ifdef SVG_DEBUG
@@ -918,7 +957,9 @@ namespace FileIO {
 
             // normalize boundingBox
             _polygonVec[i].update();
-        }
+//	        _polygonVec[i].oldBoundingBox() = _polygonVec[i].boundingBox();
+	        _polygonVec[i].boundingBox().updateOldElement();
+	        }
 
         // normalize polylines
         for( unsigned int i = 0; i < _polylineVec.size(); i++ ){
@@ -955,10 +996,10 @@ namespace FileIO {
 
         QRectF canvas = getCanvasSize( fileName );
 
-        getPolygonElements( fileName );
+//        getPolygonElements( fileName );
         getRectangleElements( fileName );
         getPathElements( fileName );
-        getCircleElements( fileName );
+//        getCircleElements( fileName );
         normalize();
 	
 #ifdef SVG_DEBUG

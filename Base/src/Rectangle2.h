@@ -105,8 +105,10 @@ namespace Base {
         //------------------------------------------------------------------------------
         // initialization
         void init( void ) { _init(); }
+	    void clear( void ) { _clear(); }
         bool isInside( Coord2 c );
-	    void        updateOldElement( void );
+	    bool isOverlap( Rectangle2 r );
+	    void updateOldElement( void );
 	    
         //------------------------------------------------------------------------------
         //	Friend functions

@@ -49,6 +49,7 @@ namespace Vector {
     Q_OBJECT
     Q_PROPERTY( QRectF geometry READ geometry WRITE setGeometry )
     Q_INTERFACES( QGraphicsItem )
+    
     private:
 	
 	    QRectF   _sourceRect;

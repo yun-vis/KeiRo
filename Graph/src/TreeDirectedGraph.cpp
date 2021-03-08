@@ -45,15 +45,16 @@ namespace Graph {
         cerr << "num_vertices = " << num_vertices( graph ) << endl;
         cerr << "num_edges = " << num_edges( graph ) << endl;
 
-//    #ifdef  DEBUG
+//	#ifdef  DEBUG
         // print vertex information
-        BGL_FORALL_VERTICES( vd, graph, TreeDirectedGraph ) {
-
-            TreeDirectedGraph::degree_size_type      out_degrees         = out_degree( vd, graph );
-            cerr << "vid = " << graph[vd].id << " level = " << graph[vd].level
-                 << " childSize = " << graph[vd].childVec.size() << " ?= " << out_degrees << endl;
-        }
-//    #endif  // DEBUG
+	    BGL_FORALL_VERTICES( vd, graph, TreeDirectedGraph ) {
+		
+		    TreeDirectedGraph ::degree_size_type      degrees         = out_degree( vd, graph );
+		    cerr << "vid = " << graph[vd].id << " level = " << graph[vd].level
+		         << " childSize = " << graph[vd].childMap.size() << " ?= " << degrees
+		         << " parentID = " << graph[vd].parentID << endl;
+	    }
+//	#endif  // DEBUG
 
     #ifdef  DEBUG
         // print edge information

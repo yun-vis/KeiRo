@@ -16,6 +16,7 @@
 //------------------------------------------------------------------------------
 #include <iostream>
 #include <vector>
+#include <map>
 
 using namespace std;
 
@@ -55,11 +56,13 @@ namespace Graph {
         unsigned int                attributeID;    // external attribute ID
 	
 	    KeiRo::Base::Coord2         meanCoord;
-	    KeiRo::Base::Coord2         *leftBottomCoordPtr;  // area of the tree cell
-
-        vector< unsigned int >      leafIDVec;      // id in samples
-        vector< unsigned int >      childVec;       // vid of children in TreeGraph
-
+	    KeiRo::Base::Coord2         *leftBottomCoordPtr;    // area of the tree cell
+	    double                      *areaCoveragePtr;       // area coverage of the tree node
+	
+	    vector< unsigned int >      leafIDVec;              // id in samples
+	    map< unsigned int, unsigned int >      childMap;    // vid of children in TreeGraph
+		unsigned int                parentID;               // each tree node has one parent node, the root has the parent node as itself
+	    
         //------------------------------------------------------------------------------
         //	Constructors & Destructors
         //------------------------------------------------------------------------------

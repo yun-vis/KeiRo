@@ -50,11 +50,11 @@ namespace Vector {
 
 	    Q_OBJECT
 	    Q_PROPERTY( QPolygonF polygon READ getPolygon WRITE setPolygon )
-
+	    Q_INTERFACES( QGraphicsItem )
+	    
     private:
 
         QRect           _bbox;
-//	    QPolygonF       _polygon;
 	    
     protected:
     	
@@ -97,10 +97,7 @@ namespace Vector {
 
         QRect &	                bbox( void )        { return _bbox; }
         const QRect &	        bbox( void ) const	{ return _bbox; }
-	
-//	    void                    setPolygon( QPolygonF polygon ) {
-//		    _polygon = polygon;
-//        }
+        
 	    QPolygonF               getPolygon() const {
             return polygon();
         }

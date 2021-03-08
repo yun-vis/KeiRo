@@ -12,7 +12,6 @@
 //	Including Header Files
 //------------------------------------------------------------------------------
 
-#include <QtWidgets>
 
 #include "MainWindow.h"
 
@@ -108,8 +107,9 @@ namespace Ui {
 
         QAction *aboutQtAct = helpMenu->addAction(tr("About &Qt"), qApp, &QApplication::aboutQt );
         aboutQtAct->setStatusTip(tr("Show the Qt library's About box"));
-        
-         connect( _mainGV, SIGNAL( dataChanged() ), this, SLOT( _updateAllDocks() ) );
+		
+		connect( _mainGV, SIGNAL( dataInitialized() ), this, SLOT( _initAllDocks() ) );
+        connect( _mainGV, SIGNAL( dataChanged() ), this, SLOT( _updateAllDocks() ) );
     }
 
     //
@@ -135,41 +135,41 @@ namespace Ui {
     //  Outputs
     //  none
     //
-    void MainWindow::_createDockWindows( void )
-    {
-	    _settingsDock = new QDockWidget(tr("Setting"), this );
-        _settingsDock->setAllowedAreas( Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-        
-	    _setting = new QWidget( _settingsDock );
-        _setting->setGeometry( QRect(0,0,KeiRo::Base::Common::getDockWidgetWidth(),
-									 KeiRo::Base::Common::getMainwidgetHeight()/2.0 ) );
-        _setting->setMinimumSize( QSize( KeiRo::Base::Common::getDockWidgetWidth(),
-										 KeiRo::Base::Common::getMainwidgetHeight()/3.0 ) );
-//	    _setting->setMaximumSize( QSize( KeiRo::Base::Common::getDockWidgetWidth(),
-//	                                     KeiRo::Base::Common::getMainwidgetHeight()/3.0 ) );
-//        _setting->setMouseTracking( false );
-        _settingsDock->setWidget( _setting );
-        addDockWidget(Qt::RightDockWidgetArea, _settingsDock );
-        _viewMenu->addAction(_settingsDock->toggleViewAction() );
-	
-	
-	    _interactionDock = new QDockWidget(tr("Interaction"), this );
-	    _interactionDock->setAllowedAreas( Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-	    
-        _interaction = new QWidget( _interactionDock );
-        _interaction->setGeometry( QRect(0,0,KeiRo::Base::Common::getDockWidgetWidth(),
-										 KeiRo::Base::Common::getDockWidgetWidth()*KeiRo::Base::Common::getMainwidgetHeight()/KeiRo::Base::Common::getMainwidgetWidth() ) );
-        _interaction->setMinimumSize( QSize( KeiRo::Base::Common::getDockWidgetWidth(),
-											 KeiRo::Base::Common::getDockWidgetWidth()*KeiRo::Base::Common::getMainwidgetHeight()/KeiRo::Base::Common::getMainwidgetWidth() ) );
-//        _interaction->setMouseTracking( false );
-
-	    _interactionDock->setWidget( _interaction );
-        addDockWidget(Qt::RightDockWidgetArea, _interactionDock );
-        _viewMenu->addAction( _interactionDock->toggleViewAction() );
-	
-	    //    connect(setting, &QWidget::windowIconChanged, this, &MainWindow::updateSetting );
-	    //    connect(interaction, &QWidget::windowIconChanged, this, &MainWindow::updateInteraction );
-    }
+//    void MainWindow::_createDockWindows( void )
+//    {
+//	    _settingsDock = new QDockWidget(tr("Setting"), this );
+//        _settingsDock->setAllowedAreas( Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+//
+//	    _setting = new QWidget( _settingsDock );
+//        _setting->setGeometry( QRect(0,0,KeiRo::Base::Common::getDockWidgetWidth(),
+//									 KeiRo::Base::Common::getMainwidgetHeight()/2.0 ) );
+//        _setting->setMinimumSize( QSize( KeiRo::Base::Common::getDockWidgetWidth(),
+//										 KeiRo::Base::Common::getMainwidgetHeight()/3.0 ) );
+////	    _setting->setMaximumSize( QSize( KeiRo::Base::Common::getDockWidgetWidth(),
+////	                                     KeiRo::Base::Common::getMainwidgetHeight()/3.0 ) );
+////        _setting->setMouseTracking( false );
+//        _settingsDock->setWidget( _setting );
+//        addDockWidget(Qt::RightDockWidgetArea, _settingsDock );
+//        _viewMenu->addAction(_settingsDock->toggleViewAction() );
+//
+//
+//	    _interactionDock = new QDockWidget(tr("Interaction"), this );
+//	    _interactionDock->setAllowedAreas( Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+//
+//        _interaction = new QWidget( _interactionDock );
+//        _interaction->setGeometry( QRect(0,0,KeiRo::Base::Common::getDockWidgetWidth(),
+//										 KeiRo::Base::Common::getDockWidgetWidth()*KeiRo::Base::Common::getMainwidgetHeight()/KeiRo::Base::Common::getMainwidgetWidth() ) );
+//        _interaction->setMinimumSize( QSize( KeiRo::Base::Common::getDockWidgetWidth(),
+//											 KeiRo::Base::Common::getDockWidgetWidth()*KeiRo::Base::Common::getMainwidgetHeight()/KeiRo::Base::Common::getMainwidgetWidth() ) );
+////        _interaction->setMouseTracking( false );
+//
+//	    _interactionDock->setWidget( _interaction );
+//        addDockWidget(Qt::RightDockWidgetArea, _interactionDock );
+//        _viewMenu->addAction( _interactionDock->toggleViewAction() );
+//
+//	    //    connect(setting, &QWidget::windowIconChanged, this, &MainWindow::updateSetting );
+//	    //    connect(interaction, &QWidget::windowIconChanged, this, &MainWindow::updateInteraction );
+//    }
 
     void MainWindow::setSettings(QWidget* settingsWidget) 
     {
@@ -183,6 +183,52 @@ namespace Ui {
     //	Protected functions
     //------------------------------------------------------------------------------
     //
+    //  MainWindow::initSetting -- init setting
+    //
+    //  Inputs
+    //  setting: text string
+    //
+    //  Outputs
+    //  none
+    //
+    void MainWindow::_initSetting( const QString &setting )
+    {
+//    	_setting->initSceneItems();
+	    if( setting.isEmpty() ) return;
+    }
+	
+	//
+	//  MainWindow::initInteraction -- init interaction
+	//
+	//  Inputs
+	//  interaction: text string
+	//
+	//  Outputs
+	//  none
+	//
+	void MainWindow::_initInteraction( const QString &interaction )
+	{
+		_interaction->initSceneItems();
+		if( interaction.isEmpty() ) return;
+	}
+	
+	//
+	//  MainWindow::_initAllDocks -- init all dock widgets
+	//
+	//  Inputs
+	//  none
+	//
+	//  Outputs
+	//  none
+	//
+	void MainWindow::_initAllDocks( void )
+	{
+		_initSetting( "" );
+		_initInteraction( "" );
+//		cerr << "init docks..." << endl;
+	}
+	
+	//
     //  MainWindow::updateSetting -- update setting
     //
     //  Inputs
@@ -193,7 +239,7 @@ namespace Ui {
     //
     void MainWindow::_updateSetting( const QString &setting )
     {
-        // _setting->updateSceneItems();
+//    	_setting->updateSceneItems();
         if( setting.isEmpty() ) return;
     }
 
@@ -208,7 +254,7 @@ namespace Ui {
     //
     void MainWindow::_updateInteraction( const QString &interaction )
     {
-//        _interaction->updateSceneItems();
+        _interaction->updateSceneItems();
         if( interaction.isEmpty() ) return;
     }
 
@@ -225,6 +271,7 @@ namespace Ui {
     {
         _updateSetting( "" );
         _updateInteraction( "" );
+//        cerr << "update docks..." << endl;
     }
 
     //------------------------------------------------------------------------------

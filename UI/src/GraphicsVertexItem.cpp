@@ -121,6 +121,7 @@ namespace Vector {
                                     QWidget *widget )
     {
 	    QRectF fineRect( rect() );
+	    _radius = rect().width();
     	double sx = _radius, sy = _radius;
 	    painter->setRenderHints( QPainter::Antialiasing );
 	    painter->setPen( pen() );
@@ -132,7 +133,6 @@ namespace Vector {
 		    fineRect.setY( rect().y() - 0.5 * sy );
 		    fineRect.setWidth( sx );
 		    fineRect.setHeight( sy );
-
 		    painter->drawEllipse( fineRect );
     	}
     	else{

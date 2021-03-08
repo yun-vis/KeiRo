@@ -124,6 +124,7 @@
     //
     bool Compression::_closeToSamples( KeiRo::Base::Coord2 &coord, unsigned int &index )
     {
+		return false;
         index = 0;
         for( unsigned int i = 0; i < _samples.size(); i++ ){
 

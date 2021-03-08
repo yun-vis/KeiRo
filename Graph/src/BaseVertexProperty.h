@@ -55,7 +55,8 @@ namespace Graph {
         double *                    namePixelWidthPtr;      // pixel width of the name
         double *                    namePixelHeightPtr;     // pixel height of the name
 
-        double                      weight;
+        double                      size;                   // size of the vertex
+        double                      weight;                 // weight of the vertex
 		double                      aspectRatio;            // aspect ratio of the vertex
         
         KeiRo::Base::Coord2 *       coordPtr;               // center coordinates
@@ -65,7 +66,8 @@ namespace Graph {
 
         int                         color;                  // color type
         bool                        flag;                   // flag
-	
+		bool                        isSelected;             // if the vertex is selected
+		
 	    unsigned int                itemID;                 // item ID for graphics
 	    // Ui::Vector::GraphicsBallItem * itemPtr;
 

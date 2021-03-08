@@ -19,6 +19,7 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets>
 
 QT_BEGIN_NAMESPACE
 //class QAction;
@@ -53,19 +54,19 @@ namespace Ui {
 	    QDockWidget                                 *_settingsDock;
 	    QDockWidget                                 *_interactionDock;
         QWidget                                     *_setting;
-	    QWidget                                     *_interaction;
+	    GraphicsView                                *_interaction;
         QMenu                                       *_viewMenu;
 
         //------------------------------------------------------------------------------
         //	Special functions
         //------------------------------------------------------------------------------
-        template <class T> void _init  ( T *__t_ptr ){
+        template <class T1, class T2, class T3> void _init  ( T1 *__mvPtr = NULL, T2 *__setPtr = NULL, T3 *__interactPtr = NULL ){
         	
-	        createMainView( __t_ptr );
+	        _createMainView( __mvPtr );
 	
 	        _createActions();
 	        _createStatusBar();
-	        _createDockWindows();
+	        _createDockWindows( __setPtr, __interactPtr );
 	
 	        setWindowTitle( tr("KeiRo") );
 	        setMouseTracking( false );
@@ -73,7 +74,64 @@ namespace Ui {
         }
         void _createActions     ( void );
         void _createStatusBar   ( void );
-        void _createDockWindows ( void );
+	    template <class T> void _createMainView( T *__mvPtr ){
+		
+		    _mainGV = __mvPtr;
+		    // _mainGV = new Ui::GraphicsView( this );
+		    _mainGV->setStyleSheet("background: white; border: transparent;");
+		    _mainGV->setGeometry( QRect( 0, 0, KeiRo::Base::Common::getDockWidgetWidth(),
+		                                 KeiRo::Base::Common::getMainwidgetHeight() ) );
+		    _mainGV->setMinimumSize( QSize( KeiRo::Base::Common::getDockWidgetWidth(),
+		                                    KeiRo::Base::Common::getMainwidgetHeight() ) );
+		    _mainGV->setMouseTracking( true );
+		    _mainGV->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+		    _mainGV->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+		    _mainGV->init( _basePtr );
+		    _mainGV->initSceneItems();
+		
+		    setCentralWidget( _mainGV );
+	    }
+	    
+	    template <class T1, class T2> void _createDockWindows ( T1 *__setPtr = NULL, T2 *__interactPtr = NULL ){
+	    	
+	    	// setting
+		    _settingsDock = new QDockWidget(tr("Setting"), this );
+		    _settingsDock->setAllowedAreas( Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+		
+		    _setting = new QWidget( _settingsDock );
+		    _setting->setGeometry( QRect(0,0,KeiRo::Base::Common::getDockWidgetWidth(),
+		                                 KeiRo::Base::Common::getMainwidgetHeight()/2.0 ) );
+		    _setting->setMinimumSize( QSize( KeiRo::Base::Common::getDockWidgetWidth(),
+		                                     KeiRo::Base::Common::getMainwidgetHeight()/3.0 ) );
+//	    _setting->setMaximumSize( QSize( KeiRo::Base::Common::getDockWidgetWidth(),
+//	                                     KeiRo::Base::Common::getMainwidgetHeight()/3.0 ) );
+//        _setting->setMouseTracking( false );
+		    _settingsDock->setWidget( _setting );
+		    addDockWidget(Qt::RightDockWidgetArea, _settingsDock );
+		    _viewMenu->addAction(_settingsDock->toggleViewAction() );
+		
+		
+		    // interaction
+		    _interactionDock = new QDockWidget(tr("Interaction"), this );
+		    _interactionDock->setAllowedAreas( Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+		
+		    _interaction = __interactPtr;
+		    _interaction->setGeometry( QRect(0,0,KeiRo::Base::Common::getDockWidgetWidth(),
+		                                     KeiRo::Base::Common::getDockWidgetWidth()*KeiRo::Base::Common::getMainwidgetHeight()/KeiRo::Base::Common::getMainwidgetWidth() ) );
+		    _interaction->setMinimumSize( QSize( KeiRo::Base::Common::getDockWidgetWidth(),
+		                                         KeiRo::Base::Common::getDockWidgetWidth()*KeiRo::Base::Common::getMainwidgetHeight()/KeiRo::Base::Common::getMainwidgetWidth() ) );
+		    _interaction->setMaximumSize( QSize( KeiRo::Base::Common::getDockWidgetWidth(),
+		                                         KeiRo::Base::Common::getDockWidgetWidth()*KeiRo::Base::Common::getMainwidgetHeight()/KeiRo::Base::Common::getMainwidgetWidth() ) );
+//        _interaction->setMouseTracking( false );
+			_interaction->init( _basePtr );
+		
+		    _interactionDock->setWidget( _interaction );
+		    addDockWidget(Qt::RightDockWidgetArea, _interactionDock );
+		    _viewMenu->addAction( _interactionDock->toggleViewAction() );
+		
+//	        connect( _setting, &QWidget::windowIconChanged, this, &MainWindow::_updateSetting );
+//	        connect( _interaction, &QWidget::windowIconChanged, this, &MainWindow::_updateInteraction );
+	    }
 
         void setSettings(QWidget* settingsWidget);
 	    void setInteraction(QWidget* interactionWidget);
@@ -102,28 +160,13 @@ namespace Ui {
         //------------------------------------------------------------------------------
         //	Specific functions
         //------------------------------------------------------------------------------
-        template <class T> void init  ( KeiRo::Base::Base *__b_ptr, T *__t_ptr ){
-	        _basePtr = __b_ptr;
-	        _init( __t_ptr );
+        template <class T1, class T2, class T3> void init  ( KeiRo::Base::Base *__bPtr, T1 *__mvPtr = NULL,
+        		                                             T2 *__setPtr = NULL, T3 *__interactPtr = NULL ){
+	        _basePtr = __bPtr;
+	        _init( __mvPtr, __setPtr, __interactPtr );
         }
         
-	    template <class T> void createMainView( T *__t_ptr ){
-      
-		    _mainGV = __t_ptr;
-		    // _mainGV = new Ui::GraphicsView( this );
-		    _mainGV->setStyleSheet("background: white; border: transparent;");
-		    _mainGV->setGeometry( QRect( 0, 0, KeiRo::Base::Common::getDockWidgetWidth(),
-		                                 KeiRo::Base::Common::getMainwidgetHeight() ) );
-		    _mainGV->setMinimumSize( QSize( KeiRo::Base::Common::getDockWidgetWidth(),
-		                                    KeiRo::Base::Common::getMainwidgetHeight() ) );
-		    _mainGV->setMouseTracking( true );
-		    _mainGV->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-		    _mainGV->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-		    _mainGV->init( _basePtr );
-		    _mainGV->initSceneItems();
-		
-		    setCentralWidget( _mainGV );
-        }
+
 
 	    //------------------------------------------------------------------------------
         //	I/O functions
@@ -142,8 +185,11 @@ namespace Ui {
         void print  ( void );
         void undo   ( void );
         void about  ( void );
-        void _updateSetting      ( const QString &setting );
-        void _updateInteraction  ( const QString &interaction );
+	    void _initAllDocks      ( void );
+	    void _initSetting       ( const QString &setting );
+	    void _initInteraction   ( const QString &interaction );
+        void _updateSetting     ( const QString &setting );
+        void _updateInteraction ( const QString &interaction );
         void _updateAllDocks    ( void );
     };
 

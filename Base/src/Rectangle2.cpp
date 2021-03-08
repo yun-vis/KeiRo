@@ -54,6 +54,9 @@ namespace Base {
     //
     void Rectangle2::_clear( void )
     {
+    	_leftBottom.zero();
+    	_oldLeftBottom.zero();
+    	_width = _oldWidth = _height = _oldHeight = 0.0;
     }
 
     //------------------------------------------------------------------------------
@@ -89,10 +92,15 @@ namespace Base {
     //
     Rectangle2::Rectangle2( double x, double y, double w, double h )
     {
-	    _leftBottom.x()    = x;
-	    _leftBottom.y()    = y;
-	    _width          = w;
-	    _height         = h;
+	    _leftBottom.x()     = x;
+	    _leftBottom.y()     = y;
+	    _width              = w;
+	    _height             = h;
+	
+	    _oldLeftBottom.x()  = x;
+	    _oldLeftBottom.y()  = y;
+	    _oldWidth           = w;
+	    _oldHeight          = h;
     }
 
     //
@@ -110,9 +118,13 @@ namespace Base {
         _gid                = v._gid;
         _name               = v._name;
 	
-	    _leftBottom            = v._leftBottom;
+	    _leftBottom         = v._leftBottom;
         _width              = v._width;
         _height             = v._height;
+
+	    _oldLeftBottom      = v._oldLeftBottom;
+	    _oldWidth           = v._oldWidth;
+	    _oldHeight          = v._oldHeight;
     }
 
     //------------------------------------------------------------------------------
@@ -139,6 +151,27 @@ namespace Base {
     		return true;
     	return false;
     }
+	
+	//
+	//  Polygon2::isOverlap -- check if the two rectangle overlapped
+	//
+	//  Inputs
+	//  Rectangle2 r
+	//
+	//  Outputs
+	//  none
+	//
+	bool Rectangle2::isOverlap( Rectangle2 r )
+	{
+    	Coord2 ci = _leftBottom + Coord2( 0.5*_width, 0.5*_height );
+		Coord2 cj = r._leftBottom + Coord2( 0.5*r._width, 0.5*r._height );
+    	double w = MAX2( 0.0, MIN2( 0.5*(_width+r._width)-fabs(ci.x()-cj.x()), MIN2( _width, r._width )) );
+    	double h = MAX2( 0.0, MIN2( 0.5*(_height+r._height)-fabs(ci.y()-cj.y()), MIN2( _height, r._height )) );
+		double area = w*h;
+
+		if( area != 0.0 ) return true;
+		else return false;
+	}
 	
 	void Rectangle2::updateOldElement( void )
 	{

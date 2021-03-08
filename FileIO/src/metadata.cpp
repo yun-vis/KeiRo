@@ -158,9 +158,10 @@ namespace FileIO {
 				_svgPtrVec[ svgIndex ]->readSVG( filePath + file );
 				
 				// set svgTree
-				_svgTree[ vd ].id           = s->id();
-				_svgTree[ vd ].attributeID  = s->id();
+				_svgTree[ vd ].id           = 0;
+				_svgTree[ vd ].attributeID  = 0;
 				_svgTree[ vd ].level        = level;
+				_svgTree[ vd ].parentID     = 0;
 			}
 			else {
 				
@@ -184,10 +185,10 @@ namespace FileIO {
 #endif // METADATA_DEBUG
 						if( _svgPtrVec[ m ]->polygonVec()[ n ].name() == objName.toStdString() ) {
 							
-							x = _svgPtrVec[ m ]->polygonVec()[ n ].boxLeftTop().x();
-							y = _svgPtrVec[ m ]->polygonVec()[ n ].boxLeftTop().y();
-							w = _svgPtrVec[ m ]->polygonVec()[ n ].boundingBox().x();
-							h = _svgPtrVec[ m ]->polygonVec()[ n ].boundingBox().y();
+							x = _svgPtrVec[ m ]->polygonVec()[ n ].boundingBox().leftBottom().x();
+							y = _svgPtrVec[ m ]->polygonVec()[ n ].boundingBox().leftBottom().y();
+							w = _svgPtrVec[ m ]->polygonVec()[ n ].boundingBox().width();
+							h = _svgPtrVec[ m ]->polygonVec()[ n ].boundingBox().height();
 #ifdef METADATA_DEBUG
 							cerr << "m = " << m << " name = " << _svgPtr[m]->polygonVec()[n].name()
 								 << " objName = " << objName.toStdString() << endl;
@@ -236,8 +237,9 @@ namespace FileIO {
 				_svgTree[ vd ].id           = s->id();
 				_svgTree[ vd ].attributeID  = s->id();
 				_svgTree[ vd ].level        = level;
-				_svgTree[ vd ].widthPtr     = &p.boundingBox().x();
-				_svgTree[ vd ].heightPtr    = &p.boundingBox().y();
+				_svgTree[ vd ].leftBottomCoordPtr     = &p.boundingBox().leftBottom();
+				_svgTree[ vd ].widthPtr     = &p.boundingBox().width();
+				_svgTree[ vd ].heightPtr    = &p.boundingBox().height();
 				_svgTree[ vd ].meanCoord    = p.center();
 
 #ifdef METADATA_DEBUG
@@ -250,7 +252,8 @@ namespace FileIO {
 				
 				// add the child vd to the parent vertex
 				Graph::TreeDirectedGraph::vertex_descriptor parentVD= vertex( parentFileID.second, _svgTree );
-				_svgTree[ parentVD ].childVec.push_back( s->id() );
+				_svgTree[ parentVD ].childMap.insert( pair< unsigned int, unsigned int >( parentPolygonID, s->id() ) );
+				_svgTree[ vd ].parentID = _svgTree[ parentVD ].id;
 				
 				// add a directed edge from parent vertex to the child vertex
 				pair< Graph::TreeDirectedGraph::edge_descriptor, unsigned int > foreE = add_edge( parentVD, vd, _svgTree );
