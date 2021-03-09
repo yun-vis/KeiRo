@@ -8,6 +8,7 @@ set( Target_Name KeiRoUI )
 add_library(${Target_Name} SHARED
         src/GraphicsBase.cpp
         src/GraphicsCellItem.cpp
+        src/GraphicsPathItem.cpp
         src/GraphicsEdgeItem.cpp
         src/GraphicsPolygonItem.cpp
         src/GraphicsVertexItem.cpp

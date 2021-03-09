@@ -46,7 +46,7 @@ using namespace std;
 #include "Common.h"
 #include "GraphicsVertexItem.h"
 #include "GraphicsCellItem.h"
-#include "GraphicsEdgeItem.h"
+#include "GraphicsPathItem.h"
 #endif // Q_MOC_RUN
 
 //------------------------------------------------------------------------------

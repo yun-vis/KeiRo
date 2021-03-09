@@ -229,6 +229,12 @@ namespace Base {
             _fineElements.push_back( core[core.size()-1] );
         }
     }
+	
+	void Line2::updateOldElement( void )
+	{
+		_oldElements = _elements;
+	}
+	
     //------------------------------------------------------------------------------
     //	Friend functions
     //------------------------------------------------------------------------------

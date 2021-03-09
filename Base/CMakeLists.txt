@@ -62,7 +62,7 @@ find_package(CGAL REQUIRED COMPONENTS Core)
 if(CGAL_FOUND)
     message(STATUS "-- LinkingCGAL")
     include_directories(${CGAL_INCLUDE_DIRS})
-    target_link_libraries(${Target_Name} ${CGAL_LIBRARIES})
+    target_link_libraries(${Target_Name} PUBLIC ${CGAL_LIBRARIES})
 endif()
 
 #----------------------------------------------------------------------

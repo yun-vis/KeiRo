@@ -572,10 +572,14 @@ namespace Base {
 	//
 	void Polygon2::normalization( Rectangle2 &r )
 	{
-		_boundingBox.leftBottom().x() = _boundingBox.oldLeftBottom().x() = r.leftBottom().x();
-		_boundingBox.leftBottom().y() = _boundingBox.oldLeftBottom().y() = r.leftBottom().y();
-		_boundingBox.width()   = _boundingBox.width()     = r.width();
-		_boundingBox.height()  = _boundingBox.height()    = r.height();
+		_boundingBox.oldLeftBottom().x() = _boundingBox.leftBottom().x();
+		_boundingBox.oldLeftBottom().y() = _boundingBox.leftBottom().y();
+		_boundingBox.oldWidth() = _boundingBox.width();
+		_boundingBox.oldHeight() = _boundingBox.height();
+		_boundingBox.leftBottom().x() = r.leftBottom().x();
+		_boundingBox.leftBottom().y() = r.leftBottom().y();
+		_boundingBox.width()   = r.width();
+		_boundingBox.height()  = r.height();
 
 		double minX = INFINITY, minY = INFINITY, maxX = -INFINITY, maxY = -INFINITY;
 		for( unsigned int i = 0; i < _elements.size(); i++ ){

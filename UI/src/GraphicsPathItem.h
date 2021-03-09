@@ -1,6 +1,6 @@
 //******************************************************************************
-// GraphicsPolygonItem.h
-//	: header file for polygon items
+// GraphicsEdgeItem.h
+//	: header file for edge items
 //
 //------------------------------------------------------------------------------
 //
@@ -8,8 +8,8 @@
 //
 //******************************************************************************
 
-#ifndef Ui_Vector_GraphicsPolygonItem_H
-#define Ui_Vector_GraphicsPolygonItem_H
+#ifndef Ui_Vector_GraphicsPathItem_H
+#define Ui_Vector_GraphicsPathItem_H
 
 //------------------------------------------------------------------------------
 //	Including Header Files
@@ -40,26 +40,23 @@ using namespace std;
 #include "GraphicsBase.h"
 #endif // Q_MOC_RUN
 
+Q_DECLARE_METATYPE (QPainterPath)
+
 namespace Ui {
 namespace Vector {
-
-    //------------------------------------------------------------------------------
+	
+	
+	//------------------------------------------------------------------------------
     //	Class definition
     //------------------------------------------------------------------------------
-    class GraphicsPolygonItem : public QObject, public QGraphicsPolygonItem, public GraphicsBase {
-
-	    Q_OBJECT
-	    Q_PROPERTY( QPolygonF polygon READ getPolygon WRITE setPolygon )
-	    Q_INTERFACES( QGraphicsItem )
+    class GraphicsPathItem : public  QGraphicsPathItem, public GraphicsBase {
+    
 	    
     private:
-
-        QRect           _bbox;
-	    unsigned long   _attributeID;
-	    
+    
     protected:
-    	
-	    //------------------------------------------------------------------------------
+	    
+    	//------------------------------------------------------------------------------
 	    //	Special functions
 	    //------------------------------------------------------------------------------
 	    void            _init( void );
@@ -70,12 +67,15 @@ namespace Vector {
         //	Constructors & Destructors
         //------------------------------------------------------------------------------
         // default constructor
-        explicit GraphicsPolygonItem( QGraphicsItem *parent = Q_NULLPTR );
+        explicit GraphicsPathItem( QGraphicsItem *parent = Q_NULLPTR );
         // copy constructor
-        explicit GraphicsPolygonItem( QPolygonF &polygon, QGraphicsItem *parent = Q_NULLPTR ) {}
+        explicit GraphicsPathItem( const QPainterPath &path, QGraphicsItem *parent = Q_NULLPTR );
         // destructor
-        ~GraphicsPolygonItem( void ) {}
+        ~GraphicsPathItem( void ) {}
 
+        //------------------------------------------------------------------------------
+        //      Reimplementation
+        //------------------------------------------------------------------------------
         // source from the qt library
         //QPainterPath path() const;
         //void setPath(const QPainterPath &path);
@@ -83,9 +83,6 @@ namespace Vector {
         //QPainterPath shape() const Q_DECL_OVERRIDE;
         //bool contains(const QPointF &point) const Q_DECL_OVERRIDE;
 
-        //------------------------------------------------------------------------------
-        //      Reimplementation
-        //------------------------------------------------------------------------------
         QRectF boundingRect() const Q_DECL_OVERRIDE;
         int type( void ) const Q_DECL_OVERRIDE;
 
@@ -95,24 +92,16 @@ namespace Vector {
         //------------------------------------------------------------------------------
         //      Reference to elements
         //------------------------------------------------------------------------------
-
-        QRect &	                bbox( void )        { return _bbox; }
-        const QRect &	        bbox( void ) const	{ return _bbox; }
 	
-	    unsigned long &	        attributeID( void )         { return _attributeID; }
-	    const unsigned long &	attributeID( void ) const	{ return _attributeID; }
-
-	    QPolygonF               getPolygon() const {
-            return polygon();
-        }
-	    
 	    //------------------------------------------------------------------------------
 	    //	Special functions
 	    //------------------------------------------------------------------------------
 	    void init( void ) { _init(); }
+
     };
 
 } // namespace Vector
 } // namespace Ui
 
-#endif // Ui_Vector_GraphicsPolygonItem_H
+
+#endif // Ui_Vector_GraphicsPathItem_H

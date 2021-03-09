@@ -207,7 +207,8 @@
                     idElements.push_back( index );
                 }
                 else{
-                    _fixedSamples.push_back( coord );
+	                coord.updateOldElement();
+	                _fixedSamples.push_back( coord );
                     _samples.push_back( coord );
                     idElements.push_back( nV );
                     nV++;
