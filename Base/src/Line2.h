@@ -39,6 +39,8 @@ namespace Base {
 
         // Line2 original coordinates of end points
         vector< Coord2 >        _fixedElements;
+	    // Line2 old sample points
+	    vector< Coord2 >        _oldElements;
         // Line2 sample points
         vector< Coord2 >        _elements;
         // Line2 sample id
@@ -89,6 +91,10 @@ namespace Base {
         //------------------------------------------------------------------------------
         //	Reference to elements
         //------------------------------------------------------------------------------
+	
+	    // reference to a vector of coordinates
+	    vector< Coord2 > &	            oldElements( void )	            { return _oldElements; }
+	    const vector< Coord2 > &	    oldElements( void ) const	    { return _oldElements; }
 
         // reference to a vector of coordinates
         vector< Coord2 > &	            elements( void )	            { return _elements; }
@@ -132,7 +138,8 @@ namespace Base {
         void computeChaikinCurve( int num, double unit );
 
         static bool isOnLine( Coord2 &a, Coord2 &b, Coord2 &c );
-
+	    void updateOldElement( void );
+	    
         //------------------------------------------------------------------------------
         //	Friend functions
         //------------------------------------------------------------------------------

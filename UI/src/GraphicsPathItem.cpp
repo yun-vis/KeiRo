@@ -12,7 +12,7 @@
 //	Including Header Files
 //------------------------------------------------------------------------------
 
-#include "GraphicsEdgeItem.h"
+#include "GraphicsPathItem.h"
 
 
 namespace Ui {
@@ -34,31 +34,11 @@ namespace Vector {
 	//  Outputs
 	//  none
 	//
-	void GraphicsEdgeItem::_init( void )
+	void GraphicsPathItem::_init( void )
 	{
 		GraphicsBase::_init();
 	}
 	
-	QVariant pathInterpolator(const QLineF &start, const QLineF &end, qreal progress)
-	{
-//    	cerr << "progress = " << progress << endl;
-//		cerr << "0 x = " << end[0].x() << " y = " << end[0].y() << endl;
-//		cerr << "1 x = " << end[1].x() << " y = " << end[1].y() << endl;
-//		QLineF line;
-//		for( unsigned int i = 0; i < start.size(); i++ ){
-		QPointF p1, p2;
-		
-		p1.setX( progress * end.p1().x() + (1.0-progress) * start.p1().x() );
-		p1.setY( progress * end.p1().y() + (1.0-progress) * start.p1().y() );
-		p2.setX( progress * end.p2().x() + (1.0-progress) * start.p2().x() );
-		p2.setY( progress * end.p2().y() + (1.0-progress) * start.p2().y() );
-//		line = QLineF( p1, p2 );
-//			poly.append( p );
-//		}
-
-//		cerr << "size = " << poly.size() << endl;
-		return  QLineF( p1, p2 );
-	}
 	
     //------------------------------------------------------------------------------
     //	Public functions
@@ -75,10 +55,8 @@ namespace Vector {
     //  Outputs
     //  none
     //
-    GraphicsEdgeItem::GraphicsEdgeItem( QGraphicsItem *parent )
+    GraphicsPathItem::GraphicsPathItem( QGraphicsItem *parent )
     {
-	    qRegisterAnimationInterpolator< QLineF >( pathInterpolator );
-	
 	    //setFlag( QGraphicsItem::ItemIsSelectable );
         //setFlag( QGraphicsItem::ItemIsMovable );
         //setFlag( QGraphicsItem::ItemSendsGeometryChanges );
@@ -99,9 +77,9 @@ namespace Vector {
     //  Outputs
     //  none
     //
-    GraphicsEdgeItem::GraphicsEdgeItem( const QLineF &line, QGraphicsItem *parent )
+    GraphicsPathItem::GraphicsPathItem( const QPainterPath &path, QGraphicsItem *parent )
     {
-        setLine( line );
+        if ( !path.isEmpty() ) setPath( path );
     }
 
     //
@@ -113,10 +91,10 @@ namespace Vector {
     //  Outputs
     //  reference to the bounding box
     //
-//    QRectF GraphicsEdgeItem::boundingRect( void ) const
-//    {
-//        return line().controlPointRect();
-//    }
+    QRectF GraphicsPathItem::boundingRect( void ) const
+    {
+        return path().controlPointRect();
+    }
 
     //
     //  GraphicsEdgeItem::paint -- paint the object
@@ -127,24 +105,23 @@ namespace Vector {
     //  Outputs
     //  none
     //
-    void GraphicsEdgeItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *option,
+    void GraphicsPathItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *option,
                                   QWidget *widget )
     {
         // draw boundary
         painter->setRenderHints( QPainter::Antialiasing );
         painter->setPen( pen() );
-//        painter->setBrush( brush() );
-//        painter->drawPath( path() );
-        painter->drawLine( line() );
+        painter->setBrush( brush() );
+        painter->drawPath( path() );
 
         // draw text
-//        if( _textOn == true ){
-//            painter->setPen( _textpen );
-//            painter->setFont( _font );
-//            painter->drawText( path().boundingRect().x()+0.5*( path().boundingRect().width() ),
-//                               path().boundingRect().y()+0.5*( path().boundingRect().height() ),
-//                               _text );
-//        }
+        if( _textOn == true ){
+            painter->setPen( _textpen );
+            painter->setFont( _font );
+            painter->drawText( path().boundingRect().x()+0.5*( path().boundingRect().width() ),
+                               path().boundingRect().y()+0.5*( path().boundingRect().height() ),
+                               _text );
+        }
 
         //cerr << "paint x = " << pos().x() << " y = " << pos().y() << endl;
 
@@ -162,7 +139,7 @@ namespace Vector {
     //  Outputs
     //  reference to the object type
     //
-    int GraphicsEdgeItem::type( void ) const
+    int GraphicsPathItem::type( void ) const
     {
         return 0; // GRAPHICS_EDGE+QGraphicsItem::UserType;
     }

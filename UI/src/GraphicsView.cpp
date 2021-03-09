@@ -13,7 +13,7 @@
 //------------------------------------------------------------------------------
 
 #include "GraphicsCellItem.h"
-#include "GraphicsEdgeItem.h"
+#include "GraphicsPathItem.h"
 #include "GraphicsView.h"
 
 #define _USE_MATH_DEFINES

@@ -34,6 +34,7 @@ using namespace std;
 //#include <QtGui/QPainter>
 //#include <QtCore/QString>
 //#include <QtWidgets/QGraphicsSceneMouseEvent>
+#include <QPropertyAnimation>
 
 #ifndef Q_MOC_RUN
 #include "GraphicsBase.h"
@@ -41,14 +42,19 @@ using namespace std;
 
 namespace Ui {
 namespace Vector {
-
-    //------------------------------------------------------------------------------
+	
+	
+	//------------------------------------------------------------------------------
     //	Class definition
     //------------------------------------------------------------------------------
-    class GraphicsEdgeItem : public  QGraphicsPathItem, public GraphicsBase {
-    
-    private:
+    class GraphicsEdgeItem : public QObject, public  QGraphicsLineItem, public GraphicsBase {
 
+        Q_OBJECT
+	    Q_PROPERTY( QLineF line READ getLine WRITE setLine )
+	    Q_INTERFACES( QGraphicsItem )
+	    
+    private:
+    
     protected:
 	    
     	//------------------------------------------------------------------------------
@@ -64,7 +70,7 @@ namespace Vector {
         // default constructor
         explicit GraphicsEdgeItem( QGraphicsItem *parent = Q_NULLPTR );
         // copy constructor
-        explicit GraphicsEdgeItem( const QPainterPath &path, QGraphicsItem *parent = Q_NULLPTR );
+        explicit GraphicsEdgeItem( const QLineF &line, QGraphicsItem *parent = Q_NULLPTR );
         // destructor
         ~GraphicsEdgeItem( void ) {}
 
@@ -78,7 +84,7 @@ namespace Vector {
         //QPainterPath shape() const Q_DECL_OVERRIDE;
         //bool contains(const QPointF &point) const Q_DECL_OVERRIDE;
 
-        QRectF boundingRect() const Q_DECL_OVERRIDE;
+//        QRectF boundingRect() const Q_DECL_OVERRIDE;
         int type( void ) const Q_DECL_OVERRIDE;
 
         void paint( QPainter *painter, const QStyleOptionGraphicsItem *option,
@@ -87,7 +93,12 @@ namespace Vector {
         //------------------------------------------------------------------------------
         //      Reference to elements
         //------------------------------------------------------------------------------
-
+        QLineF        getLine() const {
+	        return line();
+        }
+//	    void         setLine( QLineF __line ) {
+//		    _line = __line;
+//	    }
 	
 	    //------------------------------------------------------------------------------
 	    //	Special functions
@@ -98,5 +109,6 @@ namespace Vector {
 
 } // namespace Vector
 } // namespace Ui
+
 
 #endif // Ui_Vector_GraphicsEdgeItem_H
