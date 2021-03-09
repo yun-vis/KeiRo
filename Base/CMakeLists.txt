@@ -48,7 +48,7 @@ elseif( UNIX )
             PUBLIC
             /opt/local/lib/
             )
-    set( CUSTOM_LIBRARIES "-lgmp -lCGAL -lmpfr")
+    set( CUSTOM_LIBRARIES "-lgmp -lmpfr")
 endif()
 target_link_libraries(${Target_Name} PUBLIC ${CUSTOM_LIBRARIES})
 
@@ -62,7 +62,7 @@ find_package(CGAL REQUIRED COMPONENTS Core)
 if(CGAL_FOUND)
     message(STATUS "-- LinkingCGAL")
     include_directories(${CGAL_INCLUDE_DIRS})
-    target_link_libraries(${Target_Name} ${CGAL_LIBRARIES})
+    target_link_libraries(${Target_Name} PUBLIC ${CGAL_LIBRARIES})
 endif()
 
 #----------------------------------------------------------------------
