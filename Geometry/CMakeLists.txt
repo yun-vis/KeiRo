@@ -41,7 +41,7 @@ elseif( UNIX )
             /opt/local/lib/
             ${CMAKE_BINARY_DIR}/Base/
             )
-    set( CUSTOM_LIBRARIES "")
+    set( CUSTOM_LIBRARIES "-lgmp -lmpfr")
 endif()
 target_link_libraries(${Target_Name} PUBLIC ${CUSTOM_LIBRARIES})
 
@@ -56,7 +56,7 @@ find_package(Boost)
 if(Boost_FOUND)
     message(STATUS "-- Linking boost")
     include_directories(${Boost_INCLUDE_DIRS})
-    target_link_libraries(${Target_Name} ${Boost_LIBRARIES})
+    target_link_libraries(${Target_Name} PUBLIC ${Boost_LIBRARIES})
 endif()
 
 #----------------------------------------------------------------------
@@ -70,7 +70,7 @@ if(CGAL_FOUND)
     message(STATUS "-- LinkingCGAL")
     include_directories(${CGAL_INCLUDE_DIRS})
 #    message("TEST " ${CGAL_INCLUDE_DIRS})
-    target_link_libraries(${Target_Name} ${CGAL_LIBRARIES})
+target_link_libraries(${Target_Name} PUBLIC ${CGAL_LIBRARIES})
 endif()
 
 #----------------------------------------------------------------------

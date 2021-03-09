@@ -25,7 +25,7 @@ using namespace std;
 #define CGAL_DO_NOT_USE_BOOST_MP
 
 #include <CGAL/Exact_predicates_exact_constructions_kernel.h>
-#include <CGAL/Regular_triangulation_filtered_traits_2.h>
+//#include <CGAL/Regular_triangulation_filtered_traits_2.h>
 #include <CGAL/Regular_triangulation_adaptation_traits_2.h>
 #include <CGAL/Regular_triangulation_adaptation_policies_2.h>
 #include <CGAL/Regular_triangulation_2.h>
