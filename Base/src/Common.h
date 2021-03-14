@@ -208,6 +208,7 @@ namespace Base {
 		static double _mainwidget_height;
 		static double _dockwidget_width;
 		static double _menubar_height;
+		static unsigned int _font_size;
 		static std::string _batch_str;
 		
 	protected:
@@ -234,25 +235,29 @@ namespace Base {
 		//------------------------------------------------------------------------------
 		//	Reference to elements
 		//------------------------------------------------------------------------------
-		static const double &getMainwidgetWidth();
+		static const double &getMainwidgetWidth( void );
 		
 		static void setMainwidgetWidth( double _mainwidgetWidth );
 		
 		static double &  mainwidgetWidth( void ) { return _mainwidget_width; };
 		
-		static const double &getMainwidgetHeight();
+		static const double &getMainwidgetHeight( void );
 		
 		static void setMainwidgetHeight( double _mainwidgetHeight );
 
 		static double &  mainwidgetHeight( void ) { return _mainwidget_height; };
 		
-		static const double getDockWidgetWidth();
+		static const double getDockWidgetWidth( void );
 		
 		static void setDockWidgetWidth( double _dockwidgetWidth );
 		
-		static const double getMenubarHeight();
+		static const double getMenubarHeight( void );
 		
 		static void setMenubarHeight( double _menubarHeight );
+		
+		static const unsigned int getFontSize( void );
+		
+		static void setFontSize( unsigned int fontSize );
 		
 		static const std::string &getBatchStr( void );
 		

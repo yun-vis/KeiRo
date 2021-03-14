@@ -40,7 +40,8 @@ namespace Base {
 
         _id             = 0;
         _gid            = 0;
-        _name           = "unkown";
+        _name           = "unknown";
+        _label          = "unknown";
         _isVisible      = true;
         _parentFileID.first = _parentFileID.second = 0;
         _parentPolygonID = 0;
@@ -77,6 +78,7 @@ namespace Base {
         _id                     = c._id;
         _gid                    = c._gid;
         _name                   = c._name;
+	    _label                   = c._label;
         _isVisible              = c._isVisible;
         _parentFileID.first     = c._parentFileID.first;
         _parentFileID.second    = c._parentFileID.second;

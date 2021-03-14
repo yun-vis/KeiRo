@@ -33,14 +33,14 @@ namespace Vector {
 	//  none
 	//
 	void GraphicsBase::_init( void ) {
-		
+
 		_id             = 0;
 		_weight         = 1.0;
 		_name           = "NULL";
 
 		_text           = "NULL";
 		_textOn         = false;
-		_font           = QFont( "Arial", 12, QFont::Bold, false );
+		_font           = QFont( "Arial", 12, QFont::Normal, false );
 		_textpen        = QPen( QColor( 100, 100, 100, 255 ), 3 );
 	}
 	

@@ -146,6 +146,7 @@ namespace Base {
         _id                 = v._id;
         _gid                = v._gid;
         _name               = v._name;
+	    _label              = v._label;
         _area               = v._area;
         _center             = v._center;
         _centroid           = v._centroid;
@@ -180,7 +181,9 @@ namespace Base {
         if ( this != &p ) {
             _id                 = p._id;
             _gid                = p._gid;
-            _area               = p._area;
+	        _name               = p._name;
+	        _label               = p._label;
+	        _area               = p._area;
             _center             = p._center;
             _centroid           = p._centroid;
             _elements           = p._elements;

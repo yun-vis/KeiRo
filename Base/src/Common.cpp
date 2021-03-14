@@ -23,6 +23,7 @@ namespace Base {
 	double Common::_mainwidget_height = 600;
 	double Common::_dockwidget_width = 60;
 	double Common::_menubar_height = 60;
+	unsigned int Common::_font_size = 12;
 	string Common::_batch_str = "0";
 	
 	//------------------------------------------------------------------------------
@@ -84,6 +85,14 @@ namespace Base {
 	
 	void Common::setMenubarHeight( double menubarHeight ) {
 		_menubar_height = menubarHeight;
+	}
+	
+	const unsigned int Common::getFontSize() {
+		return _font_size;
+	}
+	
+	void Common::setFontSize( unsigned int fontSize ) {
+		_font_size = fontSize;
 	}
 	
 	const std::string &Common::getBatchStr( void ) {

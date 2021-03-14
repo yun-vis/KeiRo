@@ -45,6 +45,7 @@ namespace Base {
         unsigned int            _gid;
         unsigned int            _level;
         string                  _name;
+        string                  _label;
         Common::IDPair          _parentFileID;
         unsigned int            _parentPolygonID;
         bool                    _isVisible;
@@ -86,6 +87,9 @@ namespace Base {
         // name
         string &	                name( void )	        { return _name; }
         const string &	            name( void ) const	    { return _name; }
+	    // label
+	    string &	                label( void )	        { return _label; }
+	    const string &	            label( void ) const	    { return _label; }
 	    // level
 	    unsigned int &	            level( void )	            { return _level; }
 	    const unsigned int &	    level( void ) const	    { return _level; }

@@ -392,9 +392,11 @@ namespace FileIO {
 
             // element id
             QString id = gElement.attribute( "id" );
-#ifdef SVG_DEBUG
-            cerr << "id = " << id.toStdString() << endl;
-#endif // SVG_DEBUG
+	        QString label = gElement.attribute( "label" );
+
+//#ifdef SVG_DEBUG
+            cerr << "label = " << label.toStdString() << endl;
+//#endif // SVG_DEBUG
 
             // element style -- InkScape
             vector< unsigned int > fill( 4 );
@@ -438,39 +440,6 @@ namespace FileIO {
                 }
             }
 
-//            // element style -- illustrator
-//            QString strFill = gElement.attribute( "fill" );
-//            if( strFill == "" ){
-//                // cerr << "no AI fill information" << endl;
-//            }
-//            else if( strFill.size() > 0 ){
-//                QColor c( strFill );
-//                fill[0] = c.red();
-//                fill[1] = c.green();
-//                fill[2] = c.blue();
-//                fill[3] = 255;
-//#ifdef SVG_DEBUG
-//                cerr << "strFill = " << strFill.toStdString() << endl;
-//                cerr << "fill = " << fill[0] << ", "<< fill[1] << ", " << fill[2] << ", " << fill[3] << endl;
-//#endif // SVG_DEBUG
-//            }
-//
-//            QString strStroke = gElement.attribute( "stroke" );
-//            if( strStroke.size() == 0 ){
-//                // cerr << "no AI stroke information" << endl;
-//            }
-//            else if( strStroke.size() > 0 ){
-//                QColor c( strStroke );
-//                stroke[0] = c.red();
-//                stroke[1] = c.green();
-//                stroke[2] = c.blue();
-//                stroke[3] = 255;
-//#ifdef SVG_DEBUG
-//                cerr << "strStroke = " << strStroke.toStdString() << endl;
-//                cerr << "stroke = " << stroke[0] << ", "<< stroke[1] << ", " << stroke[2] << ", " << stroke[3] << endl;
-//#endif // SVG_DEBUG
-//            }
-
             // element position, width, and height
             double w = gElement.attribute( "width" ).toDouble();
             double h = gElement.attribute( "height" ).toDouble();
@@ -480,6 +449,7 @@ namespace FileIO {
             // create rectangle
 	        KeiRo::Base::Polygon2 polygon;
             polygon.name() = id.toStdString();
+            polygon.label() = label.toStdString();
             polygon.fill() = fill;
             polygon.stroke() = stroke;
 	        polygon.strokeWidth() = strokeWidth;
@@ -602,9 +572,9 @@ namespace FileIO {
                 }
 	            if( type.at(0).toStdString() == "stroke-width" ){
 		            strokeWidth = type.at(1).toDouble();
-//#ifdef SVG_DEBUG
+#ifdef SVG_DEBUG
 		            cerr << "stroke-width = " << strokeWidth << endl;
-//#endif // SVG_DEBUG
+#endif // SVG_DEBUG
 	            }
             }
             // element coordinates
@@ -957,7 +927,6 @@ namespace FileIO {
 
             // normalize boundingBox
             _polygonVec[i].update();
-//	        _polygonVec[i].oldBoundingBox() = _polygonVec[i].boundingBox();
 	        _polygonVec[i].boundingBox().updateOldElement();
 	        }
 
