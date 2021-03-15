@@ -45,6 +45,17 @@ namespace Base {
         _isVisible      = true;
         _parentFileID.first = _parentFileID.second = 0;
         _parentPolygonID = 0;
+	
+	    _stroke.resize( 4 );
+	    _stroke[0] = _stroke[1] = _stroke[2] = 0;
+	    _stroke[3] = 255;
+	    _strokeWidth = 1.0;
+	    _strokeOpacity = 1.0;
+	    
+	    _fill.resize( 4 );
+	    _fill[0] = _fill[1] = _fill[2] = 100;
+	    _fill[3] = 255;
+	    _fillOpacity = 1.0;
     }
 
     //------------------------------------------------------------------------------
@@ -73,16 +84,23 @@ namespace Base {
     //  Outputs
     //  none
     //
-    Object::Object( const Object & c )
+    Object::Object( const Object & v )
     {
-        _id                     = c._id;
-        _gid                    = c._gid;
-        _name                   = c._name;
-	    _label                   = c._label;
-        _isVisible              = c._isVisible;
-        _parentFileID.first     = c._parentFileID.first;
-        _parentFileID.second    = c._parentFileID.second;
-        _parentPolygonID        = c._parentPolygonID;
+        _id                     = v._id;
+        _gid                    = v._gid;
+        _name                   = v._name;
+	    _label                  = v._label;
+        _isVisible              = v._isVisible;
+        _parentFileID.first     = v._parentFileID.first;
+        _parentFileID.second    = v._parentFileID.second;
+        _parentPolygonID        = v._parentPolygonID;
+	
+	    _stroke                 = v._stroke;
+	    _strokeWidth            = v._strokeWidth;
+	    _strokeOpacity          = v._strokeOpacity;
+	
+	    _fill                   = v._fill;
+	    _fillOpacity            = v._fillOpacity;
     }
 	
 } // namespace Base

@@ -56,6 +56,17 @@ namespace Base {
         _centroid.zero();      // centroid of the elements
         _boundingBox.clear();        // width and height of the bounding box
 //        _boxLeftTop.zero();         // left-top corner of the bounding box
+	
+//	    _stroke.resize( 4 );
+//	    _stroke[0] = _stroke[1] = _stroke[2] = 0;
+//	    _stroke[3] = 255;
+//	    _strokeWidth = 1.0;
+//	    _strokeOpacity = 1.0;
+//
+//	    _fill.resize( 4 );
+//	    _fill[0] = _fill[1] = _fill[2] = 100;
+//	    _fill[3] = 255;
+//	    _fillOpacity = 1.0;
     }
 
     //
@@ -104,14 +115,6 @@ namespace Base {
         _clear();
 
         //Object::Object();
-        
-        _stroke.resize( 4 );
-        _stroke[0] = _stroke[1] = _stroke[2] = 0;
-        _stroke[3] = 255;
-        _fill.resize( 4 );
-        _fill[0] = _fill[1] = _fill[2] = 200;
-        _fill[3] = 255;
-        _strokeWidth = 0.0;
     }
 
     //
@@ -156,10 +159,14 @@ namespace Base {
         _boundingBox        = v._boundingBox;
 //	    _oldBoundingBox     = v._oldBoundingBox;
         _isSelected         = v._isSelected;
-        _fill               = v._fill;
-        _stroke             = v._stroke;
-	    _strokeWidth        = v._strokeWidth;
         _initArea           = v._initArea;
+	
+	    _stroke             = v._stroke;
+	    _strokeWidth        = v._strokeWidth;
+	    _strokeOpacity      = v._strokeOpacity;
+
+	    _fill               = v._fill;
+	    _fillOpacity        = v._fillOpacity;
     }
 
 

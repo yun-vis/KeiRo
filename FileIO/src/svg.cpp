@@ -62,6 +62,19 @@ namespace FileIO {
     //
     SVG::SVG( const SVG & v )
     {
+	    _id                 = v._id;
+	    _attributeID        = v._attributeID;
+	
+	    // glyphs in SVG
+	    _polygonVec         = v._polygonVec;
+	    // arcs in SVG
+	    _polylineVec        = v._polylineVec;
+	
+	    _gridPtr            = v._gridPtr;
+	
+	    _svgCanvas          = v._svgCanvas;
+		_screenCanvas       = v._screenCanvas;
+		_compression        = v._compression;
     }
 
     //------------------------------------------------------------------------------
@@ -69,13 +82,11 @@ namespace FileIO {
     //------------------------------------------------------------------------------
     void SVG::_init( Grid2 * __gridPtr, double __x, double __y, int __width, int __height )
     {
-        _x          = __x;
-        _y          = __y;
-        _width      = __width;
-        _height     = __height;
-        _gridPtr    = __gridPtr,
-
-        cerr << "initializing SVG file..." << endl;
+        _gridPtr    = __gridPtr;
+        _screenCanvas = KeiRo::Base::Rectangle2( __x, __y, __width, __height );
+	    _screenCanvas = KeiRo::Base::Rectangle2( 0.0, 0.0, 1000, 750 );
+     
+	    cerr << "initializing SVG file..." << endl;
     }
 
     //
@@ -394,14 +405,15 @@ namespace FileIO {
             QString id = gElement.attribute( "id" );
 	        QString label = gElement.attribute( "label" );
 
-//#ifdef SVG_DEBUG
+#ifdef SVG_DEBUG
             cerr << "label = " << label.toStdString() << endl;
-//#endif // SVG_DEBUG
+#endif // SVG_DEBUG
 
             // element style -- InkScape
             vector< unsigned int > fill( 4 );
             vector< unsigned int > stroke( 4 );
 	        double strokeWidth = 0.0;
+	        double strokeOpacity = 0.0;
             QStringList styles = gElement.attribute( "style" ).split( ";" );
             for( unsigned int j = 0; j < styles.size(); j++ ){
 
@@ -438,6 +450,12 @@ namespace FileIO {
 		            cerr << "stroke-width = " << strokeWidth << endl;
 #endif // SVG_DEBUG
                 }
+	            if( type.at(0).toStdString() == "stroke-opacity" ){
+		            strokeOpacity = type.at(1).toDouble();
+#ifdef SVG_DEBUG
+		            cerr << "stroke-width = " << strokeWidth << endl;
+#endif // SVG_DEBUG
+	            }
             }
 
             // element position, width, and height
@@ -445,14 +463,28 @@ namespace FileIO {
             double h = gElement.attribute( "height" ).toDouble();
             double x = gElement.attribute( "x" ).toDouble();
             double y = -gElement.attribute( "y" ).toDouble();
-
-            // create rectangle
+			w = w * _screenCanvas.width()/_svgCanvas.width();
+			h = h * _screenCanvas.height()/_svgCanvas.height();
+	        x -= 0.5 * _svgCanvas.width();
+ 			y += 0.5 * _svgCanvas.height();
+			x *= _screenCanvas.width()/_svgCanvas.width();
+			y *= _screenCanvas.height()/_svgCanvas.height();
+#ifdef DEBUG
+	        cerr << "_screenCanvas.leftbottom = " << _screenCanvas.leftBottom();
+			cerr << "_screenCanvas.width = " << _screenCanvas.width() << endl;
+	        cerr << "_screenCanvas.height = " << _screenCanvas.height() << endl;
+	        cerr << "_svgCanvas.leftbottom = " << _svgCanvas.leftBottom();
+	        cerr << "_svgCanvas.width = " << _svgCanvas.width() << endl;
+	        cerr << "_svgCanvas.height = " << _svgCanvas.height() << endl;
+#endif // DEBUG
+	        // create rectangle
 	        KeiRo::Base::Polygon2 polygon;
             polygon.name() = id.toStdString();
             polygon.label() = label.toStdString();
             polygon.fill() = fill;
             polygon.stroke() = stroke;
 	        polygon.strokeWidth() = strokeWidth;
+	        polygon.strokeOpacity() = strokeOpacity;
             polygon.boundingBox().leftBottom().x() = x;
             polygon.boundingBox().leftBottom().y() = y;
             polygon.boundingBox().width() = w;
@@ -467,7 +499,8 @@ namespace FileIO {
             polygon.elements().push_back( KeiRo::Base::Coord2( x, y ) );
             polygon.elements().push_back( KeiRo::Base::Coord2( x+w, y ) );
             polygon.elements().push_back( KeiRo::Base::Coord2( x+w, y-h ) );
-            polygon.fixedElements() = polygon.elements();
+//            polygon.fixedElements() = polygon.elements();
+            polygon.update();
             _polygonVec.push_back( polygon );
 
 #ifdef SVG_DEBUG
@@ -539,6 +572,7 @@ namespace FileIO {
             vector< unsigned int > fill( 4 );
             vector< unsigned int > stroke( 4 );
 	        double strokeWidth = 1.0;
+	        double strokeOpacity = 1.0;
 	        QStringList styles = gElement.attribute( "style" ).split( ";" );
             for( unsigned int j = 0; j < styles.size(); j++ ){
 
@@ -574,6 +608,12 @@ namespace FileIO {
 		            strokeWidth = type.at(1).toDouble();
 #ifdef SVG_DEBUG
 		            cerr << "stroke-width = " << strokeWidth << endl;
+#endif // SVG_DEBUG
+	            }
+	            if( type.at(0).toStdString() == "stroke-opacity" ){
+		            strokeOpacity = type.at(1).toDouble();
+#ifdef SVG_DEBUG
+		            cerr << "stroke-opacity = " << strokeWidth << endl;
 #endif // SVG_DEBUG
 	            }
             }
@@ -784,6 +824,12 @@ namespace FileIO {
             cerr << endl;
 #endif // SVG_DEBUG
 
+            for( unsigned int k = 0; k < coordElements.size(); k++ ){
+            	coordElements[k].x() -= 0.5 * _svgCanvas.width();
+	            coordElements[k].y() += 0.5 * _svgCanvas.height();
+	            coordElements[k].x() *= _screenCanvas.width()/_svgCanvas.width();;
+	            coordElements[k].y() *= _screenCanvas.height()/_svgCanvas.height();;
+            }
             // create object
             if( isClosed ){
 	            KeiRo::Base::Polygon2 polygon;
@@ -791,6 +837,10 @@ namespace FileIO {
 	            polygon.name() = id.toStdString();
 	            polygon.fill() = fill;
                 polygon.stroke() = stroke;
+	            polygon.strokeWidth() = strokeWidth;
+	            polygon.strokeOpacity() = strokeOpacity;
+	            polygon.update();
+	            polygon.boundingBox().updateOldElement();
                 _polygonVec.push_back( polygon );
             }
             else {
@@ -799,6 +849,8 @@ namespace FileIO {
 	            polyline.name() = id.toStdString();
 	            polyline.fill() = fill;
                 polyline.stroke() = stroke;
+	            polyline.strokeWidth() = strokeWidth;
+	            polyline.strokeOpacity() = strokeOpacity;
                 _polylineVec.push_back( polyline );
             }
         }
@@ -815,18 +867,19 @@ namespace FileIO {
     //  Outputs
     //	none
     //
-    QRectF SVG::getCanvasSize( const QString fileName )
+    KeiRo::Base::Rectangle2 SVG::getCanvasSize( const QString fileName )
     {
         // initialize the stack object QDomDocument
         QDomDocument doc;
-
+	    KeiRo::Base::Rectangle2 r( 0.0, 0.0, 100.0, 100.0 );
+	    
         // Open your SVG-file
         QFile file( fileName );
 
         // If it is not opened, or have failed to transmit the contents in QDocDocument
         if ( !file.open( QIODevice::ReadOnly ) || !doc.setContent( &file ) ) {
             // the return values for the default scene
-            return QRectF( 0.0, 0.0, 100.0, 100.0 );
+            return r;
         }
 
         // Then pick up a list of items with the tag svg.
@@ -844,14 +897,45 @@ namespace FileIO {
                                  << viewBox.at(2).toDouble() << ", "
                                  << viewBox.at(3).toDouble() << endl;
 #endif // SVG_DEBUG
-            return QRectF( viewBox.at(0).toDouble(),
-                           viewBox.at(1).toDouble(),
-                           viewBox.at(2).toDouble(),
-                           viewBox.at(3).toDouble() );
+            r.leftBottom().x() = viewBox.at(0).toDouble();
+	        r.leftBottom().y() = viewBox.at(1).toDouble();
+	        r.width() = viewBox.at(2).toDouble();
+	        r.height() = viewBox.at(3).toDouble();
+            return r;
         }
-        return QRectF( 0.0, 0.0, 100.0, 100.0 );
+        return r;
     }
-
+	
+	//
+	//  SVG::normalizeCanvas --	normalize the objects in the SVG file
+	//
+	//  Inputs
+	//	none
+	//
+	//  Outputs
+	//	none
+	//
+	void SVG::normalizeCanvas( void )
+	{
+//		// normalize polygons
+//		for( unsigned int i = 0; i < _polygonVec.size(); i++ ){
+//			for( unsigned int j = 0; j < _polygonVec[i].elements().size(); j++ ) {
+//
+//				// normalize boundingBox
+//				_polygonVec[ i ].update();
+//				_polygonVec[ i ].boundingBox().updateOldElement();
+//			}
+//		}
+		
+//		// normalize polylines
+//		for( unsigned int i = 0; i < _polylineVec.size(); i++ ){
+//			for( unsigned int j = 0; j < _polylineVec[i].elements().size(); j++ ) {
+//
+//				_polylineVec[ i ].fixedElements() = _polylineVec[ i ].elements();
+//			}
+//		}
+	}
+	
     //
     //  SVG::normalize --	normalize the objects in the SVG file
     //
@@ -867,13 +951,17 @@ namespace FileIO {
         double xMax = -INFINITY;
         double yMin =  INFINITY;
         double yMax = -INFINITY;
-        double aspect = ( double )_width/( double )_height;
+        double x = _screenCanvas.leftBottom().x();
+	    double y = _screenCanvas.leftBottom().y();
+	    double width = _screenCanvas.width();
+	    double height = _screenCanvas.height();
+        double aspect = ( double )width/( double )height;
 
         // cerr << "_w = " << _width << " _h = " << _height << endl;
         // Scan all the vertex coordinates first
         for( unsigned int i = 0; i < _polygonVec.size(); i++ ){
             for( unsigned int j = 0; j < _polygonVec[i].elements().size(); j++ ){
-	
+
 	            KeiRo::Base::Coord2 &coord = _polygonVec[i].elements()[j];
                 if ( coord.x() < xMin ) xMin = coord.x();
                 if ( coord.x() > xMax ) xMax = coord.x();
@@ -883,7 +971,7 @@ namespace FileIO {
         }
         for( unsigned int i = 0; i < _polylineVec.size(); i++ ){
             for( unsigned int j = 0; j < _polylineVec[i].elements().size(); j++ ){
-	
+
 	            KeiRo::Base::Coord2 &coord = _polylineVec[i].elements()[j];
                 if ( coord.x() < xMin ) xMin = coord.x();
                 if ( coord.x() > xMax ) xMax = coord.x();
@@ -896,7 +984,7 @@ namespace FileIO {
         double yRange;
         double xMid;
         double yMid;
-        if( ( xMax - xMin ) / ( double )_width > ( yMax - yMin ) / ( double )_height ) {
+        if( ( xMax - xMin ) / ( double )width > ( yMax - yMin ) / ( double )height ) {
             xRange  = ( xMax - xMin );
             yRange  = ( xMax - xMin ) * ( 1.0/ aspect );
         }
@@ -913,11 +1001,11 @@ namespace FileIO {
         // normalize polygons
         for( unsigned int i = 0; i < _polygonVec.size(); i++ ){
             for( unsigned int j = 0; j < _polygonVec[i].elements().size(); j++ ){
-	
+
 	            KeiRo::Base::Coord2 coord = _polygonVec[i].elements()[j];
 
-                coord.setX( (double)_width  * ( coord.x() - xMid ) / xRange + _x );
-                coord.setY( (double)_height * ( coord.y() - yMid ) / yRange + _y );
+                coord.setX( (double)width  * ( coord.x() - xMid ) / xRange + x );
+                coord.setY( (double)height * ( coord.y() - yMid ) / yRange + y );
 
                 // cerr << "coord = " << coord;
                 _polygonVec[i].elements()[j].x() = coord.x();
@@ -933,11 +1021,11 @@ namespace FileIO {
         // normalize polylines
         for( unsigned int i = 0; i < _polylineVec.size(); i++ ){
             for( unsigned int j = 0; j < _polylineVec[i].elements().size(); j++ ){
-	
+
 	            KeiRo::Base::Coord2 coord = _polylineVec[i].elements()[j];
 
-                coord.setX( (double)_width  * ( coord.x() - xMid ) / xRange + _x );
-                coord.setY( (double)_height * ( coord.y() - yMid ) / yRange + _y );
+                coord.setX( (double)width  * ( coord.x() - xMid ) / xRange + x );
+                coord.setY( (double)height * ( coord.y() - yMid ) / yRange + y );
 
                 // cerr << "coord = " << coord;
                 _polylineVec[i].elements()[j].x() = coord.x();
@@ -962,14 +1050,15 @@ namespace FileIO {
             cerr << "something is wrong here... at " << __LINE__ << " in " << __FILE__ << endl;
             return false;
         }
-
-        QRectF canvas = getCanvasSize( fileName );
+	
+	    _svgCanvas = getCanvasSize( fileName );
 
 //        getPolygonElements( fileName );
         getRectangleElements( fileName );
         getPathElements( fileName );
 //        getCircleElements( fileName );
-        normalize();
+//        normalize();
+		normalizeCanvas();
 	
 #ifdef SVG_DEBUG
 	    cerr << "fileName = " << fileName.toStdString() << endl;

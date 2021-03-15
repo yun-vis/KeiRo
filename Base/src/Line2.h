@@ -54,11 +54,6 @@ namespace Base {
         // select flag
         bool                    _isSelected;
 
-        // stroke color
-        vector< unsigned int >  _stroke;
-        // fill color
-        vector< unsigned int >  _fill;
-
         // graphics item pointer
 //        Ui::Vector::GraphicsEdgeItem * _itemPtr;
 
@@ -115,14 +110,7 @@ namespace Base {
         // select flag
         bool &	                        isSelected( void )	            { return _isSelected; }
         const bool &	                isSelected( void ) const	    { return _isSelected; }
-
-        // reference to stroke
-        vector< unsigned int > &	    stroke( void )	                { return _stroke; }
-        const vector< unsigned int > &  stroke( void ) const            { return _stroke; }
-
-        // reference to fill
-        vector< unsigned int > &	    fill( void )	                { return _fill; }
-        const vector< unsigned int > &  fill( void ) const              { return _fill; }
+        
         
 	    // graphics item
 //        void setItemPtr( Ui::Vector::GraphicsEdgeItem * ptr )	        { _itemPtr = ptr; }

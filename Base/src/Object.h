@@ -60,7 +60,16 @@ namespace Base {
         virtual void        _clear( void ) {}
 
     public:
-
+	
+		// attributes
+	    // stroke color
+	    vector< unsigned int >  _stroke;
+	    double                  _strokeWidth;
+	    double                  _strokeOpacity;
+	    // fill color
+	    vector< unsigned int >  _fill;
+	    double                  _fillOpacity;
+    	
         //------------------------------------------------------------------------------
         //	Constructors & Destructors
         //------------------------------------------------------------------------------
@@ -91,7 +100,7 @@ namespace Base {
 	    string &	                label( void )	        { return _label; }
 	    const string &	            label( void ) const	    { return _label; }
 	    // level
-	    unsigned int &	            level( void )	            { return _level; }
+	    unsigned int &	            level( void )	        { return _level; }
 	    const unsigned int &	    level( void ) const	    { return _level; }
 
         // parent file id
@@ -101,8 +110,25 @@ namespace Base {
         // parent polygon id
         unsigned int &	            parentPolygonID( void )	        { return _parentPolygonID; }
         const unsigned int &	    parentPolygonID( void ) const	{ return _parentPolygonID; }
+	
+	    // reference to stroke
+	    vector< unsigned int > &	    stroke( void )	                { return _stroke; }
+	    const vector< unsigned int > &  stroke( void ) const            { return _stroke; }
+	
+	    double &	                    strokeWidth( void )	            { return _strokeWidth; }
+	    const double &                  strokeWidth( void ) const       { return _strokeWidth; }
+	
+	    double &	                    strokeOpacity( void )	        { return _strokeOpacity; }
+	    const double &                  strokeOpacity( void ) const     { return _strokeOpacity; }
 
-        // parent name
+	    // reference to fill
+	    vector< unsigned int > &	    fill( void )	                { return _fill; }
+	    const vector< unsigned int > &  fill( void ) const              { return _fill; }
+	
+	    double &	                    fillOpacity( void )	            { return _fillOpacity; }
+	    const double &                  fillOpacity( void ) const       { return _fillOpacity; }
+	
+	    // parent name
         // string &	                parent( void )	        { return _parent; }
         //const string &	            parent( void ) const	{ return _parent; }
         // is visible

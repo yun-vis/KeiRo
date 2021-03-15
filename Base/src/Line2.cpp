@@ -77,12 +77,23 @@ namespace Base {
     Line2::Line2()
     {
         _init();
+	
+//	    _stroke.resize( 4 );
+//	    _stroke[0] = _stroke[1] = _stroke[2] = 0;
+//	    _stroke[3] = 255;
+//	    _strokeWidth = 1.0;
+//	    _strokeOpacity = 1.0;
+//
+//	    _fill.resize( 4 );
+//	    _fill[0] = _fill[1] = _fill[2] = 100;
+//	    _fill[3] = 255;
+//	    _fillOpacity = 1.0;
 
-        _stroke.resize( 4 );
-        _stroke[0] = _stroke[1] = _stroke[2] = 0;
-        _stroke[3] = 255;
-        _fill.resize( 4 );
-        _fill[0] = _fill[1] = _fill[2] = _fill[3] = 0;
+//        _stroke.resize( 4 );
+//        _stroke[0] = _stroke[1] = _stroke[2] = 0;
+//        _stroke[3] = 255;
+//        _fill.resize( 4 );
+//        _fill[0] = _fill[1] = _fill[2] = _fill[3] = 0;
         //Object::Object();
     }
 
@@ -120,8 +131,13 @@ namespace Base {
         _fixedElements      = v._fixedElements;
         _idElements         = v._idElements;
         _isSelected         = v._isSelected;
-        _fill               = v._fill;
-        _stroke             = v._stroke;
+	
+	    _stroke             = v._stroke;
+	    _strokeWidth        = v._strokeWidth;
+	    _strokeOpacity      = v._strokeOpacity;
+
+	    _fill               = v._fill;
+	    _fillOpacity        = v._fillOpacity;
     }
 
     //------------------------------------------------------------------------------

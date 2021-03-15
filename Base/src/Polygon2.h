@@ -77,12 +77,6 @@ namespace Base {
         // select flag
         bool                    _isSelected;
 
-        // stroke color
-        vector< unsigned int >  _stroke;
-        // fill color
-        vector< unsigned int >  _fill;
-	    double                  _strokeWidth;
-
         // graphics item pointer
 //        Ui::Vector::GraphicsPolygonItem * _itemPtr;
 
@@ -158,18 +152,7 @@ namespace Base {
         // select flag
         bool &	                        isSelected( void )	            { return _isSelected; }
         const bool &	                isSelected( void ) const	    { return _isSelected; }
-
-        // reference to stroke
-        vector< unsigned int > &	    stroke( void )	                { return _stroke; }
-        const vector< unsigned int > &  stroke( void ) const            { return _stroke; }
-	
-	    double &	                    strokeWidth( void )	            { return _strokeWidth; }
-	    const double &                  strokeWidth( void ) const       { return _strokeWidth; }
-
-        // reference to fill
-        vector< unsigned int > &	    fill( void )	                { return _fill; }
-        const vector< unsigned int > &  fill( void ) const              { return _fill; }
-	
+        
 	    // graphics item
 //        void setItemPtr( Ui::Vector::GraphicsPolygonItem * ptr )	    { _itemPtr = ptr; }
 //        Ui::Vector::GraphicsPolygonItem * getItemPtr( void )            { return _itemPtr; }

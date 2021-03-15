@@ -44,7 +44,8 @@ namespace FileIO {
         
         Grid2                       *_gridPtr;
 
-        int                         _x, _y, _width, _height;
+	    KeiRo::Base::Rectangle2     _svgCanvas;
+	    KeiRo::Base::Rectangle2     _screenCanvas;
 
         static int                  _curveDownSample;
 
@@ -99,8 +100,9 @@ namespace FileIO {
         void getCircleElements( const QString fileName );
         void getRectangleElements( const QString fileName );
         void getPathElements( const QString fileName );
-        QRectF getCanvasSize( const QString fileName );
+	    KeiRo::Base::Rectangle2 getCanvasSize( const QString fileName );
         void normalize( void );
+	    void normalizeCanvas( void );
         bool readSVG( const QString fileName );
         bool writeSVG( const QString fileName );
 
