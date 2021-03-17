@@ -34,6 +34,13 @@ namespace FileIO {
     class SVG : public  KeiRo::Base::Object {
 
     private:
+
+	    Grid2                       *_gridPtr;
+	    static int                  _curveDownSample;
+	
+	    Compression                 _compression;
+	    
+    protected:
 	
 	    unsigned int                _id, _attributeID;
 
@@ -42,17 +49,10 @@ namespace FileIO {
         // arcs in SVG
         vector< KeiRo::Base::Line2 >        _polylineVec;
         
-        Grid2                       *_gridPtr;
+	    KeiRo::Base::Rectangle2             _svgCanvas;
+	    KeiRo::Base::Rectangle2             _screenCanvas;
 
-	    KeiRo::Base::Rectangle2     _svgCanvas;
-	    KeiRo::Base::Rectangle2     _screenCanvas;
-
-        static int                  _curveDownSample;
-
-        Compression                 _compression;
-
-    protected:
-
+	    
         //------------------------------------------------------------------------------
         //	Special functions
         //------------------------------------------------------------------------------
@@ -102,7 +102,6 @@ namespace FileIO {
         void getPathElements( const QString fileName );
 	    KeiRo::Base::Rectangle2 getCanvasSize( const QString fileName );
         void normalize( void );
-	    void normalizeCanvas( void );
         bool readSVG( const QString fileName );
         bool writeSVG( const QString fileName );
 

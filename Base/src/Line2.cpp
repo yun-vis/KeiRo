@@ -109,6 +109,7 @@ namespace Base {
     Line2::Line2( vector< Coord2 > __elements )
     {
         _elements           = __elements;
+	    _oldElements        = _elements;
         _fixedElements      = _elements;
         _idElements.clear();
     }
@@ -128,6 +129,7 @@ namespace Base {
         _gid                = v._gid;
         _name               = v._name;
         _elements           = v._elements;
+	    _oldElements        = v._oldElements;
         _fixedElements      = v._fixedElements;
         _idElements         = v._idElements;
         _isSelected         = v._isSelected;
@@ -245,6 +247,38 @@ namespace Base {
             _fineElements.push_back( core[core.size()-1] );
         }
     }
+    
+	void Line2::simplifyGeometry( void )
+	{
+		vector< Coord2 >        simpleElements;
+		if( _elements.size() > 0 ) simpleElements.push_back( _elements[0] );
+
+		for( unsigned int i = 1; i < _elements.size()-1; i++ ){
+			Coord2 pred = _elements[i-1];
+			Coord2 curr = _elements[i];
+			Coord2 succ = _elements[i+1];
+			Coord2 diff1 = curr - pred;
+			Coord2 diff2 = succ - curr;
+#ifdef DEBUG
+			cerr << "pred = " << pred;
+			cerr << "curr = " << curr;
+			cerr << "succ = " << succ;
+#endif // DEBUG
+			if( fabs( diff1.x()*diff2.y() - diff1.y()*diff2.x() ) > 1e-5 ){
+				// not colinear
+				//cerr << "fabs( diff1.x()*diff2.y() - diff1.y()*diff2.x() ) = " << fabs( diff1.x()*diff2.y() - diff1.y()*diff2.x() ) << endl;
+				simpleElements.push_back( curr );
+			}
+		}
+		if( _elements.size() > 1 ) simpleElements.push_back( _elements[_elements.size()-1] );
+#ifdef DEBUG
+		for( unsigned int i = 0; i < simpleElements.size(); i++ ) {
+			cerr << simpleElements[i];
+		}
+		cerr << endl;
+#endif // DEBUG
+		_fixedElements = _oldElements = _elements = simpleElements;
+	}
 	
 	void Line2::updateOldElement( void )
 	{

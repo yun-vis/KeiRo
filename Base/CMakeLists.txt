@@ -13,6 +13,7 @@ add_library(${Target_Name} SHARED
         src/Common.cpp
         src/Config.cpp
         src/Coord2.cpp
+        src/Edge2.cpp
         src/Line2.cpp
         src/Rectangle2.cpp
         src/Polygon2.cpp

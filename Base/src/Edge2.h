@@ -1,6 +1,6 @@
 //******************************************************************************
-// Line2.h
-//	: header file for 2D Line2 coordinates
+// Edge2.h
+//	: header file for 2D Edge2 coordinates
 //
 //------------------------------------------------------------------------------
 //
@@ -8,8 +8,8 @@
 //
 //******************************************************************************
 
-#ifndef	_Base_Line2_H
-#define _Base_Line2_H
+#ifndef	_Base_Edge2_H
+#define _Base_Edge2_H
 
 //------------------------------------------------------------------------------
 //	Including Header Files
@@ -33,20 +33,16 @@ namespace Base {
     //------------------------------------------------------------------------------
     //	Defining Classes
     //------------------------------------------------------------------------------
-    class Line2 : public Object {
+    class Edge2 : public Object {
 
     protected:
 
-        // Line2 original coordinates of end points
+        // Edge2 original coordinates of end points
         vector< Coord2 >        _fixedElements;
-	    // Line2 old sample points
+	    // Edge2 old sample points
 	    vector< Coord2 >        _oldElements;
-        // Line2 sample points
+        // Edge2 sample points
         vector< Coord2 >        _elements;
-        // Line2 sample id
-        vector< unsigned int >  _idElements;
-        // Line2 curve sample points
-        vector< Coord2 >        _fineElements;
 
         //------------------------------------------------------------------------------
         //	Attribute
@@ -71,13 +67,13 @@ namespace Base {
         //	Constructors & Destructors
         //------------------------------------------------------------------------------
         // default constructor
-        Line2( void );
+        Edge2( void );
         // parameterized constructor
-        Line2( vector< Coord2 > __elements );
+        Edge2( vector< Coord2 > __elements );
         // copy constructor
-        Line2( const Line2 & v );
+        Edge2( const Edge2 & v );
         // destructor
-        virtual ~Line2( void ) {}
+        virtual ~Edge2( void ) {}
 
         //------------------------------------------------------------------------------
         //	Assignment operators
@@ -99,19 +95,6 @@ namespace Base {
         vector< Coord2 > &	            fixedElements( void )	        { return _fixedElements; }
         const vector< Coord2 > &	    fixedElements( void ) const	    { return _fixedElements; }
 
-        // reference to an array of coordinate pointers
-        vector< unsigned int > &	    idElements( void )	            { return _idElements; }
-        const vector< unsigned int > &  idElements( void ) const        { return _idElements; }
-
-        // reference to the fine sample points
-        vector< Coord2 > &              fineElements( void )            { return _fineElements; }
-        const vector< Coord2 > &        fineElements( void ) const      { return _fineElements; }
-
-        // select flag
-        bool &	                        isSelected( void )	            { return _isSelected; }
-        const bool &	                isSelected( void ) const	    { return _isSelected; }
-        
-        
 	    // graphics item
 //        void setItemPtr( Ui::Vector::GraphicsEdgeItem * ptr )	        { _itemPtr = ptr; }
 //        Ui::Vector::GraphicsEdgeItem * getItemPtr( void )               { return _itemPtr; }
@@ -121,14 +104,8 @@ namespace Base {
         //------------------------------------------------------------------------------
         // initialization
         void init( void ) { _init(); }
-
-        void addSample( Coord2 &coord );
-        void computeChaikinCurve( int num, double unit );
-
-        static bool isOnLine( Coord2 &a, Coord2 &b, Coord2 &c );
-	    void updateOldElement( void );
-	    void simplifyGeometry( void );
-	
+        bool isIntersected( Edge2 e );
+        
 	    //------------------------------------------------------------------------------
         //	Friend functions
         //------------------------------------------------------------------------------
@@ -137,15 +114,15 @@ namespace Base {
         //	I/O functions
         //------------------------------------------------------------------------------
         // output
-        friend ostream &	operator << ( ostream & s, const Line2 & v );
+        friend ostream &	operator << ( ostream & s, const Edge2 & v );
         // input
-        friend istream &	operator >> ( istream & s, Line2 & v );
+        friend istream &	operator >> ( istream & s, Edge2 & v );
         // class name
-        virtual const char * className( void ) const { return "Line2"; }
+        virtual const char * className( void ) const { return "Edge2"; }
 
     };
 	
 } // namespace Base
 } // namespace KeiRo
 
-#endif // _Base_Line2_H
+#endif // _Base_Edge2_H

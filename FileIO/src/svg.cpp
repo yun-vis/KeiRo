@@ -84,7 +84,9 @@ namespace FileIO {
     {
         _gridPtr    = __gridPtr;
         _screenCanvas = KeiRo::Base::Rectangle2( __x, __y, __width, __height );
-	    _screenCanvas = KeiRo::Base::Rectangle2( 0.0, 0.0, 1000, 750 );
+//		double ww = KeiRo::Base::Common::getMainwidgetWidth();
+//	    double wh = KeiRo::Base::Common::getMainwidgetHeight();
+//	    _screenCanvas = KeiRo::Base::Rectangle2( 0.0, 0.0, ww, wh );
      
 	    cerr << "initializing SVG file..." << endl;
     }
@@ -830,6 +832,13 @@ namespace FileIO {
 	            coordElements[k].x() *= _screenCanvas.width()/_svgCanvas.width();;
 	            coordElements[k].y() *= _screenCanvas.height()/_svgCanvas.height();;
             }
+            
+            // remove intermediate points on the straight line
+	        KeiRo::Base::Line2 line;
+            line.elements() = coordElements;
+	        line.simplifyGeometry();
+	        coordElements = line.elements();
+	        
             // create object
             if( isClosed ){
 	            KeiRo::Base::Polygon2 polygon;
@@ -845,7 +854,7 @@ namespace FileIO {
             }
             else {
 	            KeiRo::Base::Line2 polyline;
-                polyline.fixedElements() = polyline.elements() = coordElements;
+                polyline.fixedElements() = polyline.oldElements() = polyline.elements() = coordElements;
 	            polyline.name() = id.toStdString();
 	            polyline.fill() = fill;
                 polyline.stroke() = stroke;
@@ -905,36 +914,6 @@ namespace FileIO {
         }
         return r;
     }
-	
-	//
-	//  SVG::normalizeCanvas --	normalize the objects in the SVG file
-	//
-	//  Inputs
-	//	none
-	//
-	//  Outputs
-	//	none
-	//
-	void SVG::normalizeCanvas( void )
-	{
-//		// normalize polygons
-//		for( unsigned int i = 0; i < _polygonVec.size(); i++ ){
-//			for( unsigned int j = 0; j < _polygonVec[i].elements().size(); j++ ) {
-//
-//				// normalize boundingBox
-//				_polygonVec[ i ].update();
-//				_polygonVec[ i ].boundingBox().updateOldElement();
-//			}
-//		}
-		
-//		// normalize polylines
-//		for( unsigned int i = 0; i < _polylineVec.size(); i++ ){
-//			for( unsigned int j = 0; j < _polylineVec[i].elements().size(); j++ ) {
-//
-//				_polylineVec[ i ].fixedElements() = _polylineVec[ i ].elements();
-//			}
-//		}
-	}
 	
     //
     //  SVG::normalize --	normalize the objects in the SVG file
@@ -1058,8 +1037,7 @@ namespace FileIO {
         getPathElements( fileName );
 //        getCircleElements( fileName );
 //        normalize();
-		normalizeCanvas();
-	
+
 #ifdef SVG_DEBUG
 	    cerr << "fileName = " << fileName.toStdString() << endl;
 	    cerr << "canvas( " << canvas.x() << ", " << canvas.y() << ", " << canvas.width() << ", " << canvas.height() << " )" << endl;
