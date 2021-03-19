@@ -98,7 +98,7 @@ namespace Ui {
 		    _settingsDock = new QDockWidget(tr("Setting"), this );
 		    _settingsDock->setAllowedAreas( Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 		
-		    _setting = new QWidget( _settingsDock );
+		    _setting = __setPtr;
 		    _setting->setGeometry( QRect(0,0,KeiRo::Base::Common::getDockWidgetWidth(),
 		                                 KeiRo::Base::Common::getMainwidgetHeight()/2.0 ) );
 		    _setting->setMinimumSize( QSize( KeiRo::Base::Common::getDockWidgetWidth(),
