@@ -36,14 +36,14 @@ class Coord2 {
   protected:
 	
 	double		_oldElement[ 2 ];	// old x, y coordinates
-    double		_element[ 2 ];	// x, y coordinates
+    double		_element[ 2 ];	    // x, y coordinates
 
     virtual void	_init( void );	// initialize all coordinates to zero
 
   public:
 
 //------------------------------------------------------------------------------
-//	Constuructors
+//	Constructors
 //------------------------------------------------------------------------------
     Coord2();				// constructor (default)
     Coord2( const double x, const double y );

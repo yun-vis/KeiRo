@@ -280,9 +280,25 @@ namespace Base {
 		_fixedElements = _oldElements = _elements = simpleElements;
 	}
 	
+	void Line2::initElementPointers( void )
+	{
+    	_elementPointers.resize( _elements.size() );
+    	for( unsigned int i = 0; i < _elements.size(); i++ ){
+    		_elementPointers[ i ] = &_elements[ i ];
+	    }
+	}
+	
 	void Line2::updateOldElement( void )
 	{
 		_oldElements = _elements;
+	}
+	
+	
+	void Line2::updateOldElementByPointers( void )
+	{
+    	for( unsigned int i = 0; i < _elements.size(); i++ ){
+		    _oldElements[i] = *_elementPointers[i];
+    	}
 	}
 	
     //------------------------------------------------------------------------------

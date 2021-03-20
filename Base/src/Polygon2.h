@@ -55,9 +55,9 @@ namespace Base {
 
         double              _area;          // polygon area size
         Coord2              _center;        // average of the elements
-        Coord2              _centroid;      // centroid of the elements
-        //Polygon2 original coordinates of end points
+	    Coord2              _centroid;      // centroid of the elements
 
+        //Polygon2 original coordinates of end points
         vector< KeiRo::Base::Coord2 >       _fixedElements;
         // Polygon2 sample points
         vector< KeiRo::Base::Coord2 >       _elements;
@@ -66,7 +66,6 @@ namespace Base {
         vector< double >                    _targetEdgeAngles;
 	
         // width and height of the bounding box
-//        KeiRo::Base::Rectangle2             _oldBoundingBox;
         KeiRo::Base::Rectangle2             _boundingBox;
         // initial bounding box size
         double                              _initArea;
@@ -137,11 +136,7 @@ namespace Base {
         // reference to an array of coordinate pointers
         vector< double > &	            targetEdgeAngles( void )	    { return _targetEdgeAngles; }
         const vector< double > &        targetEdgeAngles( void ) const  { return _targetEdgeAngles; }
-	
-	    // bounding box
-//	    KeiRo::Base::Rectangle2 &	        oldBoundingBox( void )	        { return _oldBoundingBox; }
-//	    const KeiRo::Base::Rectangle2 &	    oldBoundingBox( void ) const	{ return _oldBoundingBox; }
-	
+        
 	    // bounding box
         KeiRo::Base::Rectangle2 &	        boundingBox( void )	            { return _boundingBox; }
         const KeiRo::Base::Rectangle2 &	    boundingBox( void ) const	    { return _boundingBox; }
@@ -167,6 +162,7 @@ namespace Base {
 	    void update( void ) {
 		    computeBoundingBox();
 		    computeCenter();
+		    updateCentroid();
         }
         // clear the object
         void clear( void ) { _clear(); }

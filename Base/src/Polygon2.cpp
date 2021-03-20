@@ -157,7 +157,6 @@ namespace Base {
         _fixedElements      = v._fixedElements;
         _idElements         = v._idElements;
         _boundingBox        = v._boundingBox;
-//	    _oldBoundingBox     = v._oldBoundingBox;
         _isSelected         = v._isSelected;
         _initArea           = v._initArea;
 	
@@ -193,11 +192,10 @@ namespace Base {
 	        _area               = p._area;
             _center             = p._center;
             _centroid           = p._centroid;
-            _elements           = p._elements;
+	        _elements           = p._elements;
             _fixedElements      = p._fixedElements;
             _idElements         = p._idElements;
             _boundingBox        = p._boundingBox;
-//	        _oldBoundingBox     = p._oldBoundingBox;
             _isSelected         = p._isSelected;
             _fill               = p._fill;
             _stroke             = p._stroke;

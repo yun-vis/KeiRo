@@ -492,16 +492,13 @@ namespace FileIO {
             polygon.boundingBox().width() = w;
             polygon.boundingBox().height() = h;
 	        polygon.boundingBox().updateOldElement();
-//	        polygon.boundingBox().oldLeftBottom() = polygon.boundingBox().leftBottom();
-//	        polygon.boundingBox().oldWidth() = polygon.boundingBox().width();
-//	        polygon.boundingBox().oldHeight() = polygon.boundingBox().height();
 	        		
             // add polygon contour
             polygon.elements().push_back( KeiRo::Base::Coord2( x, y-h ) );
             polygon.elements().push_back( KeiRo::Base::Coord2( x, y ) );
             polygon.elements().push_back( KeiRo::Base::Coord2( x+w, y ) );
             polygon.elements().push_back( KeiRo::Base::Coord2( x+w, y-h ) );
-//            polygon.fixedElements() = polygon.elements();
+            polygon.fixedElements() = polygon.elements();
             polygon.update();
             _polygonVec.push_back( polygon );
 

@@ -43,10 +43,13 @@ namespace Base {
 	    vector< Coord2 >        _oldElements;
         // Line2 sample points
         vector< Coord2 >        _elements;
+	    // Line2 pointer-based sample points
+	    vector< Coord2* >       _elementPointers;
         // Line2 sample id
         vector< unsigned int >  _idElements;
         // Line2 curve sample points
         vector< Coord2 >        _fineElements;
+        
 
         //------------------------------------------------------------------------------
         //	Attribute
@@ -94,6 +97,10 @@ namespace Base {
         // reference to a vector of coordinates
         vector< Coord2 > &	            elements( void )	            { return _elements; }
         const vector< Coord2 > &	    elements( void ) const	        { return _elements; }
+	
+	    // reference to a vector of coordinates
+	    vector< Coord2* > &	            elementPointers( void )	        { return _elementPointers; }
+	    const vector< Coord2* > &	    elementPointers( void ) const   { return _elementPointers; }
 
         // reference to an array of fixed coordinates
         vector< Coord2 > &	            fixedElements( void )	        { return _fixedElements; }
@@ -121,12 +128,14 @@ namespace Base {
         //------------------------------------------------------------------------------
         // initialization
         void init( void ) { _init(); }
+        void initElementPointers( void );
 
         void addSample( Coord2 &coord );
         void computeChaikinCurve( int num, double unit );
 
         static bool isOnLine( Coord2 &a, Coord2 &b, Coord2 &c );
 	    void updateOldElement( void );
+	    void updateOldElementByPointers( void );
 	    void simplifyGeometry( void );
 	
 	    //------------------------------------------------------------------------------

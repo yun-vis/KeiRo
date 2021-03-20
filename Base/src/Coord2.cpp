@@ -126,7 +126,7 @@ Coord2 & Coord2::operator = ( const Coord2 & v )
 	    _oldElement[ 1 ]	= v._oldElement[ 1 ];
 		_element[ 0 ]	= v._element[ 0 ];
 		_element[ 1 ]	= v._element[ 1 ];
-    } 
+    }
     return *this;
 }
 
@@ -331,13 +331,13 @@ Coord2 Coord2::unit( void ) const
 }
 
 //
-//  Coord2::unit --	compute the unit vector
+//  Coord2::updateOldElement --	update old elements
 //
 //  Inputs
 //	none
 //
 //  Outputs
-//	return the unit vector
+//	none
 //
 void Coord2::updateOldElement( void )
 {
