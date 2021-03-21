@@ -124,16 +124,26 @@ namespace Ui {
 			painter->setRenderHints( QPainter::Antialiasing );
 			painter->setPen( pen() );
 			painter->setBrush( brush() );
-			painter->drawRect( _sourceRect );
+			//painter->drawRect( _sourceRect );
+			painter->drawRoundedRect( _sourceRect, 1, 1);
 			
 			if( _textOn == true ) {
-				
+				QFontMetrics fm( _font );
+				double sx = fm.width( _text );
+				double sy = 0.5*fm.height();
+
 				painter->setFont( _font );
 				painter->setPen( _textpen );
+
+				painter->drawText(
+				    _sourceRect.x() + 0.5 * _sourceRect.width() - 0.5 * sx,
+				    _sourceRect.y() + 0.5 * _sourceRect.height() + 0.5 * sy,
+				    _text
+				);
 				//cerr << "id = " << _id << endl;
 				//painter->drawText( rect().x()+10, rect().y()-10, QString::fromStdString( to_string( _id ) ) );
-				painter->drawText( rect().x()+0.5*( rect().width() ),
-				                   rect().y()+0.5*( rect().height() ), _text ); // (x ,y) must be left-upper corner
+				//painter->drawText( rect().x()+0.5*( rect().width() ),
+				                   //rect().y()+0.5*( rect().height() ), _text ); // (x ,y) must be left-upper corner
 				//painter->drawText( fineRect.x()+0.5*( fineRect.width()-sx ) - 0.5*MIN_NEIGHBOR_DISTANCE,
 				//                   fineRect.y()+0.5*( fineRect.height()+0.5*sy ) + MIN_NEIGHBOR_DISTANCE, _name );
 				
