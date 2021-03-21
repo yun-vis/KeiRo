@@ -119,7 +119,7 @@ namespace Ui {
     //  none
     //
     //  Outputs
-    //  none
+    //  none-'['-]
     //
     void MainWindow::_createStatusBar()
     {

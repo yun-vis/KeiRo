@@ -55,6 +55,9 @@ namespace Vector {
 	    QRectF   _sourceRect;
     	QRectF   _targetRect;
 
+        QRect           _bbox;
+	    unsigned long   _attributeID;
+
     protected:
 	    
     	//------------------------------------------------------------------------------
@@ -63,6 +66,11 @@ namespace Vector {
 	    void            _init( void );
 	    
     public:
+        QRect &	                bbox( void )        { return _bbox; }
+        const QRect &	        bbox( void ) const	{ return _bbox; }
+	
+	    unsigned long &	        attributeID( void )         { return _attributeID; }
+	    const unsigned long &	attributeID( void ) const	{ return _attributeID; }
 
         //------------------------------------------------------------------------------
         //	Constructors & Destructors
