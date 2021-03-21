@@ -162,7 +162,7 @@ namespace Base {
 	    void update( void ) {
 		    computeBoundingBox();
 		    computeCenter();
-		    updateCentroid();
+//		    updateCentroid();
         }
         // clear the object
         void clear( void ) { _clear(); }

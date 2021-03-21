@@ -84,8 +84,8 @@ namespace Ui {
 		    _mainGV->setMinimumSize( QSize( KeiRo::Base::Common::getDockWidgetWidth(),
 		                                    KeiRo::Base::Common::getMainwidgetHeight() ) );
 		    _mainGV->setMouseTracking( true );
-		    _mainGV->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-		    _mainGV->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+//		    _mainGV->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+//		    _mainGV->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 		    _mainGV->init( _basePtr );
 		    _mainGV->initSceneItems();
 		

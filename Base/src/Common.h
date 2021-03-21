@@ -206,6 +206,8 @@ namespace Base {
 		
 		static double _mainwidget_width;
 		static double _mainwidget_height;
+		static double _maincontent_width;           // could be larger than mainwidget
+		static double _maincontent_height;          // could be larger than mainwidget
 		static double _dockwidget_width;
 		static double _menubar_height;
 		static unsigned int _font_size;
@@ -239,13 +241,25 @@ namespace Base {
 		
 		static void setMainwidgetWidth( double _mainwidgetWidth );
 		
-		static double &  mainwidgetWidth( void ) { return _mainwidget_width; };
+		static double &  mainwidgetWidth( void );
 		
 		static const double &getMainwidgetHeight( void );
 		
 		static void setMainwidgetHeight( double _mainwidgetHeight );
 
-		static double &  mainwidgetHeight( void ) { return _mainwidget_height; };
+		static double &  mainwidgetHeight( void );
+		
+		static const double &getMaincontentWidth( void );
+		
+		static void setMaincontentWidth( double _maincontentWidth );
+		
+		static double &  maincontentWidth( void );
+		
+		static const double &getMaincontentHeight( void );
+		
+		static void setMaincontentHeight( double _maincontentHeight );
+		
+		static double &  maincontentHeight( void );
 		
 		static const double getDockWidgetWidth( void );
 		

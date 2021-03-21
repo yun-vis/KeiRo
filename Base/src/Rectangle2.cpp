@@ -161,15 +161,17 @@ namespace Base {
 	//  Outputs
 	//  none
 	//
-	bool Rectangle2::isOverlap( Rectangle2 r )
+	bool Rectangle2::isOverlap( Rectangle2 r, double &area )
 	{
+    	area = 0.0;
+    	
     	Coord2 ci = _leftBottom + Coord2( 0.5*_width, 0.5*_height );
 		Coord2 cj = r._leftBottom + Coord2( 0.5*r._width, 0.5*r._height );
     	double w = MAX2( 0.0, MIN2( 0.5*(_width+r._width)-fabs(ci.x()-cj.x()), MIN2( _width, r._width )) );
     	double h = MAX2( 0.0, MIN2( 0.5*(_height+r._height)-fabs(ci.y()-cj.y()), MIN2( _height, r._height )) );
-		double area = w*h;
+		area = w*h;
 
-		if( area != 0.0 ) return true;
+		if( area > 0.0 ) return true;
 		else return false;
 	}
 	

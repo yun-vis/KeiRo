@@ -107,7 +107,7 @@ namespace Base {
         void init( void ) { _init(); }
 	    void clear( void ) { _clear(); }
         bool isInside( Coord2 c );
-	    bool isOverlap( Rectangle2 r );
+	    bool isOverlap( Rectangle2 r, double &area );
 	    void updateOldElement( void );
 	    
         //------------------------------------------------------------------------------

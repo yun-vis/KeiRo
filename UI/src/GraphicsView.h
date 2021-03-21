@@ -67,12 +67,7 @@ namespace Ui{
         //------------------------------------------------------------------------------
         //	UI
         //------------------------------------------------------------------------------
-        double      _min_point_distance;
 
-        QPoint      _oldCursor, _cursor;
-        bool        _left_button_pressed,
-                    _middle_button_pressed,
-                    _right_button_pressed;
 
         //------------------------------------------------------------------------------
         //	Special functions
@@ -84,7 +79,17 @@ namespace Ui{
 	
 	    // picking testing
 	    QPainterPath                    _selectionArea;
-	    unsigned int                    _test;
+	
+	    //------------------------------------------------------------------------------
+	    //	UI
+	    //------------------------------------------------------------------------------
+	    double                          _min_point_distance;
+	
+	    QPoint                          _oldCursor, _cursor;
+	    bool                            _left_button_pressed,
+				                        _middle_button_pressed,
+									    _right_button_pressed;
+	    double                          _wheel_scale;
 	
 	    //------------------------------------------------------------------------------
 	    //	Data

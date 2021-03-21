@@ -21,6 +21,8 @@ namespace Base {
 	
 	double Common::_mainwidget_width = 800;
 	double Common::_mainwidget_height = 600;
+	double Common::_maincontent_width = 800;
+	double Common::_maincontent_height = 600;
 	double Common::_dockwidget_width = 60;
 	double Common::_menubar_height = 60;
 	unsigned int Common::_font_size = 12;
@@ -63,12 +65,44 @@ namespace Base {
 		_mainwidget_width = mainwidgetWidth;
 	}
 	
+	double & Common::mainwidgetWidth( void ) {
+		return _mainwidget_width;
+	}
+	
 	const double &Common::getMainwidgetHeight() {
 		return _mainwidget_height;
 	}
 	
 	void Common::setMainwidgetHeight( double mainwidgetHeight ) {
 		_mainwidget_height = mainwidgetHeight;
+	}
+	
+	double & Common::mainwidgetHeight( void ) {
+		return _mainwidget_height;
+	}
+	
+	const double &Common::getMaincontentWidth() {
+		return _maincontent_width;
+	}
+	
+	void Common::setMaincontentWidth( double maincontentWidth ) {
+		_maincontent_width = maincontentWidth;
+	}
+	
+	double & Common::maincontentWidth( void ) {
+		return _maincontent_width;
+	}
+	
+	const double &Common::getMaincontentHeight() {
+		return _maincontent_height;
+	}
+	
+	void Common::setMaincontentHeight( double maincontentHeight ) {
+		_maincontent_height = maincontentHeight;
+	}
+	
+	double & Common::maincontentHeight( void ) {
+		return _maincontent_height;
 	}
 	
 	const double Common::getDockWidgetWidth() {
