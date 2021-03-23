@@ -97,7 +97,7 @@ namespace Base {
 	    _oldElements        = _elements;
         _fixedElements      = _elements;
     }
-
+    
     //
     //  Polygon2::Polygon2 -- copy constructor
     //
@@ -136,7 +136,40 @@ namespace Base {
     bool Edge2::isIntersected( Edge2 e ){
     	return false;
     }
+	
+	bool Edge2::isOnEdge( Coord2 c ) {
 
+    	bool isOn = false;
+    	Coord2 diff = _elements[1] - _elements[0];
+    	Coord2 diffC = c - _elements[0];
+		
+		if( diff.x() == 0 ){
+			if( diffC.x() == 0 &&
+				( c.y() > MIN2( _elements[0].y(), _elements[1].y() ) ) &&
+				( c.y() < MAX2( _elements[0].y(), _elements[1].y() ) )
+				)
+				return true;
+		}
+		else{
+			if( diffC.norm() < diff.norm() ){
+				// L: mx -y + b = 0
+				
+			}
+			double m = diff.y()/diff.x();
+			double b = _elements[0].y() - m * _elements[0].x();
+			double dist = fabs( m * c.x() - c.y() + b )/sqrt( SQUARE( m ) + 1.0 );
+			if( dist == 0.0 &&
+			    ( c.x() > MIN2( _elements[0].x(), _elements[1].x() ) ) &&
+			    ( c.x() < MAX2( _elements[0].x(), _elements[1].x() ) ) &&
+			    ( c.y() > MIN2( _elements[0].y(), _elements[1].y() ) ) &&
+			    ( c.y() < MAX2( _elements[0].y(), _elements[1].y() ) )
+				)
+				return true;
+		}
+  
+		return isOn;
+	}
+	
     //------------------------------------------------------------------------------
     //	Friend functions
     //------------------------------------------------------------------------------

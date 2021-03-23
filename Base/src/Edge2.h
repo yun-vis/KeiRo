@@ -105,6 +105,7 @@ namespace Base {
         // initialization
         void init( void ) { _init(); }
         bool isIntersected( Edge2 e );
+        bool isOnEdge( Coord2 c );
         
 	    //------------------------------------------------------------------------------
         //	Friend functions
