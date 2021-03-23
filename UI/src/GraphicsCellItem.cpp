@@ -125,7 +125,8 @@ namespace Ui {
 			painter->setPen( pen() );
 			painter->setBrush( brush() );
 			//painter->drawRect( _sourceRect );
-			painter->drawRoundedRect( _sourceRect, 1, 1);
+			int padding = 3;
+			painter->drawRoundedRect( _sourceRect, padding, padding);
 			
 			if( _textOn == true ) {
 				QFontMetrics fm( _font );
