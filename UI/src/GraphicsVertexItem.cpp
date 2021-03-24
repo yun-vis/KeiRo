@@ -120,46 +120,47 @@ namespace Vector {
     void GraphicsVertexItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *option,
                                     QWidget *widget )
     {
-	    QRectF fineRect( rect() );
-	    _radius = rect().width();
-    	double sx = _radius, sy = _radius;
 	    painter->setRenderHints( QPainter::Antialiasing );
 	    painter->setPen( pen() );
 	    painter->setBrush( brush() );
 
-    	if( _isSimple = true ){
-
+	    QRectF fineRect( rect() );
+	    _radius = rect().width();
+    	QFontMetrics fm( _font );
+	    double sx = fm.width( _text );
+	    double sy = 0.5*fm.height();
+	    
+    	if( _isSimple == true ){
+		
+		    double sx = _radius, sy = _radius;
+		
 		    fineRect.setX( rect().x() - 0.5 * sx );
 		    fineRect.setY( rect().y() - 0.5 * sy );
 		    fineRect.setWidth( sx );
 		    fineRect.setHeight( sy );
-		    painter->drawEllipse( fineRect );
+		    _sourceRect = fineRect;
+		    painter->drawEllipse( _sourceRect );
     	}
     	else{
+		    int padding = 3;
+		    fineRect.setX( rect().x() );
+		    fineRect.setY( rect().y() );
+		    fineRect.setWidth( rect().width() );
+		    fineRect.setHeight( rect().height() );
+		    _sourceRect = fineRect;
     		
-		    QFontMetrics metrics( _font );
-		    sx = metrics.width( _name );
-		    sy = metrics.height();
-
-		    fineRect.setX( rect().x() - 0.5 * sx );
-		    fineRect.setY( rect().y() - 0.5 * sy );
-		    fineRect.setWidth( sx );
-		    fineRect.setHeight( 2.0*sy );
-		    painter->drawRoundedRect( fineRect, 5, 5, Qt::AbsoluteSize );
+		    painter->drawRoundedRect( _sourceRect, 3, 3, Qt::AbsoluteSize );
     	}
     	
         if( _textOn == true ) {
-        	
+	        
 	        painter->setFont( _font );
 	        painter->setPen( _textpen );
-	        //cerr << "id = " << _id << endl;
-	        //painter->drawText( rect().x()+10, rect().y()-10, QString::fromStdString( to_string( _id ) ) );
-	        painter->drawText( fineRect.x()+0.5*( fineRect.width() - sx ),
-	                           fineRect.y()+0.5*( fineRect.height() + 0.25*sy ), _text ); // (x ,y) must be left-upper corner
-	        //painter->drawText( fineRect.x()+0.5*( fineRect.width()-sx ) - 0.5*MIN_NEIGHBOR_DISTANCE,
-	        //                   fineRect.y()+0.5*( fineRect.height()+0.5*sy ) + MIN_NEIGHBOR_DISTANCE, _name );
-	
-	        //cerr << "paint x = " << pos().x() << " y = " << pos().y() << endl;
+	        painter->drawText(
+			        _sourceRect.x() + 0.5 * _sourceRect.width() - 0.5 * sx,
+			        _sourceRect.y() + 0.5 * _sourceRect.height() + 0.5 * sy,
+			        _text
+	        );
         }
 
         // Qt function

@@ -43,11 +43,18 @@ namespace Vector {
     //------------------------------------------------------------------------------
     //	Class definition
     //------------------------------------------------------------------------------
-    class GraphicsVertexItem : public  QGraphicsRectItem, public GraphicsBase {
-    
-    private:
+    class GraphicsVertexItem : public QObject, public  QGraphicsRectItem, public GraphicsBase {
 
-        double          _radius;
+    Q_OBJECT
+    Q_PROPERTY( QRectF geometry READ geometry WRITE setGeometry )
+    Q_INTERFACES( QGraphicsItem )
+	   
+    private:
+	
+	    QRectF   _sourceRect;
+	    QRectF   _targetRect;
+	
+	    double          _radius;
         bool            _isSimple;
 
     protected:
@@ -97,12 +104,33 @@ namespace Vector {
         bool &isSimple( void ) { return _isSimple; }
 	
 	    const bool &isSimple( void ) const { return _isSimple; }
+	
+	    QRectF &sourceRect( void ) { return _sourceRect; }
+	
+	    const QRectF &sourceRect( void ) const { return _sourceRect; }
+	
+	    QRectF &targetRect( void ) { return _targetRect; }
+	
+	    const QRectF &targetRect( void ) const { return _targetRect; }
 	    
 	    //------------------------------------------------------------------------------
 	    //	Special functions
 	    //------------------------------------------------------------------------------
 	    void init( void ) { _init(); }
-
+	
+	    QRectF geometry( void ) const {
+		    return _sourceRect;
+	    }
+	
+	    void setGeometry( const QRectF &value ) {
+		
+		    if( _sourceRect != value ){
+			    _sourceRect = value;
+			    setRect( value );
+			    update();
+		    }
+	    }
+	    
     private:
 
     };

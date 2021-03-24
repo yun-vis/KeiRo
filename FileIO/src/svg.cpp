@@ -349,7 +349,8 @@ namespace FileIO {
             polygon.stroke() = stroke;
             polygon.boundingBox().leftBottom().x() = x-r;
             polygon.boundingBox().leftBottom().y() = y-r;
-
+	        polygon.boundingBox().updateOldElement();
+	        
             // add polygon contour
             const int nDiv = 10;
             for ( int k = 0; k <= nDiv; k++ ) {
@@ -491,8 +492,7 @@ namespace FileIO {
             polygon.boundingBox().leftBottom().y() = y;
             polygon.boundingBox().width() = w;
             polygon.boundingBox().height() = h;
-	        polygon.boundingBox().updateOldElement();
-	        		
+	        
             // add polygon contour
             polygon.elements().push_back( KeiRo::Base::Coord2( x, y-h ) );
             polygon.elements().push_back( KeiRo::Base::Coord2( x, y ) );
@@ -500,9 +500,16 @@ namespace FileIO {
             polygon.elements().push_back( KeiRo::Base::Coord2( x+w, y-h ) );
             polygon.fixedElements() = polygon.elements();
             polygon.update();
+	        polygon.boundingBox().updateOldElement();
             _polygonVec.push_back( polygon );
 
 #ifdef SVG_DEBUG
+	        KeiRo::Base::Rectangle2 &bbox = polygon.boundingBox();
+	        cerr << "old = " << bbox.oldLeftBottom();
+	        cerr << "ow = " << bbox.oldWidth() << endl;
+	        cerr << "new = " << bbox.leftBottom();
+	        cerr << "nw = " << bbox.width() << endl;
+
             cerr << "id = " << id.toStdString()
                  << ", x = " << x << " y = " << y
                  << " w = " << w << " h = " << h << endl;

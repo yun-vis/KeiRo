@@ -143,6 +143,7 @@ namespace Vector {
         if( _textOn == true ){
 
             painter->setPen( _textpen );
+	        painter->setFont( _font );
 #ifdef SKIP
             for( unsigned int i = 0; i < p.size(); i++ ){
                 painter->drawText( p.at(i).x()+5, p.at(i).y()-5, QString::fromStdString( to_string( _id ) ) );

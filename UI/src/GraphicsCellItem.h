@@ -128,6 +128,7 @@ namespace Vector {
       
 		    if( _sourceRect != value ){
 			    _sourceRect = value;
+			    setRect( value );
 			    update();
 		    }
         }
