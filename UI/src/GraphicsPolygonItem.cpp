@@ -76,8 +76,8 @@ namespace Vector {
 	    qRegisterAnimationInterpolator< QPolygonF >( polygonInterpolator );
     	
         setFlag( QGraphicsItem::ItemIsSelectable );
-        setFlag( QGraphicsItem::ItemIsMovable );
-        setFlag( QGraphicsItem::ItemSendsGeometryChanges );
+//        setFlag( QGraphicsItem::ItemIsMovable );
+//        setFlag( QGraphicsItem::ItemSendsGeometryChanges );
         //setAcceptDrops( true );
 
         //pen().setJoinStyle( Qt::MiterJoin );
