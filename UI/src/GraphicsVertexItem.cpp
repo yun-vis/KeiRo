@@ -136,6 +136,8 @@ namespace Vector {
 		
 		    fineRect.setX( rect().x() - 0.5 * sx );
 		    fineRect.setY( rect().y() - 0.5 * sy );
+//		    fineRect.setX( rect().x() - 0.5 * sx );
+//		    fineRect.setY( rect().y() - 0.5 * sy );
 		    fineRect.setWidth( sx );
 		    fineRect.setHeight( sy );
 		    _sourceRect = fineRect;

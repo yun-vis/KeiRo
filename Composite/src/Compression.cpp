@@ -72,7 +72,7 @@
     //  Outputs
     //	none
     //
-    Compression::Compression()
+    Compression::Compression( void )
     {
         //------------------------------------------------------------------------------
         // configuration file
@@ -85,13 +85,38 @@
             string paramMinPointDistance = conf.gets( "min_point_distance" );
             _min_point_distance = stoi( paramMinPointDistance );
         }
-
+	
+	    _fixedSamples.clear();
+        _samples.clear();
+	
+	    _polygonVecPtr = NULL;
+	    _polylineVecPtr = NULL;
+	    _gridPtr = NULL;
+	    
 #ifdef COMPRESSION_DEBUG
         cerr << "_min_point_distance: " << _min_point_distance << endl;
 #endif // COMPRESSION_DEBUG
 
     }
 
+	//
+	//  Compression::Compression --	copy constructor
+	//
+	//  Inputs
+	//	none
+	//
+	//  Outputs
+	//	none
+	//
+	Compression::Compression( const Compression & v )
+	{
+		_fixedSamples   = v._fixedSamples;
+		_samples        = v._samples;
+		
+		_polygonVecPtr  = v._polygonVecPtr;
+		_polylineVecPtr = v._polylineVecPtr;
+		_gridPtr        = v._gridPtr;
+	}
     //
     //  Compression::~Compression --	destructor
     //
@@ -108,6 +133,18 @@
     //------------------------------------------------------------------------------
     //	Assignment operators
     //------------------------------------------------------------------------------
+    Compression & Compression::operator = ( const Compression & v )
+    {
+	    if ( this != &v ) {
+		    _fixedSamples   = v._fixedSamples;
+		    _samples        = v._samples;
+		
+		    _polygonVecPtr  = v._polygonVecPtr;
+		    _polylineVecPtr = v._polylineVecPtr;
+		    _gridPtr        = v._gridPtr;
+	    }
+	    return *this;
+    }
 
 
     //------------------------------------------------------------------------------

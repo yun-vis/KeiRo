@@ -37,6 +37,11 @@ namespace Base {
 
     protected:
 	
+	    // Rectangle2 fixed coordinates of end points
+	    Coord2      _fixedLeftBottom;
+	    double      _fixedWidth;
+	    double      _fixedHeight;
+	
 	    // Rectangle2 old coordinates of end points
         Coord2      _oldLeftBottom;
 	    double      _oldWidth;
@@ -79,7 +84,17 @@ namespace Base {
         //------------------------------------------------------------------------------
         //	Reference to elements
         //------------------------------------------------------------------------------
-
+        
+        // left-top corner
+        Coord2 &	        fixedLeftBottom( void )       { return _fixedLeftBottom; }
+	    const Coord2 &	    fixedLeftBottom( void ) const	{ return _fixedLeftBottom; }
+	
+	    double &	        fixedWidth( void )	        { return _fixedWidth; }
+	    const double &	    fixedWidth( void ) const	    { return _fixedWidth; }
+	
+	    double &	        fixedHeight( void )	        { return _fixedHeight; }
+	    const double &	    fixedHeight( void ) const	    { return _fixedHeight; }
+	    
         // left-top corner
         Coord2 &	        oldLeftBottom( void )       { return _oldLeftBottom; }
 	    const Coord2 &	    oldLeftBottom( void ) const	{ return _oldLeftBottom; }
