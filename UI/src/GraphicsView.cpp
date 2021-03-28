@@ -230,7 +230,8 @@ namespace Ui {
 	//  Outputs
 	//  none
 	//
-	void GraphicsView::exportPNG( double x, double y, double w, double h ) {
+	void GraphicsView::exportPNG( double x, double y, double w, double h )
+	{
 		// Take file path and name that will create
 		//QString newPath = QFileDialog::getSaveFileName(this, trUtf8("Save SVG"),
 		//                                               path, tr("SVG files (*.svg)"));
@@ -240,8 +241,19 @@ namespace Ui {
 		string s2( ss.str() );
 		QString idStr = QString::fromStdString( s2 );
 		// cerr << "s2 = " << s2 << endl;
-		QString newPath =
-				QString( QLatin1String( "../png/pathway-" ) ) + idStr + QString( QLatin1String( ".png" ) );
+		
+		// create tmp folder for stable treemap command
+		QString filePath = qApp->applicationDirPath() + QString( "/tmp" );
+		
+		// create the temporary folder
+		QString exportFolder = filePath + QString( "/png/" );
+		
+		if( !QDir( exportFolder ).exists() ){
+			QDir().mkdir( exportFolder );
+			cerr << "create a png folder!" << endl;
+		}
+		
+		QString newPath = exportFolder + idStr + QString( QLatin1String( ".png" ) );
 		_scenePtr->setSceneRect( x, y, w, h );  // x, y, w, h
 		
 		if( newPath.isEmpty() ) return;

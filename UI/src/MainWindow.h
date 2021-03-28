@@ -47,7 +47,10 @@ namespace Ui {
     private:
 	
 	    KeiRo::Base::Base                           *_basePtr;
-    
+	    
+        // setup timer
+	    QTimer                                      *_timerptr;
+	    
     private:
 
         GraphicsView                                *_mainGV;
@@ -191,6 +194,11 @@ namespace Ui {
         void _updateSetting     ( const QString &setting );
         void _updateInteraction ( const QString &interaction );
         void _updateAllDocks    ( void );
+        
+    public slots:
+    	
+	    void exportPNG( void );
+	
     };
 
 } // namespace Ui

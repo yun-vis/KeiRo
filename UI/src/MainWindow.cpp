@@ -296,7 +296,12 @@ namespace Ui {
 	    // initialization
 	    //------------------------------------------------------------------------------
 	    _basePtr = nullptr;
-	
+	    
+	    // setup timer
+	    _timerptr = new QTimer( this );
+	    connect( _timerptr, SIGNAL( timeout() ), this, SLOT( exportPNG() ) );
+	    _timerptr->start( 500 );
+	    
 	    //------------------------------------------------------------------------------
         // clear stored images
         //------------------------------------------------------------------------------
@@ -381,7 +386,24 @@ namespace Ui {
     {
         _mainGV->simulateKey( Qt::Key_L );
     }
+	
+	//
+	//  MainWindow::exportPNG -- export main window as png
+	//
+	//  Inputs
+	//  none
+	//
+	//  Outputs
+	//  none
+	//
+	void MainWindow::exportPNG( void )
+	{
+    	double ww = KeiRo::Base::Common::getMainwidgetWidth();
+		double wh = KeiRo::Base::Common::getMainwidgetHeight();
 
+    	_mainGV->exportPNG( -0.5*ww, -0.5*wh, ww, wh );
+	}
+	
     //
     //  MainWindow::print -- print
     //
