@@ -387,7 +387,7 @@
     void Compression::createCompressedGridJoints( void )
     {
         Graph::GridGraph & gridG = _gridPtr->gridG();
-        printGraph( gridG );
+//        printGraph( gridG );
 
         for( unsigned int i = 0; i < _polygonVecPtr->size(); i++ ){
 

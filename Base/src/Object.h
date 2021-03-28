@@ -49,6 +49,7 @@ namespace Base {
         Common::IDPair          _parentFileID;
         unsigned int            _parentPolygonID;
         bool                    _isVisible;
+	    bool                    _isTextVisible;
 	
 	    // graphics item id
 	    unsigned int            _itemID;
@@ -135,6 +136,9 @@ namespace Base {
         bool &	                    isVisible( void )       { return _isVisible; }
         const bool &	            isVisible( void ) const { return _isVisible; }
 	
+	    bool &	                    isTextVisible( void )       { return _isTextVisible; }
+	    const bool &	            isTextVisible( void ) const { return _isTextVisible; }
+
 	    // reference to itemID
 	    unsigned int &	                itemID( void )	                { return _itemID; }
 	    const unsigned int &            itemID( void ) const            { return _itemID; }

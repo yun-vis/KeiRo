@@ -56,7 +56,9 @@ namespace Vector {
 
         QRect           _bbox;
 	    unsigned long   _attributeID;
-	    
+	    QBrush          _defaultBrush;
+	    QPen            _defaultPen;
+
     protected:
     	
 	    //------------------------------------------------------------------------------
@@ -101,6 +103,12 @@ namespace Vector {
 	
 	    unsigned long &	        attributeID( void )         { return _attributeID; }
 	    const unsigned long &	attributeID( void ) const	{ return _attributeID; }
+	
+	    QBrush &	            defaultBrush( void )        { return _defaultBrush; }
+	    const QBrush &	        defaultBrush( void ) const	{ return _defaultBrush; }
+	
+	    QPen &	                defaultPen( void )          { return _defaultPen; }
+	    const QPen &	        defaultPen( void ) const	{ return _defaultPen; }
 
 	    QPolygonF               getPolygon() const {
             return polygon();

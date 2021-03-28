@@ -88,7 +88,7 @@ namespace FileIO {
 //	    double wh = KeiRo::Base::Common::getMainwidgetHeight();
 //	    _screenCanvas = KeiRo::Base::Rectangle2( 0.0, 0.0, ww, wh );
      
-	    cerr << "initializing SVG file..." << endl;
+//	    cerr << "initializing SVG file..." << endl;
     }
 
     //
