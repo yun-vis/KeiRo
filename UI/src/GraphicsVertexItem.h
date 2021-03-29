@@ -105,6 +105,10 @@ namespace Vector {
 	
 	    const bool &isSimple( void ) const { return _isSimple; }
 	
+	    double &radius( void ) { return _radius; }
+	
+	    const bool &radius( void ) const { return _radius; }
+
 	    QRectF &sourceRect( void ) { return _sourceRect; }
 	
 	    const QRectF &sourceRect( void ) const { return _sourceRect; }

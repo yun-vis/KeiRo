@@ -144,14 +144,14 @@ namespace Vector {
 		    painter->drawEllipse( _sourceRect );
     	}
     	else{
-		    int padding = 3;
+
 		    fineRect.setX( rect().x() );
 		    fineRect.setY( rect().y() );
 		    fineRect.setWidth( rect().width() );
 		    fineRect.setHeight( rect().height() );
 		    _sourceRect = fineRect;
     		
-		    painter->drawRoundedRect( _sourceRect, 3, 3, Qt::AbsoluteSize );
+		    painter->drawRoundedRect( _sourceRect, _radius, _radius, Qt::AbsoluteSize );
     	}
     	
         if( _textOn == true ) {
