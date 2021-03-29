@@ -125,7 +125,6 @@ namespace Vector {
 	    painter->setBrush( brush() );
 
 	    QRectF fineRect( rect() );
-	    _radius = rect().width();
     	QFontMetrics fm( _font );
 	    double sx = fm.width( _text );
 	    double sy = 0.5*fm.height();

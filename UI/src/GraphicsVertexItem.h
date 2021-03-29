@@ -107,7 +107,7 @@ namespace Vector {
 	
 	    double &radius( void ) { return _radius; }
 	
-	    const bool &radius( void ) const { return _radius; }
+	    const double &radius( void ) const { return _radius; }
 
 	    QRectF &sourceRect( void ) { return _sourceRect; }
 	
