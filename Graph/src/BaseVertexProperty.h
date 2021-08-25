@@ -62,6 +62,8 @@ namespace Graph {
         KeiRo::Base::Coord2 *       coordPtr;               // center coordinates
         double *                    widthPtr;               // vertex width
         double *                    heightPtr;              // vertex height
+        int *                       gridWidthPtr;           // vertex width
+        int *                       gridHeightPtr;          // vertex height
         double *                    areaPtr;                // vertex area
 
         int                         color;                  // color type

@@ -371,9 +371,9 @@ namespace FileIO {
 
         file.close();
     }
-
+    
     //
-    //  SVG::getRectangleElements --	get rectangle elements
+    //  SVG::getRectangleElementsOld --	get rectangle elements
     //
     //  Inputs
     //	string: file name
@@ -472,6 +472,7 @@ namespace FileIO {
  			y += 0.5 * _svgCanvas.height();
 			x *= _screenCanvas.width()/_svgCanvas.width();
 			y *= _screenCanvas.height()/_svgCanvas.height();
+			
 #ifdef DEBUG
 	        cerr << "_screenCanvas.leftbottom = " << _screenCanvas.leftBottom();
 			cerr << "_screenCanvas.width = " << _screenCanvas.width() << endl;
@@ -480,6 +481,7 @@ namespace FileIO {
 	        cerr << "_svgCanvas.width = " << _svgCanvas.width() << endl;
 	        cerr << "_svgCanvas.height = " << _svgCanvas.height() << endl;
 #endif // DEBUG
+
 	        // create rectangle
 	        KeiRo::Base::Polygon2 polygon;
             polygon.name() = id.toStdString();
@@ -488,8 +490,19 @@ namespace FileIO {
             polygon.stroke() = stroke;
 	        polygon.strokeWidth() = strokeWidth;
 	        polygon.strokeOpacity() = strokeOpacity;
+
+            int lbx = round( x );
+            int lby = round( y );
+            int rtx = round( x + w );
+            int rty = round( y + h );
+
+            x = lbx;
+            y = lby;
+            w = rtx - lbx;
+            h = rty - lby;
+
             polygon.boundingBox().leftBottom().x() = x;
-            polygon.boundingBox().leftBottom().y() = y;
+            polygon.boundingBox().leftBottom().y() = y-h;
             polygon.boundingBox().width() = w;
             polygon.boundingBox().height() = h;
 	        
@@ -505,14 +518,14 @@ namespace FileIO {
 
 #ifdef SVG_DEBUG
 	        KeiRo::Base::Rectangle2 &bbox = polygon.boundingBox();
-	        cerr << "old = " << bbox.oldLeftBottom();
-	        cerr << "ow = " << bbox.oldWidth() << endl;
+//	        cerr << "old = " << bbox.oldLeftBottom();
+//	        cerr << "ow = " << bbox.oldWidth() << endl;
 	        cerr << "new = " << bbox.leftBottom();
-	        cerr << "nw = " << bbox.width() << endl;
-
+	        cerr << " nw = " << bbox.width() << " nh = " << bbox.height() << endl;
             cerr << "id = " << id.toStdString()
                  << ", x = " << x << " y = " << y
                  << " w = " << w << " h = " << h << endl;
+            cerr << "polygon = " << polygon << endl;
 #endif // SVG_DEBUG
         }
 

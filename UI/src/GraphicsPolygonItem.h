@@ -106,9 +106,11 @@ namespace Vector {
 	
 	    QBrush &	            defaultBrush( void )        { return _defaultBrush; }
 	    const QBrush &	        defaultBrush( void ) const	{ return _defaultBrush; }
+	    void                    settoDefaultBrush( void ) 	{ this->setBrush( _defaultBrush ); }
 	
 	    QPen &	                defaultPen( void )          { return _defaultPen; }
 	    const QPen &	        defaultPen( void ) const	{ return _defaultPen; }
+	    void                    settoDefaultPen( void ) 	{ this->setPen( _defaultPen ); }
 
 	    QPolygonF               getPolygon() const {
             return polygon();

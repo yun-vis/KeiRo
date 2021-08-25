@@ -37,7 +37,7 @@ namespace Base {
 
     protected:
 	
-	    // Rectangle2 fixed coordinates of end points
+	    // Rectangle2 fixed coordinates of end points, usually the initial value
 	    Coord2      _fixedLeftBottom;
 	    double      _fixedWidth;
 	    double      _fixedHeight;
@@ -85,17 +85,17 @@ namespace Base {
         //	Reference to elements
         //------------------------------------------------------------------------------
         
-        // left-top corner
-        Coord2 &	        fixedLeftBottom( void )       { return _fixedLeftBottom; }
+        // left-bottom corner
+        Coord2 &	        fixedLeftBottom( void )         { return _fixedLeftBottom; }
 	    const Coord2 &	    fixedLeftBottom( void ) const	{ return _fixedLeftBottom; }
 	
 	    double &	        fixedWidth( void )	        { return _fixedWidth; }
-	    const double &	    fixedWidth( void ) const	    { return _fixedWidth; }
+	    const double &	    fixedWidth( void ) const	{ return _fixedWidth; }
 	
 	    double &	        fixedHeight( void )	        { return _fixedHeight; }
-	    const double &	    fixedHeight( void ) const	    { return _fixedHeight; }
+	    const double &	    fixedHeight( void ) const	{ return _fixedHeight; }
 	    
-        // left-top corner
+        // left-bottom corner
         Coord2 &	        oldLeftBottom( void )       { return _oldLeftBottom; }
 	    const Coord2 &	    oldLeftBottom( void ) const	{ return _oldLeftBottom; }
 
@@ -105,7 +105,7 @@ namespace Base {
 	    double &	        oldHeight( void )	        { return _oldHeight; }
 	    const double &	    oldHeight( void ) const	    { return _oldHeight; }
 	
-	    // left-top corner
+	    // left-bottom corner
 	    Coord2 &	        leftBottom( void )	        { return _leftBottom; }
 	    const Coord2 &	    leftBottom( void ) const	{ return _leftBottom; }
 	
@@ -114,7 +114,7 @@ namespace Base {
 	
 	    double &	        height( void )	            { return _height; }
 	    const double &	    height( void ) const	    { return _height; }
-	
+	    
 	    //------------------------------------------------------------------------------
         //	Special functions
         //------------------------------------------------------------------------------

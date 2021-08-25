@@ -81,7 +81,7 @@ namespace FileIO {
 
         vector< KeiRo::Base::Polygon2 > &	        polygonVec( void ) 	        { return _polygonVec; }
         const vector< KeiRo::Base::Polygon2 > &	    polygonVec( void ) const	{ return _polygonVec; }
-
+        
         vector< KeiRo::Base::Line2 > &	            polylineVec( void ) 	    { return _polylineVec; }
         const vector< KeiRo::Base::Line2 > &	    polylineVec( void ) const	{ return _polylineVec; }
 
@@ -99,6 +99,7 @@ namespace FileIO {
         void getPolygonElements( const QString fileName );
         void getCircleElements( const QString fileName );
         void getRectangleElements( const QString fileName );
+        void getRectangleElementsOld( const QString fileName );
         void getPathElements( const QString fileName );
 	    KeiRo::Base::Rectangle2 getCanvasSize( const QString fileName );
         void normalize( void );
