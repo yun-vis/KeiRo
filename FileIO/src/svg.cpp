@@ -373,7 +373,7 @@ namespace FileIO {
     }
     
     //
-    //  SVG::getRectangleElementsOld --	get rectangle elements
+    //  SVG::getRectangleElements --	get rectangle elements
     //
     //  Inputs
     //	string: file name
@@ -517,6 +517,7 @@ namespace FileIO {
             _polygonVec.push_back( polygon );
 
 #ifdef SVG_DEBUG
+            cerr << "read poly = " << polygon << endl;
 	        KeiRo::Base::Rectangle2 &bbox = polygon.boundingBox();
 //	        cerr << "old = " << bbox.oldLeftBottom();
 //	        cerr << "ow = " << bbox.oldWidth() << endl;
@@ -1040,7 +1041,7 @@ namespace FileIO {
     //  Outputs
     //	bool
     //
-    bool SVG::readSVG( const QString fileName )
+    bool SVG::readSVG( const QString fileName, bool isCompressionOn )
     {
         if ( fileName.isEmpty() ){
             cerr << "something is wrong here... at " << __LINE__ << " in " << __FILE__ << endl;
@@ -1064,7 +1065,7 @@ namespace FileIO {
 	    
         // create compression
         _compression.init( _gridPtr, &_polygonVec, &_polylineVec );
-        _compression.createCompression();
+        _compression.createCompression( isCompressionOn );
 
         return true;
     }

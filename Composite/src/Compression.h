@@ -105,7 +105,7 @@ public:
     void createCompressedSamples( void );
     void createCompressedJoints( void );
     void createCompressedGridJoints( void );
-    void createCompression( void );
+    void createCompression( bool isOn );
 
 
     //------------------------------------------------------------------------------

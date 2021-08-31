@@ -103,7 +103,7 @@ namespace FileIO {
         void getPathElements( const QString fileName );
 	    KeiRo::Base::Rectangle2 getCanvasSize( const QString fileName );
         void normalize( void );
-        bool readSVG( const QString fileName );
+        bool readSVG( const QString fileName, bool isCompressionOn = false );
         bool writeSVG( const QString fileName );
 
         //------------------------------------------------------------------------------

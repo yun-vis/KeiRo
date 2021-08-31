@@ -194,6 +194,8 @@
 
             vector< KeiRo::Base::Coord2 > &elements = (*_polygonVecPtr)[i].elements();
             vector< unsigned int > &idElements = (*_polygonVecPtr)[i].idElements();
+//            cerr << "i = " << i << ", elements.size() = " << elements.size() << endl;
+
             for( unsigned int j = 0; j < elements.size(); j++ ){
 	
 	            KeiRo::Base::Coord2 &coord = elements[j];
@@ -211,8 +213,16 @@
                 }
             }
         }
-
+        
 #ifdef COMPRESSION_DEBUG
+        for( unsigned int i = 0; i < _polygonVecPtr->size(); i++ ){
+
+        	vector< KeiRo::Base::Coord2 > &elements = (*_polygonVecPtr)[i].elements();
+        	vector< unsigned int > &idElements = (*_polygonVecPtr)[i].idElements();
+        	cerr << " i = " << i << ", elements.size() = " << elements.size() << endl;
+        	cerr << " i = " << i << ", idElements.size() = " << idElements.size() << endl;
+        }
+
         for( unsigned int i = 0; i < _samples.size(); i++ ){
             cerr << "ref = " << &_samples[i] << ", i = " << i << " , " << _samples[i];
         }
@@ -502,11 +512,15 @@
     //  Outputs
     //	none
     //
-    void Compression::createCompression( void )
+    void Compression::createCompression( bool isOn )
     {
-        createCompressedGridJoints();
-        createCompressedJoints();
-        createCompressedSamples();
+		if( isOn ){
+	        createCompressedGridJoints();
+	        createCompressedJoints();
+		}
+		else{
+			createCompressedSamples();
+		}
     }
 
     //------------------------------------------------------------------------------
