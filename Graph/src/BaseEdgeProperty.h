@@ -51,7 +51,8 @@ namespace Graph {
         double                      weight;
         bool                        visit;
         int                         visitedTimes;
-
+		int                         level;
+        
         bool                        isFore;
         bool                        isBack;
         bool                        isShow;

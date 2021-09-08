@@ -66,6 +66,7 @@ namespace Graph {
         int *                       gridHeightPtr;          // vertex height
         double *                    areaPtr;                // vertex area
 
+        int                         level;                  // vertex level
         int                         color;                  // color type
         bool                        flag;                   // flag
 		bool                        isSelected;             // if the vertex is selected

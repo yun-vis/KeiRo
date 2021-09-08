@@ -34,7 +34,7 @@ set_target_properties(${Target_Name} PROPERTIES
         src/BaseUndirectedGraph.h;src/GridVertexProperty.h;src/GridEdgeProperty.h;src/GridGraphProperty.h;
         src/GridGraph.h;src/SchematicVertexProperty.h;src/SchematicEdgeProperty.h;src/SchematicGraphProperty.h;
         src/SchematicGraph.h;src/TreeEdgeProperty.h;src/TreeVertexProperty.h;src/TreeGraphProperty.h;src/TreeGraph.h;
-        src/TreeDirectedGraph.h"
+        src/TreeDirectedGraph.h;src/PropertyGraph.h"
         )
 
 #----------------------------------------------------------------------

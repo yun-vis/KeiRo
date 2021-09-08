@@ -10,13 +10,14 @@ set( MAIN_PROJECT_ROOT "${CMAKE_SOURCE_DIR}/.." )
 add_library(${Target_Name} SHARED
         src/Grid2.cpp
         src/Compression.cpp
+        src/CompressionGrid.cpp
         src/Contour2.cpp
         )
 
 set_target_properties(${Target_Name} PROPERTIES
         VERSION ${PROJECT_VERSION}
         SOVERSION 1
-        PUBLIC_HEADER "src/Grid2.h;src/Composite.h;src/Contour2.h"
+        PUBLIC_HEADER "src/Grid2.h;src/CompressionGrid.h;src/Compression.h;src/Contour2.h"
         )
 
 #----------------------------------------------------------------------

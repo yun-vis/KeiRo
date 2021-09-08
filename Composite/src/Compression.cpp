@@ -18,7 +18,27 @@
     //------------------------------------------------------------------------------
     //	Private Functions
     //------------------------------------------------------------------------------
-
+    //
+    //  Compression::_closeToSamplesInt --	find if the two points are at the same position
+    //
+    //  Inputs
+    //	coord
+    //  index
+    //
+    //  Outputs
+    //	none
+    //
+    bool Compression::_closeToSamplesInt( KeiRo::Base::Coord2 coordS, KeiRo::Base::Coord2 coordT )
+    {
+//		cerr << "norm = " << ( coordS - coordT ).norm() << endl;
+		if( ( coordS - coordT ).norm() == 0 ){
+			return true;
+		}
+		else{
+			return false;
+		}
+    }
+    
     //------------------------------------------------------------------------------
     //	Protected Functions
     //------------------------------------------------------------------------------
@@ -31,15 +51,9 @@
     //  Outputs
     //  none
     //
-    void Compression::_init( Grid2 * __gridPtr,
-                             vector< KeiRo::Base::Polygon2 > *__polygonVecPtr,
-                             vector< KeiRo::Base::Line2 > *__polylineVecPtr )
-
+    void Compression::_init( void )
     {
         _clear();
-        _gridPtr        =  __gridPtr;
-        _polygonVecPtr  = __polygonVecPtr;
-        _polylineVecPtr = __polylineVecPtr;
     }
 
     //
@@ -53,13 +67,13 @@
     //
     void Compression::_clear( void )
     {
-        _fixedSamples.clear();
-        _samples.clear();
+		clearGraph( _graph );
     }
 
     //------------------------------------------------------------------------------
     //	Public functions
     //------------------------------------------------------------------------------
+    
     //------------------------------------------------------------------------------
     //	Constructors & Destructors
     //------------------------------------------------------------------------------
@@ -77,26 +91,6 @@
         //------------------------------------------------------------------------------
         // configuration file
         //------------------------------------------------------------------------------
-
-        string configFilePath = qApp->applicationDirPath().toStdString() + "/../config/MainWindow.conf";
-	    KeiRo::Base::Config conf( configFilePath );
-
-        if ( conf.has( "min_point_distance" ) ){
-            string paramMinPointDistance = conf.gets( "min_point_distance" );
-            _min_point_distance = stoi( paramMinPointDistance );
-        }
-	
-	    _fixedSamples.clear();
-        _samples.clear();
-	
-	    _polygonVecPtr = NULL;
-	    _polylineVecPtr = NULL;
-	    _gridPtr = NULL;
-	    
-#ifdef COMPRESSION_DEBUG
-        cerr << "_min_point_distance: " << _min_point_distance << endl;
-#endif // COMPRESSION_DEBUG
-
     }
 
 	//
@@ -110,13 +104,9 @@
 	//
 	Compression::Compression( const Compression & v )
 	{
-		_fixedSamples   = v._fixedSamples;
-		_samples        = v._samples;
-		
-		_polygonVecPtr  = v._polygonVecPtr;
-		_polylineVecPtr = v._polylineVecPtr;
-		_gridPtr        = v._gridPtr;
+		_graph        = v._graph;
 	}
+
     //
     //  Compression::~Compression --	destructor
     //
@@ -136,12 +126,7 @@
     Compression & Compression::operator = ( const Compression & v )
     {
 	    if ( this != &v ) {
-		    _fixedSamples   = v._fixedSamples;
-		    _samples        = v._samples;
-		
-		    _polygonVecPtr  = v._polygonVecPtr;
-		    _polylineVecPtr = v._polylineVecPtr;
-		    _gridPtr        = v._gridPtr;
+		    _graph        = v._graph;
 	    }
 	    return *this;
     }
@@ -151,378 +136,202 @@
     //	Special functions
     //------------------------------------------------------------------------------
     //
-    //  Compression::createCompression --	create compression from polygons and polylines
+    //  Compression::findVertex --	find if the coordinate has been occupied
     //
     //  Inputs
-    //	none
+    //	coord
+    //  vertex_descriptor
     //
     //  Outputs
     //	none
     //
-    bool Compression::_closeToSamples( KeiRo::Base::Coord2 &coord, unsigned int &index )
+    bool Compression::findVertex( KeiRo::Base::Coord2 coord, unsigned int sortedID, unsigned int &index )
     {
+		BGL_FORALL_VERTICES( vd, _graph, Graph::BaseUndirectedGraph ) {
+
+			if( _graph[vd].initID == sortedID ){
+				if( _closeToSamplesInt( *_graph[vd].coordPtr, coord ) ){
+					index = _graph[vd].id;
+					return true;
+				}
+			}
+		}
 		return false;
-        index = 0;
-        for( unsigned int i = 0; i < _samples.size(); i++ ){
-
-            double distance = distanceBetween( coord, _samples[i] );
-            if( distance < _min_point_distance ) {
-                index = i;
-                return true;
-            }
-        }
-
-        return false;
     }
 
     //
-    //  Compression::createCompressedSamples --	create compression from samples of polygons and polylines
+    //  Compression::addVertex --	add a new vertex
     //
     //  Inputs
-    //	none
+    //	coordPtr
+    //  level
+    //
+    //  Outputs
+    //	vertex id
+    //
+    unsigned int Compression::addVertex( KeiRo::Base::Coord2 coord, unsigned int level, unsigned int sortedID )
+    {
+		unsigned int vid = num_vertices( _graph );
+		Graph::BaseUndirectedGraph::vertex_descriptor vdNew = add_vertex( _graph );
+		_graph[ vdNew ].level     = level;
+		_graph[ vdNew ].id        = vid;
+		_graph[ vdNew ].initID    = sortedID;
+		_graph[ vdNew ].weight    = 0;
+		_graph[ vdNew ].coordPtr  = new KeiRo::Base::Coord2( coord.x(), coord.y() );
+		_graph[ vdNew ].widthPtr  = new double( 10.0 );
+		_graph[ vdNew ].heightPtr = new double( 10.0 );
+	
+		return vid;
+    }
+    
+    //
+    //  Compression::addEdge --	add a new edge
+    //
+    //  Inputs
+    //	source vid
+    //  target vid
+    //  isCompressed
     //
     //  Outputs
     //	none
     //
-    void Compression::createCompressedSamples( void )
+    void Compression::addEdge( unsigned int idS, unsigned int idT,
+							   unsigned int sortedID, bool isCompressed )
     {
-        // sample size index
-        unsigned int nV = 0;
+	    unsigned int eid = num_edges( _graph );
+//	    cerr << "idS = " << idS << " idT = " << idT << endl;
+        Graph::BaseUndirectedGraph::vertex_descriptor vdS = vertex( idS, _graph );
+        Graph::BaseUndirectedGraph::vertex_descriptor vdT = vertex( idT, _graph );
 
-        // add polygonal objects
-        for( unsigned int i = 0; i < _polygonVecPtr->size(); i++ ){
+        if( isCompressed == true ){
 
-            vector< KeiRo::Base::Coord2 > &elements = (*_polygonVecPtr)[i].elements();
-            vector< unsigned int > &idElements = (*_polygonVecPtr)[i].idElements();
-//            cerr << "i = " << i << ", elements.size() = " << elements.size() << endl;
+        	map< int, Graph::BaseUndirectedGraph::vertex_descriptor > vdMap;
+        	vector< KeiRo::Base::Coord2 > elements;
+        	elements.push_back( *_graph[vdS].coordPtr );
+        	elements.push_back( *_graph[vdT].coordPtr );
+        	KeiRo::Base::Edge2 e( elements );
+        	
+        	// sort vertices on the edge
+        	vdMap.insert( pair< int, Graph::BaseUndirectedGraph::vertex_descriptor >( 0, vdS ) );
+        	BGL_FORALL_VERTICES( vd, _graph, Graph::BaseUndirectedGraph ) {
+        	
+#ifdef DEBUG_COMPRESSION
+        		if( _graph[vdS].id == 12 && _graph[vdT].id == 13 ) {
+        			cerr << "vid = " << _graph[vd].id << endl;
+        			cerr << "_graph[vdS].coord = " << *_graph[vdS].coordPtr;
+        			cerr << "_graph[vdT].coord = " << *_graph[vdT].coordPtr;
+        			cerr << "_graph[vd].coord = " << *_graph[vd].coordPtr;
+        			cerr << "e.isOnEdge( *_graph[vd].coordPtr ) = " << e.isOnEdge( *_graph[vd].coordPtr ) << endl;
+        		}
+#endif // DEBUG_COMPRESSION
+				if( (vd != vdS) && (vd != vdT) && sortedID == _graph[vd].initID &&
+        		    e.isOnEdge( *_graph[vd].coordPtr ) == true ){
+        			int distance = (*_graph[vd].coordPtr - *_graph[vdS].coordPtr).norm();
+        			vdMap.insert( pair< int, Graph::BaseUndirectedGraph::vertex_descriptor >( distance, vd ) );
+        		}
+        	}
+        	vdMap.insert( pair< int, Graph::BaseUndirectedGraph::vertex_descriptor >( (*_graph[vdT].coordPtr - *_graph[vdS].coordPtr).norm(), vdT ) );
+        	
+        	// insert edge segments
+//        	cerr << "vdMap.size() = " << vdMap.size() << endl;
+        	for( unsigned int i = 1; i < vdMap.size(); i++ ){
 
-            for( unsigned int j = 0; j < elements.size(); j++ ){
-	
-	            KeiRo::Base::Coord2 &coord = elements[j];
-                unsigned int index = 0;
-                if( _closeToSamples( coord, index ) == true ){
-                    // cerr << "index = " << index << endl;
-                    idElements.push_back( index );
-                }
-                else{
-                	coord.updateOldElement();
-                    _fixedSamples.push_back( coord );
-                    _samples.push_back( coord );
-                    idElements.push_back( nV );
-                    nV++;
-                }
-            }
+        		map< int, Graph::BaseUndirectedGraph::vertex_descriptor >::iterator itS = vdMap.begin();
+        		map< int, Graph::BaseUndirectedGraph::vertex_descriptor >::iterator itT = vdMap.begin();
+        		std::advance( itS, i-1 );
+        		std::advance( itT, i );
+        		Graph::BaseUndirectedGraph::vertex_descriptor vdSS = itS->second;
+        		Graph::BaseUndirectedGraph::vertex_descriptor vdST = itT->second;
+
+        		bool found = false;
+        		Graph::BaseUndirectedGraph::edge_descriptor oldED;
+        		tie( oldED, found ) = edge( vdSS, vdST, _graph );
+
+        		if( found == false ){
+        			
+        			pair< Graph::BaseUndirectedGraph::edge_descriptor, unsigned int > foreE = add_edge( vdSS, vdST, _graph );
+        			Graph::BaseUndirectedGraph::edge_descriptor foreED = foreE.first;
+
+        			// base_graph
+        			_graph[ foreED ].id = eid;
+        			_graph[ foreED ].level = _graph[vdS].level;
+
+        			_graph[ foreED ].angle = 0.0;
+        			_graph[ foreED ].weight = (_graph[ foreED ].level + 1) * (*_graph[vdST].coordPtr - *_graph[vdSS].coordPtr).norm();;
+        			_graph[ foreED ].visit = false;
+        			_graph[ foreED ].visitedTimes = 0;
+
+        			_graph[ foreED ].isFore = false;
+        			_graph[ foreED ].isBack = false;
+        			eid++;
+#ifdef DEBUG_COMPRESSION
+        			cerr << "new edge = ( " << _graph[ vdSS ].id << ", " << _graph[ vdST ].id << " ) " << endl;
+#endif // DEBUG_COMPRESSION
+        		}
+        	}
         }
-        
-#ifdef COMPRESSION_DEBUG
-        for( unsigned int i = 0; i < _polygonVecPtr->size(); i++ ){
+        else{
+        	
+        	bool found = false;
+        	Graph::BaseUndirectedGraph::edge_descriptor oldED;
+        	tie( oldED, found ) = edge( vdS, vdT, _graph );
 
-        	vector< KeiRo::Base::Coord2 > &elements = (*_polygonVecPtr)[i].elements();
-        	vector< unsigned int > &idElements = (*_polygonVecPtr)[i].idElements();
-        	cerr << " i = " << i << ", elements.size() = " << elements.size() << endl;
-        	cerr << " i = " << i << ", idElements.size() = " << idElements.size() << endl;
+        	if( found == false ){
+        		pair< Graph::BaseUndirectedGraph::edge_descriptor, unsigned int > foreE = add_edge( vdS, vdT, _graph );
+        		Graph::BaseUndirectedGraph::edge_descriptor foreED = foreE.first;
+
+        		// base_graph
+        		_graph[ foreED ].id = eid;
+        		_graph[ foreED ].level = _graph[vdS].level;
+
+        		_graph[ foreED ].angle = 0.0;
+        		_graph[ foreED ].weight = (_graph[ foreED ].level + 1) * (*_graph[vdT].coordPtr - *_graph[vdS].coordPtr).norm();
+        		_graph[ foreED ].visit = false;
+        		_graph[ foreED ].visitedTimes = 0;
+
+        		_graph[ foreED ].isFore = false;
+        		_graph[ foreED ].isBack = false;
+#ifdef DEBUG_COMPRESSION
+        		cerr << "new edge = ( " << _graph[ vdS ].id << ", " << _graph[ vdT ].id << " ) " << endl;
+#endif // DEBUG_COMPRESSION
+        	}
         }
-
-        for( unsigned int i = 0; i < _samples.size(); i++ ){
-            cerr << "ref = " << &_samples[i] << ", i = " << i << " , " << _samples[i];
-        }
-        cerr << endl;
-        for( unsigned int i = 0; i < _polygonVecPtr->size(); i++ ){
-
-            cerr << "i = " << i << endl;
-            vector< KeiRo::Base::Coord2 > &elements = (*_polygonVecPtr)[i].elements();
-            vector< unsigned int > &idElements = (*_polygonVecPtr)[i].idElements();
-
-            for( unsigned int j = 0; j < elements.size(); j++ ){
-                // pointerElements[j] = &elements[j];
-                cerr << "j = " << j << ", " << idElements[j] << ", c = " << elements[j];
-            }
-            cerr << endl;
-        }
-#endif // COMPRESSION_DEBUG
-
-        // add line objects
-        for( unsigned int i = 0; i < _polylineVecPtr->size(); i++ ){
-
-            vector< KeiRo::Base::Coord2 > &elements = (*_polylineVecPtr)[i].elements();
-            vector< unsigned int > &idElements = (*_polylineVecPtr)[i].idElements();
-            for( unsigned int j = 0; j < elements.size(); j++ ){
-	
-	            KeiRo::Base::Coord2 &coord = elements[j];
-                unsigned int index = 0;
-                if( _closeToSamples( coord, index ) == true ){
-                    idElements.push_back( index );
-                }
-                else{
-	                coord.updateOldElement();
-	                _fixedSamples.push_back( coord );
-                    _samples.push_back( coord );
-                    idElements.push_back( nV );
-                    nV++;
-                }
-            }
-        }
-
-#ifdef COMPRESSION_DEBUG
-        cerr << "nV = " << nV << endl;
-        cerr << "nPolygons = " << _polygonVecPtr->size() << " _nPolylines = " << _polylineVecPtr->size() << endl;
-        cerr << "_samples.size() = " << _samples.size() << " _fixedSamples.size() = " << _fixedSamples.size() << endl;
-#endif // COMPRESSION_DEBUG
     }
 
     //
-    //  Compression::createCompressedJoints --	create compression from joints of polygons and polylines
+    //  Compression::addBridgeEdge --	add a new bridge edge
     //
     //  Inputs
-    //	none
+    //	source vid
+    //  target vid
     //
     //  Outputs
     //	none
     //
-    void Compression::createCompressedJoints( void )
-    {
-        // sample size index
-        unsigned int nV = 0;
+    void Compression::addBridgeEdge( unsigned int idS, unsigned int idT )
+	{
+		unsigned int eid = num_edges( _graph );
+		Graph::BaseUndirectedGraph::vertex_descriptor vdS = vertex( idS, _graph );
+		Graph::BaseUndirectedGraph::vertex_descriptor vdT = vertex( idT, _graph );
 
-        // add polygonal x line intersection
-        for( unsigned int i = 0; i < _polygonVecPtr->size(); i++ ){
-
-            // get polygon elements
-            vector< KeiRo::Base::Coord2 > newPolygonElements;
-            vector< unsigned int > newPolygonIDElements;
-            vector< KeiRo::Base::Coord2 > &polygonElements = (*_polygonVecPtr)[i].elements();
-            newPolygonElements.push_back( polygonElements[0] );
-
-            for( unsigned int j = 0; j < polygonElements.size(); j++ ){
+		pair< Graph::BaseUndirectedGraph::edge_descriptor, unsigned int > foreE = add_edge( vdS, vdT, _graph );
+		Graph::BaseUndirectedGraph::edge_descriptor foreED = foreE.first;
 	
-	            KeiRo::Base::Coord2 &coordA = polygonElements[j];
-	            KeiRo::Base::Coord2 &coordB = polygonElements[ (j+1)%polygonElements.size() ];
-	            KeiRo::Base::Coord2 unitBA = (coordA-coordB)/(coordA-coordB).norm();
-	            KeiRo::Base::Coord2 a = coordA + _min_point_distance * unitBA;
-	            KeiRo::Base::Coord2 b = coordB - _min_point_distance * unitBA;
-
-                // get line elements
-                for( unsigned int m = 0; m < _polylineVecPtr->size(); m++ ){
-
-                    map< double, KeiRo::Base::Coord2 > intersectionMap;
-                    vector< KeiRo::Base::Coord2 > &lineElements = (*_polylineVecPtr)[m].elements();
-                    //vector< unsigned int > &lineIDElements = (*_polylineVecPtr)[m].idElements();
-                    for( unsigned int n = 0; n < lineElements.size()-1; n++ ){
+		// base_graph
+		_graph[ foreED ].id = eid;
+		_graph[ foreED ].level = _graph[vdS].level;
 	
-	                    KeiRo::Base::Coord2 &coordC = lineElements[ n ];
-	                    KeiRo::Base::Coord2 &coordD = lineElements[ n+1 ];
-	                    KeiRo::Base::Coord2 unitDC = (coordC-coordD)/(coordC-coordD).norm();
+		_graph[ foreED ].angle = 0.0;
+		_graph[ foreED ].weight = 0.0;
+		_graph[ foreED ].visit = false;
+		_graph[ foreED ].visitedTimes = 0;
 	
-	                    KeiRo::Base::Coord2 c = coordC + _min_point_distance * unitDC;
-	                    KeiRo::Base::Coord2 d = coordD - _min_point_distance * unitDC;
-	                    KeiRo::Base::Coord2 intersection;
-                        if( isIntersected( a, b, c, d, intersection ) == true ){
-
-                            // add intermediate sample points
-                            double distance = ( intersection-coordA ).norm();
-
-                            if( !( ( distance < _min_point_distance ) ||
-                                   ( ( intersection-coordB ).norm() < _min_point_distance ) ) ) {
-                                // cerr << "intersection = " << intersection;
-                                intersectionMap.insert( pair< double, KeiRo::Base::Coord2 >( distance, intersection ) );
-                            }
-
-#ifdef COMPRESSION_DEBUG
-                            cerr << "isIntersected = " << true << endl;
-                            cerr << setprecision(50) << " coordC = " << coordC;
-                            cerr << setprecision(50) << " coordD = " << coordD;
-                            cerr << setprecision(50) << "intersection = " << intersection;
-                            if( distanceBetween( coordC, intersection ) < 1e-5 ){
-                                cerr << "coordC == intersection" << endl;
-                            }
-                            if( distanceBetween( coordD, intersection ) < 1e-5 ){
-                                cerr << "coordD == intersection" << endl;
-                            }
-                            cerr << endl;
-#endif // COMPRESSION_DEBUG
-                        }
-                    }
-
-                    // add intersected nodes
-                    // cerr << "intersectionMap.size() = " << intersectionMap.size() << endl;
-                    if( intersectionMap.size() > 0 ){
-
-                        map< double, KeiRo::Base::Coord2 >::iterator it = intersectionMap.begin();
-                        newPolygonElements.push_back( it->second );
-                        map< double, KeiRo::Base::Coord2 >::iterator itPrev = it;
-                        it++;
-                        for( ; it != intersectionMap.end(); it++ ){
-
-                            if( ( itPrev->second - it->second ).norm() > _min_point_distance ){
-                                newPolygonElements.push_back( it->second );
-                            }
-                            itPrev = it;
-                        }
-                    }
-
-                }
-
-                if( (j+1)%polygonElements.size() != 0 ){
-                    newPolygonElements.push_back( polygonElements[(j+1)%polygonElements.size()] );
-                }
-            }
-
-#ifdef COMPRESSION_DEBUG
-            cerr << "ori = " << polygonElements.size() << endl;
-            for( unsigned int j = 0; j < polygonElements.size(); j++ ){
-                cerr << "j = " << j << ", " << polygonElements[j];
-            }
-            cerr << "new = " << newPolygonElements.size() << endl;
-            for( unsigned int j = 0; j < newPolygonElements.size(); j++ ){
-                cerr << "j = " << j << ", " << newPolygonElements[j];
-            }
-            cerr << endl;
-#endif // COMPRESSION_DEBUG
-
-            (*_polygonVecPtr)[i].elements() = newPolygonElements;
-            (*_polygonVecPtr)[i].fixedElements() = newPolygonElements;
-        }
-
+		_graph[ foreED ].isFore = false;
+		_graph[ foreED ].isBack = false;
+#ifdef DEBUG_COMPRESSION
+		cerr << "new bridge edge = ( " << _graph[ vdS ].id << ", " << _graph[ vdT ].id << " ) " << endl;
+#endif // DEBUG_COMPRESSION
     }
-
-    //
-    //  Compression::createCompressedGridJoints --	create compression from joints of polygons and grids
-    //
-    //  Inputs
-    //	none
-    //
-    //  Outputs
-    //	none
-    //
-    void Compression::createCompressedGridJoints( void )
-    {
-        Graph::GridGraph & gridG = _gridPtr->gridG();
-//        printGraph( gridG );
-
-        for( unsigned int i = 0; i < _polygonVecPtr->size(); i++ ){
-
-            // get polygon elements
-            vector< KeiRo::Base::Coord2 > newPolygonElements;
-            vector< unsigned int > newPolygonIDElements;
-            vector< KeiRo::Base::Coord2 > &polygonElements = (*_polygonVecPtr)[i].elements();
-            newPolygonElements.push_back( polygonElements[0] );
-            for( unsigned int j = 0; j < polygonElements.size(); j++ ) {
-	
-	            KeiRo::Base::Coord2 &coordA = polygonElements[j];
-	            KeiRo::Base::Coord2 &coordB = polygonElements[(j + 1) % polygonElements.size()];
-	            KeiRo::Base::Coord2 unitBA = (coordA - coordB) / (coordA - coordB).norm();
-	            KeiRo::Base::Coord2 a = coordA + _min_point_distance * unitBA;
-	            KeiRo::Base::Coord2 b = coordB - _min_point_distance * unitBA;
-
-                // draw grid graph edges
-                map< double, KeiRo::Base::Coord2 > intersectionMap;
-                BGL_FORALL_EDGES( ed, gridG, Graph::GridGraph ) {
-
-                    Graph::GridGraph::vertex_descriptor vdS = source( ed, gridG );
-                    Graph::GridGraph::vertex_descriptor vdT = target( ed, gridG );
-                    KeiRo::Base::Coord2 &coordC = *gridG[ vdS ].coordPtr;
-                    KeiRo::Base::Coord2 &coordD = *gridG[ vdT ].coordPtr;
-                    KeiRo::Base::Coord2 unitDC = (coordC-coordD)/(coordC-coordD).norm();
-
-                    KeiRo::Base::Coord2 c = coordC + _min_point_distance * unitDC;
-                    KeiRo::Base::Coord2 d = coordD - _min_point_distance * unitDC;
-                    KeiRo::Base::Coord2 intersection;
-                    if( isIntersected( a, b, c, d, intersection ) == true ){
-
-                        // add intermediate sample points
-                        double distance = ( intersection-coordA ).norm();
-
-                        if( !( ( distance < _min_point_distance ) ||
-                            ( ( intersection-coordB ).norm() < _min_point_distance ) ) ) {
-                            intersectionMap.insert( pair< double, KeiRo::Base::Coord2 >( distance, intersection ) );
-                        }
-#ifdef COMPRESSION_DEBUG
-                        else{
-                            cerr << "skip... " << endl;
-                        }
-                        cerr << "eid = " << gridG[ed].id << endl;
-                        cerr << "distance to A = " << distance << endl;
-                        cerr << "distance to B = " << ( intersection-coordB ).norm() << endl;
-
-                        cerr << "isIntersected = " << true << endl;
-                        cerr << setprecision(50) << " coordC = " << coordC;
-                        cerr << setprecision(50) << " coordD = " << coordD;
-                        cerr << setprecision(50) << "intersection = " << intersection;
-                        if( distanceBetween( coordC, intersection ) < 1e-5 ){
-                            cerr << "coordC == intersection" << endl;
-                        }
-                        if( distanceBetween( coordD, intersection ) < 1e-5 ){
-                            cerr << "coordD == intersection" << endl;
-                        }
-                        cerr << endl;
-#endif // COMPRESSION_DEBUG
-                    }
-                }
-
-                // add intersected nodes
-                if( intersectionMap.size() > 0 ){
-                    map< double, KeiRo::Base::Coord2 >::iterator it = intersectionMap.begin();
-                    newPolygonElements.push_back( it->second );
-                    map< double, KeiRo::Base::Coord2 >::iterator itPrev = it;
-                    it++;
-                    for( ; it != intersectionMap.end(); it++ ){
-
-                        if( ( itPrev->second - it->second ).norm() > _min_point_distance ){
-                            newPolygonElements.push_back( it->second );
-                        }
-                        itPrev = it;
-                    }
-                }
-
-#ifdef COMPRESSION_DEBUG
-                cerr << "list = " << intersectionMap.size() << endl;
-                cerr << "A: " << coordA;
-                map< double, KeiRo::Base::Coord2 >::iterator it = intersectionMap.begin();
-                cerr << it->second;
-                newPolygonElements.push_back( it->second );
-                map< double, KeiRo::Base::Coord2 >::iterator itPrev = it;
-                it++;
-                for( ; it != intersectionMap.end(); it++ ){
-                    if( ( itPrev->second - it->second ).norm() > _min_point_distance ){
-                        cerr << "( itPrev->second - it->second ).norm() = " << ( itPrev->second - it->second ).norm()
-                             << ", " << it->second;
-                    }
-                    itPrev = it;
-                }
-                cerr << "B: " << coordB;
-                cerr << endl;
-#endif // COMPRESSION_DEBUG
-
-                if( (j+1)%polygonElements.size() != 0 ){
-                    newPolygonElements.push_back( polygonElements[(j+1)%polygonElements.size()] );
-                }
-            }
-
-            (*_polygonVecPtr)[i].elements() = newPolygonElements;
-            (*_polygonVecPtr)[i].fixedElements() = newPolygonElements;
-        }
-    }
-
-    //
-    //  Compression::createCompression --	create compression from polygons and polylines
-    //
-    //  Inputs
-    //	none
-    //
-    //  Outputs
-    //	none
-    //
-    void Compression::createCompression( bool isOn )
-    {
-		if( isOn ){
-	        createCompressedGridJoints();
-	        createCompressedJoints();
-		}
-		else{
-			createCompressedSamples();
-		}
-    }
-
     //------------------------------------------------------------------------------
     //	Friend functions
     //------------------------------------------------------------------------------

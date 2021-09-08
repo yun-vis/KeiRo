@@ -145,8 +145,8 @@ namespace Base {
 		
 		if( diff.x() == 0 ){
 			if( diffC.x() == 0 &&
-				( c.y() > MIN2( _elements[0].y(), _elements[1].y() ) ) &&
-				( c.y() < MAX2( _elements[0].y(), _elements[1].y() ) )
+				( c.y() >= MIN2( _elements[0].y(), _elements[1].y() ) ) &&
+				( c.y() <= MAX2( _elements[0].y(), _elements[1].y() ) )
 				)
 				return true;
 		}
@@ -159,10 +159,10 @@ namespace Base {
 			double b = _elements[0].y() - m * _elements[0].x();
 			double dist = fabs( m * c.x() - c.y() + b )/sqrt( SQUARE( m ) + 1.0 );
 			if( dist == 0.0 &&
-			    ( c.x() > MIN2( _elements[0].x(), _elements[1].x() ) ) &&
-			    ( c.x() < MAX2( _elements[0].x(), _elements[1].x() ) ) &&
-			    ( c.y() > MIN2( _elements[0].y(), _elements[1].y() ) ) &&
-			    ( c.y() < MAX2( _elements[0].y(), _elements[1].y() ) )
+			    ( c.x() >= MIN2( _elements[0].x(), _elements[1].x() ) ) &&
+			    ( c.x() <= MAX2( _elements[0].x(), _elements[1].x() ) ) &&
+			    ( c.y() >= MIN2( _elements[0].y(), _elements[1].y() ) ) &&
+			    ( c.y() <= MAX2( _elements[0].y(), _elements[1].y() ) )
 				)
 				return true;
 		}

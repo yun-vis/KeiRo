@@ -74,7 +74,7 @@ namespace FileIO {
 	
 	    _svgCanvas          = v._svgCanvas;
 		_screenCanvas       = v._screenCanvas;
-		_compression        = v._compression;
+		_compressionGrid    = v._compressionGrid;
     }
 
     //------------------------------------------------------------------------------
@@ -1064,8 +1064,8 @@ namespace FileIO {
 #endif // SVG_DEBUG
 	    
         // create compression
-        _compression.init( _gridPtr, &_polygonVec, &_polylineVec );
-        _compression.createCompression( isCompressionOn );
+        _compressionGrid.init( _gridPtr, &_polygonVec, &_polylineVec );
+        _compressionGrid.createCompression( isCompressionOn );
 
         return true;
     }

@@ -4,12 +4,12 @@
 //
 //------------------------------------------------------------------------------
 //
-//	Ver 1.00		Date: Mon Sep 06 20:58:23 2021
+//	Ver 1.00		Date: Mon Mar 16 07:58:23 2020
 //
 //******************************************************************************
 
-#ifndef	_Compression_H
-#define _Compression_H
+#ifndef	_CompressionGrid_H
+#define _CompressionGrid_H
 
 //------------------------------------------------------------------------------
 //	Including Header Files
@@ -21,8 +21,12 @@
 
 using namespace std;
 
-#include "BaseUndirectedGraph.h"
-#include "Edge2.h"
+#include <qapplication.h>
+
+//#include "Config.h"
+#include "Polygon2.h"
+#include "Line2.h"
+#include "Grid2.h"
 
 //------------------------------------------------------------------------------
 //	Defining Macros
@@ -31,20 +35,29 @@ using namespace std;
 //------------------------------------------------------------------------------
 //	Defining Classes
 //------------------------------------------------------------------------------
-class Compression {
+class CompressionGrid {
 
 private:
 
-    Graph::BaseUndirectedGraph                  _graph;
-    bool        _closeToSamplesInt( KeiRo::Base::Coord2 coordS,
-									KeiRo::Base::Coord2 coordT );
+    double                                              _min_point_distance;
+
+    vector< KeiRo::Base::Coord2 >                       _fixedSamples;
+    vector< KeiRo::Base::Coord2 >                       _samples;
+
+    vector< KeiRo::Base::Polygon2 >                     *_polygonVecPtr;
+    vector< KeiRo::Base::Line2 >                        *_polylineVecPtr;
+    Grid2                                               *_gridPtr;
+
+    bool        _closeToSamples( KeiRo::Base::Coord2 &coord, unsigned int &index );
 
 protected:
 
     //------------------------------------------------------------------------------
     //	Special functions
     //------------------------------------------------------------------------------
-    void	    _init( void );
+    void	    _init( Grid2 * __gridPtr,
+                       vector< KeiRo::Base::Polygon2 > *__polygonVecPtr,
+                       vector< KeiRo::Base::Line2 > *__polylineVecPtr );
     void	    _clear( void );
 
 public:
@@ -53,41 +66,48 @@ public:
     //	Constructors
     //------------------------------------------------------------------------------
     // default constructor
-    Compression( void );
+    CompressionGrid( void );
 	// copy constructor
-	Compression( const Compression & v );
+	CompressionGrid( const CompressionGrid & v );
     // destructor
-    virtual ~Compression( void );
+    virtual ~CompressionGrid( void );
 
     //------------------------------------------------------------------------------
     //	Assignment operators
     //------------------------------------------------------------------------------
-	Compression &		operator = ( const Compression & v );
+	CompressionGrid &		operator = ( const CompressionGrid & v );
 	
     //------------------------------------------------------------------------------
     //	Reference to elements
     //------------------------------------------------------------------------------
-    
-    Graph::BaseUndirectedGraph &                graph( void )		        { return _graph; }
-    const Graph::BaseUndirectedGraph &	        graph( void ) const 	    { return _graph; }
+    vector< KeiRo::Base::Coord2 > &              fixedSamples( void )		{ return _fixedSamples; }
+    const vector< KeiRo::Base::Coord2 > &	    fixedSamples( void ) const  { return _fixedSamples; }
+
+    vector< KeiRo::Base::Coord2 > &              samples( void )		        { return _samples; }
+    const vector< KeiRo::Base::Coord2 > &	    samples( void ) const 	    { return _samples; }
+
+    vector< KeiRo::Base::Polygon2 > *	        polygonVecPtr( void ) 	        { return _polygonVecPtr; }
+    const vector< KeiRo::Base::Polygon2 > *	polygonVecPtr( void ) const	{ return _polygonVecPtr; }
+    vector< KeiRo::Base::Line2 > *	            polylineVecPtr( void ) 	    { return _polylineVecPtr; }
+    const vector< KeiRo::Base::Line2 > *	    polylineVecPtr( void ) const	{ return _polylineVecPtr; }
 
     //------------------------------------------------------------------------------
     //	Special functions
     //------------------------------------------------------------------------------
-    void init( void ){
-        _init();
+    void init( Grid2 * __gridPtr,
+               vector< KeiRo::Base::Polygon2 > *__polygonVecPtr,
+               vector< KeiRo::Base::Line2 > *__polylineVecPtr ){
+        _init( __gridPtr, __polygonVecPtr, __polylineVecPtr );
     }
-
     void clear( void ){
         _clear();
     }
+    void createCompressedSamples( void );
+    void createCompressedJoints( void );
+    void createCompressedGridJoints( void );
+    void createCompression( bool isOn );
 
-    bool findVertex( KeiRo::Base::Coord2 coord, unsigned int sortedID, unsigned int &index );
-    unsigned int addVertex( KeiRo::Base::Coord2 coord, unsigned int level, unsigned int sortedID );
-    void addEdge( unsigned int idS, unsigned int idT,
-				  unsigned int sortedID, bool isCompressed );
-    void addBridgeEdge( unsigned int idS, unsigned int idT );
-    
+
     //------------------------------------------------------------------------------
     //	Friend functions
     //------------------------------------------------------------------------------
@@ -96,13 +116,13 @@ public:
     //	I/O functions
     //------------------------------------------------------------------------------
     // output
-    friend ostream &	operator << ( ostream & s, const Compression & v );
+    friend ostream &	operator << ( ostream & s, const CompressionGrid & v );
     // input
-    friend istream &	operator >> ( istream & s, Compression & v );
+    friend istream &	operator >> ( istream & s, CompressionGrid & v );
     // class name
     virtual const char * className( void ) const { return "Compression"; }
 
 };
 
 
-#endif // _Compression_H
+#endif // _CompressionGrid_H

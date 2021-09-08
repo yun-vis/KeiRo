@@ -52,8 +52,8 @@ namespace Graph {
 
     public:
 
-        unsigned int                level;          // hierarchical level
-        unsigned int                attributeID;    // external attribute ID
+        unsigned int                level;                  // hierarchical level
+        unsigned int                attributeID;            // external attribute ID
 	
 	    KeiRo::Base::Coord2         meanCoord;
 	    KeiRo::Base::Coord2         *leftBottomCoordPtr;    // area of the tree cell

@@ -18,7 +18,7 @@ using namespace std;
 #ifndef Q_MOC_RUN
 #include "Object.h"
 #include "Polygon2.h"
-#include "Compression.h"
+#include "CompressionGrid.h"
 #include "Grid2.h"
 #endif // Q_MOC_RUN
 
@@ -38,7 +38,7 @@ namespace FileIO {
 	    Grid2                       *_gridPtr;
 	    static int                  _curveDownSample;
 	
-	    Compression                 _compression;
+	    CompressionGrid             _compressionGrid;
 	    
     protected:
 	
@@ -85,8 +85,8 @@ namespace FileIO {
         vector< KeiRo::Base::Line2 > &	            polylineVec( void ) 	    { return _polylineVec; }
         const vector< KeiRo::Base::Line2 > &	    polylineVec( void ) const	{ return _polylineVec; }
 
-        Compression &	                            compression( void ) 	    { return _compression; }
-        const Compression &	                        compression( void ) const	{ return _compression; }
+        CompressionGrid &	                        compressionGrid( void ) 	    { return _compressionGrid; }
+        const CompressionGrid &                     compressionGrid( void ) const	{ return _compressionGrid; }
 
         //------------------------------------------------------------------------------
         //	Special functions
