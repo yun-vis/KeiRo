@@ -52,11 +52,12 @@ namespace Graph {
 		    TreeDirectedGraph ::degree_size_type      degrees         = out_degree( vd, graph );
 		    cerr << "vid = " << graph[vd].id << " level = " << graph[vd].level
 		         << " childSize = " << graph[vd].childMap.size() << " ?= " << degrees
-		         << " parentID = " << graph[vd].parentID << endl;
+			     << " parentID = " << graph[vd].parentID
+			     << " coord = " << *graph[vd].coordPtr;
 	    }
 //	#endif  // DEBUG
 
-    #ifdef  DEBUG
+//    #ifdef  DEBUG
         // print edge information
         BGL_FORALL_EDGES( ed, graph, TreeDirectedGraph ) {
 
@@ -65,7 +66,7 @@ namespace Graph {
 
             cerr << "eid = " << graph[ ed ].id << " ( " << graph[ vdS ].id << " == " << graph[ vdT ].id << " ) " << endl;
         }
-    #endif  // DEBUG
+//    #endif  // DEBUG
     }
 
     //

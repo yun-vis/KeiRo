@@ -50,7 +50,9 @@ namespace Graph {
         BGL_FORALL_VERTICES( vd, graph, BaseUndirectedGraph ) {
 
             //BaseUndirectedGraph::degree_size_type      degrees         = out_degree( vd, graph );
-            cerr << " id = " << graph[vd].id << " initID = " << graph[vd].initID
+            cerr << " id = " << graph[vd].id
+	             << " level = " << graph[vd].level
+	             << " initID = " << graph[vd].initID
                  << " coord = " << *graph[ vd ].coordPtr;
         }
     //#endif  // DEBUG
