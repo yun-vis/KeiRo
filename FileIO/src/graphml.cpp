@@ -57,6 +57,8 @@ namespace FileIO {
     //
     GraphML::GraphML( const GraphML & v )
     {
+	    _graphmlTree    = v._graphmlTree;
+		_graph          = v._graph;
 	    _isWithGeometry = v._isWithGeometry;
 		_maxLevel       = v._maxLevel;
     }
@@ -166,6 +168,7 @@ namespace FileIO {
 	
 	    Graph::BaseUndirectedGraph::vertex_descriptor vdNew = add_vertex( _graph );
 	    _graph[ vdNew ].id = num_vertices( _graph ) - 1;
+	    _graph[ vdNew ].initID = 0;
 	    _graph[ vdNew ].level = layer;
 	    _graph[ vdNew ].coordPtr = new KeiRo::Base::Coord2( x, y );
 		
@@ -260,7 +263,7 @@ namespace FileIO {
 	    _graphmlTree[ vdNew ].level = 0;
 	    _graphmlTree[ vdNew ].initID = 0;
 	    _graphmlTree[ vdNew ].parentID = 0;
-	    _graphmlTree[ vdNew ].coordPtr = new KeiRo::Base::Coord2( 0, 0 );
+	    _graphmlTree[ vdNew ].coordPtr = new KeiRo::Base::Coord2( 5, 0 );
     	
     	// load nodes
     	if( graphElement.firstChild().toElement().tagName() == QString( "node" ) ){
@@ -288,11 +291,14 @@ namespace FileIO {
     	// load edges
 	    loadEdge( graphElement );
 
-#ifdef DEBUG
+//#ifdef DEBUG
+	    cerr << "*****************************" << endl;
 		cerr << "_maxLevel = " << _maxLevel << endl;
 	    Graph::printGraph( _graphmlTree );
+	    cerr << "*****************************" << endl;
 	    Graph::printGraph( _graph );
-#endif // DEBUG
+	    cerr << "*****************************" << endl;
+//#endif // DEBUG
     }
 	
 } // namespace FilIO

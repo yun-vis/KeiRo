@@ -30,7 +30,7 @@ namespace FileIO {
     
 		bool _isWithGeometry;
 		unsigned int _maxLevel;
-	    Graph::TreeDirectedGraph                        *_graphmlTree;
+	    Graph::TreeDirectedGraph                        _graphmlTree;
 	    Graph::BaseUndirectedGraph                      _graph;
 	    vector< Graph::BaseUndirectedGraph >            _subgraphVec;
 
@@ -62,8 +62,12 @@ namespace FileIO {
 	    unsigned int &	            maxLevel( void ) 	            { return _maxLevel; }
 	    const unsigned int &	    maxLevel( void ) const	        { return _maxLevel; }
 
-	    Graph::TreeDirectedGraph &	            graphmlTree( void ) 	    { return _graphmlTree; }
+	    Graph::TreeDirectedGraph &	            graphmlTree( void )         { return _graphmlTree; }
 	    const Graph::TreeDirectedGraph &  	    graphmlTree( void ) const	{ return _graphmlTree; }
+	
+	    Graph::BaseUndirectedGraph &	        graph( void ) 	    { return _graph; }
+	    const Graph::BaseUndirectedGraph &  	graph( void ) const	{ return _graph; }
+	    
 		
 	    //------------------------------------------------------------------------------
         //	Special functions
