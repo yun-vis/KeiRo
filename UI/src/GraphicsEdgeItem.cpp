@@ -39,7 +39,7 @@ namespace Vector {
 		GraphicsBase::_init();
 	}
 	
-	QVariant pathInterpolator(const QLineF &start, const QLineF &end, qreal progress)
+	QVariant pathInterpolator(const QLineF &start, const QLineF &end, qreal progress )
 	{
 //    	cerr << "progress = " << progress << endl;
 //		cerr << "0 x = " << end[0].x() << " y = " << end[0].y() << endl;
@@ -84,7 +84,7 @@ namespace Vector {
         //setFlag( QGraphicsItem::ItemSendsGeometryChanges );
         //setAcceptDrops( true );
 
-        //pen().setJoinStyle( Qt::MiterJoin );
+//        pen().setJoinStyle( Qt::MiterJoin );
         pen().setJoinStyle( Qt::RoundJoin );
 	
 	    GraphicsBase::_init();

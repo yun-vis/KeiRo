@@ -51,7 +51,8 @@ namespace Graph {
 
             //BaseUndirectedGraph::degree_size_type      degrees         = out_degree( vd, graph );
             cerr << " id = " << graph[vd].id
-	             << " level = " << graph[vd].level
+ 	             << " name = " << *graph[vd].namePtr
+		         << " level = " << graph[vd].level
 	             << " initID = " << graph[vd].initID
                  << " coord = " << *graph[ vd ].coordPtr;
         }

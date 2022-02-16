@@ -44,6 +44,9 @@ namespace FileIO {
     {
 		_isWithGeometry = false;
 		_maxLevel = 0;
+	    _subGraphNodeIndex = 0;
+	    
+		_subGraphMap.clear();
     }
 
     //
@@ -57,11 +60,13 @@ namespace FileIO {
     //
     GraphML::GraphML( const GraphML & v )
     {
-	    _graphmlTree    = v._graphmlTree;
-		_graph          = v._graph;
-	    _isWithGeometry = v._isWithGeometry;
+		_isWithGeometry = v._isWithGeometry;
 		_maxLevel       = v._maxLevel;
-    }
+	    _subGraphNodeIndex = v._subGraphNodeIndex;
+	
+	    _graphmlTree    = v._graphmlTree;
+	    _subGraphMap    = v._subGraphMap;
+	}
     
     
     //
@@ -75,10 +80,10 @@ namespace FileIO {
     //
     void GraphML::loadGroup( QDomElement &parentElement, int parentID )
     {
-    	// element layer
-    	unsigned int layer = parentElement.attribute( "layer" ).toUInt();
-		if( layer > _maxLevel ) _maxLevel = layer;
-//	    cerr << "layer = " << layer << endl;
+    	// element level
+    	unsigned int level = parentElement.attribute( "level" ).toUInt();
+		if( level > _maxLevel ) _maxLevel = level;
+//	    cerr << "level = " << level << endl;
 		
 		// element name
     	QString name = parentElement.attribute( "name" );
@@ -87,7 +92,8 @@ namespace FileIO {
 		// add _graphmlTree node
 	    Graph::TreeDirectedGraph::vertex_descriptor vdNew = add_vertex( _graphmlTree );
 	    _graphmlTree[ vdNew ].id = num_vertices( _graphmlTree ) - 1;
-	    _graphmlTree[ vdNew ].level = layer;
+	    _graphmlTree[ vdNew ].namePtr = new string( name.toStdString() );
+	    _graphmlTree[ vdNew ].level = level;
 	    _graphmlTree[ vdNew ].initID = 0;
 	    _graphmlTree[ vdNew ].parentID = parentID;
 	    _graphmlTree[ vdNew ].coordPtr = new KeiRo::Base::Coord2( 0, 0 );
@@ -111,7 +117,7 @@ namespace FileIO {
     			loadGroup( groupElement, _graphmlTree[ vdNew ].id );
     		}
     		else if( groupElement.tagName() == QString( "node" ) ){
-    			loadNode( groupElement );
+    			loadNode( groupElement, _graphmlTree[ vdNew ].id );
     		}
     		else{
     			cerr << "Unrecognized tagName at " << __LINE__ << " in " << __FILE__ << endl;
@@ -128,18 +134,34 @@ namespace FileIO {
     //  Output
     //	none
     //
-    void GraphML::loadNode( QDomElement & nodeElement )
+    void GraphML::loadNode( QDomElement & nodeElement, int parentID )
     {
-	    // element layer
-	    unsigned int layer = nodeElement.attribute( "layer" ).toUInt();
- 	    if( layer > _maxLevel ) _maxLevel = layer;
-//	    cerr << "node layer = " << layer << " _maxLevel = " << _maxLevel
-//			 << " layer > _maxLevel = " << (layer > _maxLevel) << endl;
-//	    cerr << "node layer = " << layer.toStdString() << endl;
-		
+	    // element level
+	    unsigned int level = nodeElement.attribute( "level" ).toUInt();
+ 	    if( level > _maxLevel ) _maxLevel = level;
+//	    cerr << "node level = " << level << " _maxLevel = " << _maxLevel
+//			 << " level > _maxLevel = " << (level > _maxLevel) << endl;
+//	    cerr << "node level = " << level.toStdString() << endl;
+	
+	    Graph::BaseUndirectedGraph *subGraphPtr;
+	    map< unsigned int, Graph::BaseUndirectedGraph >::iterator itSubG = _subGraphMap.find( parentID );
+		if( itSubG == _subGraphMap.end() ){
+			Graph::BaseUndirectedGraph g;
+			_subGraphMap.insert( pair< unsigned int, Graph::BaseUndirectedGraph >( parentID, g ) );
+			itSubG = _subGraphMap.find( parentID );
+			subGraphPtr = &itSubG->second;
+		}
+		else{
+			subGraphPtr = &itSubG->second;
+//			cerr << " num_vertices( itSubG->second ) = " << num_vertices( itSubG->second ) << endl;
+//			cerr << " num_vertices( *subGraphPtr ) = " << num_vertices( *subGraphPtr ) << endl;
+		}
+
 	    // element id
         QString id = nodeElement.attribute( "id" );
 //        cerr << "id = " << id.toStdString() << endl;
+	    // element name
+	    QString name = nodeElement.attribute( "name" );
 
         QDomNodeList dataList = nodeElement.childNodes();
 		double x = 0.0, y = 0.0;
@@ -166,13 +188,57 @@ namespace FileIO {
 			}
         }
 	
-	    Graph::BaseUndirectedGraph::vertex_descriptor vdNew = add_vertex( _graph );
-	    _graph[ vdNew ].id = num_vertices( _graph ) - 1;
-	    _graph[ vdNew ].initID = 0;
-	    _graph[ vdNew ].level = layer;
-	    _graph[ vdNew ].coordPtr = new KeiRo::Base::Coord2( x, y );
-		
+	    Graph::BaseUndirectedGraph::vertex_descriptor vdNew = add_vertex( *subGraphPtr );
+	    (*subGraphPtr)[ vdNew ].id = num_vertices( *subGraphPtr ) - 1;
+	    (*subGraphPtr)[ vdNew ].namePtr = new string( name.toStdString() );
+	    (*subGraphPtr)[ vdNew ].namePixelWidthPtr = new double( 0.0 );
+	    (*subGraphPtr)[ vdNew ].namePixelHeightPtr = new double( 0.0 );
+	    (*subGraphPtr)[ vdNew ].initID  = _subGraphNodeIndex;
+	    (*subGraphPtr)[ vdNew ].level   = level;
+	    (*subGraphPtr)[ vdNew ].coordPtr = new KeiRo::Base::Coord2( x, y );
+#ifdef DEBUG
+		cerr << " pid = " << parentID
+			 << " nid = " << (*subGraphPtr)[ vdNew ].id
+			 << " num_vertices( *subGraphPtr ) = " << num_vertices( *subGraphPtr ) << endl;
+#endif // DEBUG
+	    _subGraphNodeIndex++;
     }
+	
+	//
+	//  GraphML::findNodesinSubGraphs --	find nodes in subGraphs
+	//
+	//  Input
+	//	idS, idT, initS, initT, subGSPtr, subGTPtr
+	//
+	//  Output
+	//	none
+	//
+	void GraphML::findNodesinSubGraphs( unsigned int idS, unsigned int idT,
+	                                    unsigned int &idSinSubG, unsigned int &idTinSubG,
+	                                    unsigned int &idGS, unsigned int &idGT,
+	                                    Graph::BaseUndirectedGraph **subGraphSPtr,
+										Graph::BaseUndirectedGraph **subGraphTPtr )
+	{
+		for( map< unsigned int, Graph::BaseUndirectedGraph >::iterator it = _subGraphMap.begin();
+			 it != _subGraphMap.end(); it++ ){
+			
+			Graph::BaseUndirectedGraph *subGPtr = &it->second;
+			
+			BGL_FORALL_VERTICES( vd, *subGPtr, Graph::BaseUndirectedGraph ) {
+				if( (*subGPtr)[vd].initID == idS ){
+					idSinSubG = (*subGPtr)[vd].id;
+					idGS = it->first;
+					*subGraphSPtr = subGPtr;
+				}
+				if( (*subGPtr)[vd].initID == idT ){
+					idTinSubG = (*subGPtr)[vd].id;
+					idGT = it->first;
+					*subGraphTPtr = subGPtr;
+				}
+			}
+		}
+	}
+	
     //
     //  GraphML::loadEdge --	loadEdge function
     //
@@ -185,7 +251,9 @@ namespace FileIO {
     void GraphML::loadEdge( QDomElement & graphElement )
     {
     	QDomNodeList edgeList = graphElement.elementsByTagName( "edge" );
+		
 		cerr << "edgeList.size() = " << edgeList.size() << endl;
+		
     	for( unsigned int i = 0; i < edgeList.size(); i++ ) {
 
     		// Select from the node list
@@ -198,25 +266,152 @@ namespace FileIO {
     		// element target
     		QString target = edgeElement.attribute( "target" );
 		    unsigned int idT = target.toUInt();
-//		    cerr << "(source, target) = (" << idS << ", " << idT << ")"<< endl;
-		
-		    Graph::BaseUndirectedGraph::vertex_descriptor vdS= vertex( idS, _graph );
-		    Graph::BaseUndirectedGraph::vertex_descriptor vdT= vertex( idT, _graph );
-		
-		    bool found = false;
-		    Graph::BaseUndirectedGraph::edge_descriptor oldED;
-		    tie( oldED, found ) = edge( vdS, vdT, _graph );
-		
-			if( found == false ){
+			
+		    Graph::BaseUndirectedGraph *subGraphSPtr, *subGraphTPtr;
+		    unsigned int idSinSubG, idTinSubG, idGS, idGT;
+			findNodesinSubGraphs( idS, idT,
+			                      idSinSubG, idTinSubG,
+								  idGS, idGT,
+			                      &subGraphSPtr, &subGraphTPtr );
+#ifdef DEBUG
+		    cerr << "(source, target) = (" << idS << ", " << idT << ")"<< endl;
+		    cerr << "(initIDS, initIDT) = (" << initIDS << ", " << initIDT << ")"<< endl;
+#endif // DEBUG
+			if( subGraphSPtr == subGraphTPtr ){
+
+				// local edge
+				Graph::BaseUndirectedGraph::vertex_descriptor vdS= vertex( idSinSubG, *subGraphSPtr );
+				Graph::BaseUndirectedGraph::vertex_descriptor vdT= vertex( idTinSubG, *subGraphTPtr );
 				
-				pair< Graph::BaseUndirectedGraph::edge_descriptor, unsigned int > foreE = add_edge( vdS, vdT, _graph );
-				Graph::BaseUndirectedGraph::edge_descriptor foreED = foreE.first;
-				_graph[ foreED ].id = num_edges( _graph ) - 1;
+				bool found = false;
+				Graph::BaseUndirectedGraph::edge_descriptor oldED;
+				tie( oldED, found ) = edge( vdS, vdT, *subGraphSPtr );
+
+				if( found == false ){
+					
+					pair< Graph::BaseUndirectedGraph::edge_descriptor, unsigned int > foreE = add_edge( vdS, vdT, *subGraphSPtr );
+					Graph::BaseUndirectedGraph::edge_descriptor foreED = foreE.first;
+					(*subGraphSPtr)[ foreED ].id = num_edges( *subGraphSPtr ) - 1;
+				}
 			}
-
+			else{
+				// global path
+				_globalPath.insert( pair< KeiRo::Base::Common::UIDPair,
+						KeiRo::Base::Common::UIDPair >( pair< unsigned int, unsigned >( idGS, idSinSubG ),
+				                                        pair< unsigned int, unsigned >( idGT, idTinSubG ) ) );
+			}
+#ifdef DEBUG
+		    cerr << "num_edges( *subGraphSPtr ) = " << num_edges( *subGraphSPtr ) << endl;
+#endif // DEBUG
     	}
+#ifdef DEBUG
+		for( multimap< KeiRo::Base::Common::UIDPair, KeiRo::Base::Common::UIDPair >::iterator it = _globalPath.begin();
+			 it != _globalPath.end(); it++ ){
+			cerr << "(" << it->first.first << ", " << it->first.second << ")" << " -- "
+				 << "(" << it->second.first << ", " << it->second.second << ")" << endl;
+		}
+#endif // DEBUG
     }
+	
+	//
+	//  GraphML::computeGroupBoundary --	load function
+	//
+	//  Input
+	//	none
+	//
+	//  Output
+	//	none
+	//
+	void GraphML::computeGroupBoundary( void )
+	{
+		// leaf nodes
+		for( map< unsigned int, Graph::BaseUndirectedGraph >::iterator it = _subGraphMap.begin();
+		     it != _subGraphMap.end(); it++ ){
+			
+			unsigned int parentID = it->first;
+			Graph::BaseUndirectedGraph *subGPtr = &it->second;
+			Graph::TreeDirectedGraph::vertex_descriptor parentVD = vertex( parentID, _graphmlTree );
 
+			double minX = INFINITY, minY = INFINITY, maxX = -INFINITY, maxY = -INFINITY;
+			BGL_FORALL_VERTICES( vd, *subGPtr, Graph::BaseUndirectedGraph ) {
+				
+				KeiRo::Base::Coord2 &coord = *(*subGPtr)[vd].coordPtr;
+				if( minX > coord.x() ) minX = coord.x();
+				if( minY > coord.y() ) minY = coord.y();
+				if( maxX < coord.x() ) maxX = coord.x();
+				if( maxY < coord.y() ) maxY = coord.y();
+			}
+			
+//			_graphmlTree[ parentVD ].leftBottomCoordPtr = new KeiRo::Base::Coord2( minX, minY );
+//			_graphmlTree[ parentVD ].widthPtr = new double ( maxX-minX );
+//			_graphmlTree[ parentVD ].heightPtr = new double ( maxY-minY );
+			
+			_graphmlTree[ parentVD ].boundingBoxPtr = new KeiRo::Base::Rectangle2( minX, minY, maxX-minX, maxY-minY );
+			
+#ifdef DEBUG
+			cerr << "cid = " << parentID
+ 				 << " level = " << _graphmlTree[ parentVD ].level
+				 << " w = " << *_graphmlTree[ parentVD ].widthPtr
+				 << " h = " << *_graphmlTree[ parentVD ].heightPtr
+				 << " lb = " << *_graphmlTree[ parentVD ].leftBottomCoordPtr;
+#endif // DEBUG
+		}
+		
+		// non-leaf nodes
+		// cerr << "_maxLevel = " << _maxLevel << endl;
+		for( int i = _maxLevel-2; i >= 0; i-- ){
+			
+			BGL_FORALL_VERTICES( vd, _graphmlTree, Graph::TreeDirectedGraph ) {
+
+//				cerr << "level = " << _graphmlTree[ vd ].level << endl;
+//				cerr << "i = " << i << endl;
+				if( i == _graphmlTree[ vd ].level ){
+					
+					double minX = INFINITY, minY = INFINITY, maxX = -INFINITY, maxY = -INFINITY;
+					Graph::TreeDirectedGraph::out_edge_iterator e, e_end;
+					for( tie( e, e_end ) = out_edges( vd, _graphmlTree ); e != e_end; ++e ) {
+						Graph::TreeDirectedGraph::edge_descriptor ed = *e;
+						Graph::TreeDirectedGraph::vertex_descriptor vdS = source( ed, _graphmlTree );
+						Graph::TreeDirectedGraph::vertex_descriptor vdT = target( ed, _graphmlTree );
+						
+						if( minX > _graphmlTree[ vdT ].boundingBoxPtr->leftBottom().x() )
+							minX = _graphmlTree[ vdT ].boundingBoxPtr->leftBottom().x();
+						if( minY > _graphmlTree[ vdT ].boundingBoxPtr->leftBottom().y() )
+							minY = _graphmlTree[ vdT ].boundingBoxPtr->leftBottom().y();
+						if( maxX < _graphmlTree[ vdT ].boundingBoxPtr->leftBottom().x() + _graphmlTree[ vdT ].boundingBoxPtr->width() )
+							maxX = _graphmlTree[ vdT ].boundingBoxPtr->leftBottom().x() + _graphmlTree[ vdT ].boundingBoxPtr->width();
+						if( maxY < _graphmlTree[ vdT ].boundingBoxPtr->leftBottom().y() + _graphmlTree[ vdT ].boundingBoxPtr->height() )
+							maxY = _graphmlTree[ vdT ].boundingBoxPtr->leftBottom().y() + _graphmlTree[ vdT ].boundingBoxPtr->height();
+					}
+					
+//					_graphmlTree[ vd ].leftBottomCoordPtr = new KeiRo::Base::Coord2( minX, minY );
+//					_graphmlTree[ vd ].widthPtr = new double ( maxX-minX );
+//					_graphmlTree[ vd ].heightPtr = new double ( maxY-minY );
+					
+					_graphmlTree[ vd ].boundingBoxPtr = new KeiRo::Base::Rectangle2( minX, minY, maxX-minX, maxY-minY );
+
+#ifdef DEBUG
+					cerr << "cid = " << _graphmlTree[ vd ].id
+					     << " level = " << _graphmlTree[ vd ].level
+						 << " bbox = " << *_graphmlTree[ vd ].boundingBoxPtr
+						 << " obbox = " << _graphmlTree[ vd ].boundingBoxPtr->oldWidth() << endl;
+//						 << " w = " << *_graphmlTree[ vd ].widthPtr
+//					     << " h = " << *_graphmlTree[ vd ].heightPtr
+//					     << " lb = " << *_graphmlTree[ vd ].leftBottomCoordPtr;
+#endif // DEBUG
+				}
+			}
+		}
+		
+#ifdef DEBUG
+		BGL_FORALL_VERTICES( vd, _graphmlTree, Graph::TreeDirectedGraph ) {
+				cerr << " id = " << _graphmlTree[ vd ].id
+				     << " boundingBox = " << *_graphmlTree[ vd ].boundingBoxPtr;
+		}
+#endif // DEBUG
+	
+	}
+	
     //
     //  GraphML::load --	load function
     //
@@ -260,11 +455,12 @@ namespace FileIO {
 		// add root node for the _graphmlTree
 	    Graph::TreeDirectedGraph::vertex_descriptor vdNew = add_vertex( _graphmlTree );
 	    _graphmlTree[ vdNew ].id = 0;
+	    _graphmlTree[ vdNew ].namePtr = new string( "root" );
 	    _graphmlTree[ vdNew ].level = 0;
 	    _graphmlTree[ vdNew ].initID = 0;
 	    _graphmlTree[ vdNew ].parentID = 0;
 	    _graphmlTree[ vdNew ].coordPtr = new KeiRo::Base::Coord2( 5, 0 );
-    	
+		
     	// load nodes
     	if( graphElement.firstChild().toElement().tagName() == QString( "node" ) ){
     		QDomNodeList nodeList = graphElement.childNodes();
@@ -291,14 +487,21 @@ namespace FileIO {
     	// load edges
 	    loadEdge( graphElement );
 
-//#ifdef DEBUG
+		// compute group boundary
+	    computeGroupBoundary();
+#ifdef DEBUG
 	    cerr << "*****************************" << endl;
 		cerr << "_maxLevel = " << _maxLevel << endl;
 	    Graph::printGraph( _graphmlTree );
 	    cerr << "*****************************" << endl;
-	    Graph::printGraph( _graph );
-	    cerr << "*****************************" << endl;
-//#endif // DEBUG
+
+		for( map< unsigned int, Graph::BaseUndirectedGraph >::iterator it = _subGraphMap.begin();
+			 it != _subGraphMap.end(); it++ ){
+			cerr << "gid = " << it->first << endl;
+			Graph::printGraph( it->second );
+			cerr << "*****************************" << endl;
+		}
+#endif // DEBUG
     }
 	
 } // namespace FilIO

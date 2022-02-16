@@ -7,12 +7,14 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <map>
 
 using namespace std;
 
 #ifndef Q_MOC_RUN
 #include "TreeDirectedGraph.h"
 #include "BaseUndirectedGraph.h"
+#include "Common.h"
 #endif // Q_MOC_RUN
 
 //------------------------------------------------------------------------------
@@ -28,11 +30,15 @@ namespace FileIO {
     {
     private:
     
-		bool _isWithGeometry;
-		unsigned int _maxLevel;
+		bool                                            _isWithGeometry;
+		unsigned int                                    _maxLevel;
+		
 	    Graph::TreeDirectedGraph                        _graphmlTree;
-	    Graph::BaseUndirectedGraph                      _graph;
-	    vector< Graph::BaseUndirectedGraph >            _subgraphVec;
+
+	    map< unsigned int, Graph::BaseUndirectedGraph > _subGraphMap;
+		unsigned int                                    _subGraphNodeIndex;
+		multimap< KeiRo::Base::Common::UIDPair,
+			 KeiRo::Base::Common::UIDPair >             _globalPath;
 
     protected:
 
@@ -64,11 +70,15 @@ namespace FileIO {
 
 	    Graph::TreeDirectedGraph &	            graphmlTree( void )         { return _graphmlTree; }
 	    const Graph::TreeDirectedGraph &  	    graphmlTree( void ) const	{ return _graphmlTree; }
-	
-	    Graph::BaseUndirectedGraph &	        graph( void ) 	    { return _graph; }
-	    const Graph::BaseUndirectedGraph &  	graph( void ) const	{ return _graph; }
-	    
 		
+	    map< unsigned int, Graph::BaseUndirectedGraph > &	        subGraphMap( void ) 	    { return _subGraphMap; }
+	    const map< unsigned int, Graph::BaseUndirectedGraph > &  	subGraphMap( void ) const	{ return _subGraphMap; }
+	
+	    multimap< KeiRo::Base::Common::UIDPair,
+			    KeiRo::Base::Common::UIDPair > &    _globalPathMap( void ) 	        { return _globalPath; }
+	    const multimap< KeiRo::Base::Common::UIDPair,
+			    KeiRo::Base::Common::UIDPair > &  	_globalPathMap( void ) const	{ return _globalPath; }
+				
 	    //------------------------------------------------------------------------------
         //	Special functions
         //------------------------------------------------------------------------------
@@ -77,8 +87,14 @@ namespace FileIO {
         }
         void load( const string filename );
         void loadGroup( QDomElement & groupElement, int parentID = -1 );
-        void loadNode( QDomElement & nodeElement );
+        void loadNode( QDomElement & nodeElement, int parentID = -1 );
         void loadEdge( QDomElement & graphElement );
+		void computeGroupBoundary( void );
+	    void findNodesinSubGraphs( unsigned int idS, unsigned int idT,
+	                               unsigned int &idSinSubG, unsigned int &idTinSubG,
+	                               unsigned int &idGS, unsigned int &idGT,
+	                               Graph::BaseUndirectedGraph **subGraphS,
+								   Graph::BaseUndirectedGraph **subGraphT );
 
         //------------------------------------------------------------------------------
         //	I/O functions

@@ -50,7 +50,9 @@ namespace Graph {
 	    BGL_FORALL_VERTICES( vd, graph, TreeDirectedGraph ) {
 		
 		    TreeDirectedGraph ::degree_size_type      degrees         = out_degree( vd, graph );
-		    cerr << "vid = " << graph[vd].id << " level = " << graph[vd].level
+		    cerr << "vid = " << graph[vd].id
+			     << " name = " << *graph[vd].namePtr
+			     << " level = " << graph[vd].level
 		         << " childSize = " << graph[vd].childMap.size() << " ?= " << degrees
 			     << " parentID = " << graph[vd].parentID
 			     << " coord = " << *graph[vd].coordPtr;

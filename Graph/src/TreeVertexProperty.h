@@ -58,6 +58,7 @@ namespace Graph {
 	    KeiRo::Base::Coord2         meanCoord;
 	    KeiRo::Base::Coord2         *leftBottomCoordPtr;    // area of the tree cell
 	    double                      *areaCoveragePtr;       // area coverage of the tree node
+	    KeiRo::Base::Rectangle2     *boundingBoxPtr;        // bounding box of the tree cell
 	
 	    vector< unsigned int >      leafIDVec;              // id in samples
 	    map< unsigned int, unsigned int >      childMap;    // vid of children in TreeGraph

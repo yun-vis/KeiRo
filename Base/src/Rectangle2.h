@@ -124,6 +124,7 @@ namespace Base {
         bool isInside( Coord2 c );
 	    bool isOverlap( Rectangle2 r, double &area );
 	    void updateOldElement( void );
+	    void updateFixedElement( void );
 	    
         //------------------------------------------------------------------------------
         //	Friend functions

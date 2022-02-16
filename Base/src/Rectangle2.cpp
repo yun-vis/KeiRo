@@ -56,7 +56,8 @@ namespace Base {
     {
     	_leftBottom.zero();
     	_oldLeftBottom.zero();
-    	_width = _oldWidth = _height = _oldHeight = 0.0;
+		_fixedLeftBottom.zero();
+    	_width = _oldWidth = _fixedWidth = _height = _oldHeight = _fixedHeight = 0.0;
     }
 
     //------------------------------------------------------------------------------
@@ -97,6 +98,11 @@ namespace Base {
 	    _width              = w;
 	    _height             = h;
 	
+	    _fixedLeftBottom.x()  = x;
+	    _fixedLeftBottom.y()  = y;
+	    _fixedWidth           = w;
+	    _fixedHeight          = h;
+		
 	    _oldLeftBottom.x()  = x;
 	    _oldLeftBottom.y()  = y;
 	    _oldWidth           = w;
@@ -121,7 +127,11 @@ namespace Base {
 	    _leftBottom         = v._leftBottom;
         _width              = v._width;
         _height             = v._height;
-
+	
+	    _fixedLeftBottom    = v._fixedLeftBottom;
+	    _fixedWidth         = v._fixedWidth;
+	    _fixedHeight        = v._fixedHeight;
+		
 	    _oldLeftBottom      = v._oldLeftBottom;
 	    _oldWidth           = v._oldWidth;
 	    _oldHeight          = v._oldHeight;
@@ -182,6 +192,13 @@ namespace Base {
 		_oldHeight      = _height;
 	}
 	
+	void Rectangle2::updateFixedElement( void )
+	{
+		_fixedLeftBottom  = _leftBottom;
+		_fixedWidth       = _width;
+		_fixedHeight      = _height;
+	}
+	
     //------------------------------------------------------------------------------
     //	Friend functions
     //------------------------------------------------------------------------------
@@ -210,6 +227,8 @@ namespace Base {
         // print out the elements
         stream << setw( width ) << "x = " << obj._leftBottom.x() << ", y = " << obj._leftBottom.y() << ", ";
 	    stream << setw( width ) << "w = " << obj._width << ", h = " << obj._height << endl;
+	    stream << setw( width ) << "ox = " << obj._oldLeftBottom.x() << ", oy = " << obj._oldLeftBottom.y() << ", ";
+	    stream << setw( width ) << "ow = " << obj._oldWidth << ", oh = " << obj._oldHeight << endl;
 //        stream << endl;
 
         return stream;
