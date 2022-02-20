@@ -96,6 +96,7 @@ namespace FileIO {
 	    _graphmlTree[ vdNew ].level = level;
 	    _graphmlTree[ vdNew ].initID = 0;
 	    _graphmlTree[ vdNew ].parentID = parentID;
+	    _graphmlTree[ vdNew ].isSelected = false;
 	    _graphmlTree[ vdNew ].coordPtr = new KeiRo::Base::Coord2( 0, 0 );
 	
 	    // add _graphmlTree edge
@@ -195,6 +196,7 @@ namespace FileIO {
 	    (*subGraphPtr)[ vdNew ].namePixelHeightPtr = new double( 0.0 );
 	    (*subGraphPtr)[ vdNew ].initID  = _subGraphNodeIndex;
 	    (*subGraphPtr)[ vdNew ].level   = level;
+	    (*subGraphPtr)[ vdNew ].isSelected   = false;
 	    (*subGraphPtr)[ vdNew ].coordPtr = new KeiRo::Base::Coord2( x, y );
 #ifdef DEBUG
 		cerr << " pid = " << parentID
@@ -296,7 +298,7 @@ namespace FileIO {
 			}
 			else{
 				// global path
-				_globalPath.insert( pair< KeiRo::Base::Common::UIDPair,
+				_globalPathMap.insert( pair< KeiRo::Base::Common::UIDPair,
 						KeiRo::Base::Common::UIDPair >( pair< unsigned int, unsigned >( idGS, idSinSubG ),
 				                                        pair< unsigned int, unsigned >( idGT, idTinSubG ) ) );
 			}
@@ -459,6 +461,7 @@ namespace FileIO {
 	    _graphmlTree[ vdNew ].level = 0;
 	    _graphmlTree[ vdNew ].initID = 0;
 	    _graphmlTree[ vdNew ].parentID = 0;
+	    _graphmlTree[ vdNew ].isSelected = false;
 	    _graphmlTree[ vdNew ].coordPtr = new KeiRo::Base::Coord2( 5, 0 );
 		
     	// load nodes

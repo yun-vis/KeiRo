@@ -38,7 +38,7 @@ namespace FileIO {
 	    map< unsigned int, Graph::BaseUndirectedGraph > _subGraphMap;
 		unsigned int                                    _subGraphNodeIndex;
 		multimap< KeiRo::Base::Common::UIDPair,
-			 KeiRo::Base::Common::UIDPair >             _globalPath;
+			 KeiRo::Base::Common::UIDPair >             _globalPathMap;
 
     protected:
 
@@ -75,9 +75,9 @@ namespace FileIO {
 	    const map< unsigned int, Graph::BaseUndirectedGraph > &  	subGraphMap( void ) const	{ return _subGraphMap; }
 	
 	    multimap< KeiRo::Base::Common::UIDPair,
-			    KeiRo::Base::Common::UIDPair > &    _globalPathMap( void ) 	        { return _globalPath; }
+			    KeiRo::Base::Common::UIDPair > &    globalPathMap( void ) 	    { return _globalPathMap; }
 	    const multimap< KeiRo::Base::Common::UIDPair,
-			    KeiRo::Base::Common::UIDPair > &  	_globalPathMap( void ) const	{ return _globalPath; }
+			    KeiRo::Base::Common::UIDPair > &  	globalPathMap( void ) const	{ return _globalPathMap; }
 				
 	    //------------------------------------------------------------------------------
         //	Special functions
