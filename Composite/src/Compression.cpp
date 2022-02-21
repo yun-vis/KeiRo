@@ -200,8 +200,7 @@
     void Compression::addEdge( unsigned int idS, unsigned int idT, vector< unsigned int > &intermediateVec,
 							   unsigned int sortedID, bool isCompressed )
     {
-		cerr << "here isCompressed = " << isCompressed << endl;
-	    unsigned int eid = num_edges( _graph );
+		unsigned int eid = num_edges( _graph );
 //	    cerr << "idS = " << idS << " idT = " << idT << endl;
         Graph::BaseUndirectedGraph::vertex_descriptor vdS = vertex( idS, _graph );
         Graph::BaseUndirectedGraph::vertex_descriptor vdT = vertex( idT, _graph );

@@ -111,6 +111,7 @@ namespace Base {
         _elements           = __elements;
 	    _oldElements        = _elements;
         _fixedElements      = _elements;
+		
         _idElements.clear();
     }
 
@@ -133,7 +134,9 @@ namespace Base {
         _fixedElements      = v._fixedElements;
         _idElements         = v._idElements;
         _isSelected         = v._isSelected;
-	
+		_fineElements       = v._fineElements;
+		_elementPointers    = v._elementPointers;
+		
 	    _stroke             = v._stroke;
 	    _strokeWidth        = v._strokeWidth;
 	    _strokeOpacity      = v._strokeOpacity;
