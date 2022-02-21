@@ -125,7 +125,8 @@ namespace Base {
 	    bool isOverlap( Rectangle2 r, double &area );
 	    void updateOldElement( void );
 	    void updateFixedElement( void );
-	    
+	    Coord2 projectedOnBoundary( Coord2 c );
+		
         //------------------------------------------------------------------------------
         //	Friend functions
         //------------------------------------------------------------------------------

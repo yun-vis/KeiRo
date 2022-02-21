@@ -84,7 +84,7 @@ public:
 
     bool findVertex( KeiRo::Base::Coord2 coord, unsigned int sortedID, unsigned int &index );
     unsigned int addVertex( KeiRo::Base::Coord2 coord, unsigned int level, unsigned int sortedID );
-    void addEdge( unsigned int idS, unsigned int idT,
+    void addEdge( unsigned int idS, unsigned int idT, vector< unsigned int > &intermediateVec,
 				  unsigned int sortedID, bool isCompressed );
     void addBridgeEdge( unsigned int idS, unsigned int idT );
     

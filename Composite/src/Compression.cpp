@@ -147,6 +147,7 @@
     //
     bool Compression::findVertex( KeiRo::Base::Coord2 coord, unsigned int sortedID, unsigned int &index )
     {
+		index = 0;
 		BGL_FORALL_VERTICES( vd, _graph, Graph::BaseUndirectedGraph ) {
 
 			if( _graph[vd].initID == sortedID ){
@@ -175,6 +176,7 @@
 		Graph::BaseUndirectedGraph::vertex_descriptor vdNew = add_vertex( _graph );
 		_graph[ vdNew ].level     = level;
 		_graph[ vdNew ].id        = vid;
+	    _graph[ vdNew ].namePtr   = new string( to_string( vid ) );
 		_graph[ vdNew ].initID    = sortedID;
 		_graph[ vdNew ].weight    = 0;
 		_graph[ vdNew ].coordPtr  = new KeiRo::Base::Coord2( coord.x(), coord.y() );
@@ -195,9 +197,10 @@
     //  Outputs
     //	none
     //
-    void Compression::addEdge( unsigned int idS, unsigned int idT,
+    void Compression::addEdge( unsigned int idS, unsigned int idT, vector< unsigned int > &intermediateVec,
 							   unsigned int sortedID, bool isCompressed )
     {
+		cerr << "here isCompressed = " << isCompressed << endl;
 	    unsigned int eid = num_edges( _graph );
 //	    cerr << "idS = " << idS << " idT = " << idT << endl;
         Graph::BaseUndirectedGraph::vertex_descriptor vdS = vertex( idS, _graph );
@@ -242,6 +245,7 @@
         		std::advance( itT, i );
         		Graph::BaseUndirectedGraph::vertex_descriptor vdSS = itS->second;
         		Graph::BaseUndirectedGraph::vertex_descriptor vdST = itT->second;
+		        if( i != vdMap.size()-1 ) intermediateVec.push_back( _graph[ vdST ].id );
 
         		bool found = false;
         		Graph::BaseUndirectedGraph::edge_descriptor oldED;
@@ -314,23 +318,29 @@
 		Graph::BaseUndirectedGraph::vertex_descriptor vdS = vertex( idS, _graph );
 		Graph::BaseUndirectedGraph::vertex_descriptor vdT = vertex( idT, _graph );
 
-		pair< Graph::BaseUndirectedGraph::edge_descriptor, unsigned int > foreE = add_edge( vdS, vdT, _graph );
-		Graph::BaseUndirectedGraph::edge_descriptor foreED = foreE.first;
-	
-		// base_graph
-		_graph[ foreED ].id = eid;
-		_graph[ foreED ].level = _graph[vdS].level;
-	
-		_graph[ foreED ].angle = 0.0;
-		_graph[ foreED ].weight = 0.0;
-		_graph[ foreED ].visit = false;
-		_graph[ foreED ].visitedTimes = 0;
-	
-		_graph[ foreED ].isFore = false;
-		_graph[ foreED ].isBack = false;
+		bool found = false;
+		Graph::BaseUndirectedGraph::edge_descriptor oldED;
+		tie( oldED, found ) = edge( vdS, vdT, _graph );
+
+		if( found == false ){
+			pair< Graph::BaseUndirectedGraph::edge_descriptor, unsigned int > foreE = add_edge( vdS, vdT, _graph );
+			Graph::BaseUndirectedGraph::edge_descriptor foreED = foreE.first;
+			
+			// base_graph
+			_graph[ foreED ].id = eid;
+			_graph[ foreED ].level = _graph[vdS].level;
+			
+			_graph[ foreED ].angle = 0.0;
+			_graph[ foreED ].weight = 0.0;
+			_graph[ foreED ].visit = false;
+			_graph[ foreED ].visitedTimes = 0;
+			
+			_graph[ foreED ].isFore = false;
+			_graph[ foreED ].isBack = false;
 #ifdef DEBUG_COMPRESSION
-		cerr << "new bridge edge = ( " << _graph[ vdS ].id << ", " << _graph[ vdT ].id << " ) " << endl;
+			cerr << "new bridge edge = ( " << _graph[ vdS ].id << ", " << _graph[ vdT ].id << " ) " << endl;
 #endif // DEBUG_COMPRESSION
+		}
     }
     //------------------------------------------------------------------------------
     //	Friend functions

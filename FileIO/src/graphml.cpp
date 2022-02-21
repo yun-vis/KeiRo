@@ -344,10 +344,6 @@ namespace FileIO {
 				if( maxY < coord.y() ) maxY = coord.y();
 			}
 			
-//			_graphmlTree[ parentVD ].leftBottomCoordPtr = new KeiRo::Base::Coord2( minX, minY );
-//			_graphmlTree[ parentVD ].widthPtr = new double ( maxX-minX );
-//			_graphmlTree[ parentVD ].heightPtr = new double ( maxY-minY );
-			
 			_graphmlTree[ parentVD ].boundingBoxPtr = new KeiRo::Base::Rectangle2( minX, minY, maxX-minX, maxY-minY );
 			
 #ifdef DEBUG
@@ -385,10 +381,6 @@ namespace FileIO {
 						if( maxY < _graphmlTree[ vdT ].boundingBoxPtr->leftBottom().y() + _graphmlTree[ vdT ].boundingBoxPtr->height() )
 							maxY = _graphmlTree[ vdT ].boundingBoxPtr->leftBottom().y() + _graphmlTree[ vdT ].boundingBoxPtr->height();
 					}
-					
-//					_graphmlTree[ vd ].leftBottomCoordPtr = new KeiRo::Base::Coord2( minX, minY );
-//					_graphmlTree[ vd ].widthPtr = new double ( maxX-minX );
-//					_graphmlTree[ vd ].heightPtr = new double ( maxY-minY );
 					
 					_graphmlTree[ vd ].boundingBoxPtr = new KeiRo::Base::Rectangle2( minX, minY, maxX-minX, maxY-minY );
 

@@ -185,6 +185,54 @@ namespace Base {
 		else return false;
 	}
 	
+	//
+	//  Polygon2::isOverlap -- check if the two rectangle overlapped
+	//
+	//  Inputs
+	//  Rectangle2 r
+	//
+	//  Outputs
+	//  none
+	//
+	Coord2 Rectangle2::projectedOnBoundary( Coord2 c )
+	{
+		Coord2 projectedC;
+		Coord2 diff = c - _leftBottom;
+		
+		if( isInside( c ) == false ){
+			cerr << "sth is wrong here... " << __LINE__ << " in file " << __FILE__ << endl;
+		}
+		
+		double left = fabs( diff.x() );
+		double right = _width - fabs( diff.x() );
+		double bottom = fabs( diff.y() );
+		double top = _height - fabs( diff.y() );
+		
+		if( left < right && left < bottom && left < top ){
+			projectedC.x() = _leftBottom.x();
+			projectedC.y() = c.y();
+		}
+		if( right < left && right < bottom && right < top ){
+			projectedC.x() = _leftBottom.x() + _width;
+			projectedC.y() = c.y();
+		}
+		if( bottom < left && bottom < right && bottom < top ){
+			projectedC.x() = c.x();
+			projectedC.y() = _leftBottom.y();
+		}
+		if( top < left && top < right && top < bottom ){
+			projectedC.x() = c.x();
+			projectedC.y() = _leftBottom.y() + _height;
+		}
+#ifdef DEBUG
+		cerr << "c = " << c
+			 << "lb = " << _leftBottom
+			 << "w = " << _width << ",h = " << _height << endl
+			 << "projC = " << projectedC << endl;
+#endif // DEBUG
+		return projectedC;
+	}
+	
 	void Rectangle2::updateOldElement( void )
 	{
 		_oldLeftBottom  = _leftBottom;
