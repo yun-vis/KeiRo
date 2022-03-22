@@ -406,6 +406,52 @@ namespace FileIO {
 	
 	}
 	
+	//
+	//  GraphML::normalize --	normalize the data
+	//
+	//  Input
+	//	none
+	//
+	//  Output
+	//	none
+	//
+	void GraphML::normalize( void )
+	{
+		// leaf nodes
+		double minX = INFINITY, minY = INFINITY, maxX = -INFINITY, maxY = -INFINITY;
+		for( map< unsigned int, Graph::BaseUndirectedGraph >::iterator it = _subGraphMap.begin();
+		     it != _subGraphMap.end(); it++ ){
+			
+			unsigned int parentID = it->first;
+			Graph::BaseUndirectedGraph *subGPtr = &it->second;
+
+			BGL_FORALL_VERTICES( vd, *subGPtr, Graph::BaseUndirectedGraph ) {
+				
+				KeiRo::Base::Coord2 &coord = *(*subGPtr)[vd].coordPtr;
+				if( minX > coord.x() ) minX = coord.x();
+				if( minY > coord.y() ) minY = coord.y();
+				if( maxX < coord.x() ) maxX = coord.x();
+				if( maxY < coord.y() ) maxY = coord.y();
+			}
+		}
+
+		// update the coordinates
+		for( map< unsigned int, Graph::BaseUndirectedGraph >::iterator it = _subGraphMap.begin();
+		     it != _subGraphMap.end(); it++ ){
+			
+			unsigned int parentID = it->first;
+			Graph::BaseUndirectedGraph *subGPtr = &it->second;
+
+			BGL_FORALL_VERTICES( vd, *subGPtr, Graph::BaseUndirectedGraph ) {
+				
+				KeiRo::Base::Coord2 &coord = *(*subGPtr)[vd].coordPtr;
+				coord.x() = ( coord.x() - minX ) / ( maxX - minX ) * KeiRo::Base::Common::getMainwidgetWidth() - 0.5 * KeiRo::Base::Common::getMainwidgetWidth();
+				coord.y() = ( coord.y() - minY ) / ( maxY - minY ) * KeiRo::Base::Common::getMainwidgetHeight() - 0.5 * KeiRo::Base::Common::getMainwidgetHeight();
+				coord.updateOldElement();
+			}
+		}
+	}
+	
     //
     //  GraphML::load --	load function
     //
@@ -476,12 +522,15 @@ namespace FileIO {
     		}
     	}
     	else{
-    		cerr << "Unrecognized tagName at " << __LINE__ << " in " << __FILE__ << endl;
+    		cerr << "Unrecognized tagName " << graphElement.firstChild().toElement().tagName().toStdString() << " at " << __LINE__ << " in " << __FILE__ << endl;
     	}
 	
     	// load edges
 	    loadEdge( graphElement );
 
+		// nomalization
+		normalize();
+		
 		// compute group boundary
 	    computeGroupBoundary();
 #ifdef DEBUG
