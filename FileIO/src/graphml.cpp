@@ -99,6 +99,11 @@ namespace FileIO {
 	    _graphmlTree[ vdNew ].isSelected = false;
 	    _graphmlTree[ vdNew ].coordPtr = new KeiRo::Base::Coord2( 0, 0 );
 	
+		// load group attribute
+	    XML::getStyleElement( parentElement,
+	                          _graphmlTree[ vdNew ].attribute.fill(), _graphmlTree[ vdNew ].attribute.stroke(),
+	                          _graphmlTree[ vdNew ].attribute.strokeWidth() );
+		
 	    // add _graphmlTree edge
 		if( parentID != -1 ){
 			Graph::TreeDirectedGraph::vertex_descriptor vdP = vertex( parentID, _graphmlTree );
@@ -198,6 +203,12 @@ namespace FileIO {
 	    (*subGraphPtr)[ vdNew ].level   = level;
 	    (*subGraphPtr)[ vdNew ].isSelected   = false;
 	    (*subGraphPtr)[ vdNew ].coordPtr = new KeiRo::Base::Coord2( x, y );
+
+	    // read vertex style
+	    XML::getStyleElement( nodeElement,
+	                          (*subGraphPtr)[ vdNew ].attribute.fill(), (*subGraphPtr)[ vdNew ].attribute.stroke(),
+	                          (*subGraphPtr)[ vdNew ].attribute.strokeWidth() );
+
 #ifdef DEBUG
 		cerr << " pid = " << parentID
 			 << " nid = " << (*subGraphPtr)[ vdNew ].id
@@ -294,13 +305,35 @@ namespace FileIO {
 					pair< Graph::BaseUndirectedGraph::edge_descriptor, unsigned int > foreE = add_edge( vdS, vdT, *subGraphSPtr );
 					Graph::BaseUndirectedGraph::edge_descriptor foreED = foreE.first;
 					(*subGraphSPtr)[ foreED ].id = num_edges( *subGraphSPtr ) - 1;
+
+					// read edge page
+					XML::getEdgeDElement( edgeElement,
+										  (*subGraphSPtr)[ foreED ].edge, (*subGraphSPtr)[ foreED ].edge.isClosed() );
+					// read edge style
+					XML::getStyleElement( edgeElement,
+											  (*subGraphSPtr)[ foreED ].edge.fill(), (*subGraphSPtr)[ foreED ].edge.stroke(),
+											  (*subGraphSPtr)[ foreED ].edge.strokeWidth() );
+#ifdef DEBUG
+					cerr << "(*subGraphSPtr)[ foreED ].edge.size() = " << (*subGraphSPtr)[ foreED ].edge.elements().size() << endl;
+					cerr << "(*subGraphSPtr)[ foreED ].strokeWidth = " << (*subGraphSPtr)[ foreED ].edge.strokeWidth() << endl;
+#endif // DEBUG
 				}
 			}
 			else{
+				
 				// global path
 				_globalPathMap.insert( pair< KeiRo::Base::Common::UIDPair,
-						KeiRo::Base::Common::UIDPair >( pair< unsigned int, unsigned >( idGS, idSinSubG ),
-				                                        pair< unsigned int, unsigned >( idGT, idTinSubG ) ) );
+						KeiRo::Base::Common::UIDPair >( pair< unsigned int, unsigned int >( idGS, idSinSubG ),
+				                                        pair< unsigned int, unsigned int >( idGT, idTinSubG ) ) );
+				KeiRo::Base::Edge2 edge;
+
+				// read edge style
+				XML::getStyleElement( edgeElement, edge.fill(),
+									  edge.stroke(), edge.strokeWidth() );
+				_globalPathAttributeMap.insert( pair< pair< KeiRo::Base::Common::UIDPair, KeiRo::Base::Common::UIDPair >,
+				        KeiRo::Base::Edge2 >( pair< pair< unsigned int, unsigned int >, pair< unsigned int, unsigned int > >(
+						pair< unsigned int, unsigned int >( idGS, idSinSubG ),
+						pair< unsigned int, unsigned int >( idGT, idTinSubG ) ), edge ) );
 			}
 #ifdef DEBUG
 		    cerr << "num_edges( *subGraphSPtr ) = " << num_edges( *subGraphSPtr ) << endl;
@@ -424,10 +457,24 @@ namespace FileIO {
 			
 			unsigned int parentID = it->first;
 			Graph::BaseUndirectedGraph *subGPtr = &it->second;
+			
+			// iterate edge sample points
+			BGL_FORALL_EDGES( ed, *subGPtr, Graph::BaseUndirectedGraph ) {
+				KeiRo::Base::Edge2 &edge = (*subGPtr)[ed].edge;
+				for( unsigned int i = 0; i < edge.elements().size(); i++ ){
+					KeiRo::Base::Coord2 &coord = edge.elements()[i];
 
+					if( minX > coord.x() ) minX = coord.x();
+					if( minY > coord.y() ) minY = coord.y();
+					if( maxX < coord.x() ) maxX = coord.x();
+					if( maxY < coord.y() ) maxY = coord.y();
+				}
+			}
+			// iterate vertices
 			BGL_FORALL_VERTICES( vd, *subGPtr, Graph::BaseUndirectedGraph ) {
 				
 				KeiRo::Base::Coord2 &coord = *(*subGPtr)[vd].coordPtr;
+
 				if( minX > coord.x() ) minX = coord.x();
 				if( minY > coord.y() ) minY = coord.y();
 				if( maxX < coord.x() ) maxX = coord.x();
@@ -441,7 +488,19 @@ namespace FileIO {
 			
 			unsigned int parentID = it->first;
 			Graph::BaseUndirectedGraph *subGPtr = &it->second;
+			
+			// iterate edge sample points
+			BGL_FORALL_EDGES( ed, *subGPtr, Graph::BaseUndirectedGraph ) {
+				KeiRo::Base::Edge2 &edge = (*subGPtr)[ed].edge;
+				for( unsigned int i = 0; i < edge.elements().size(); i++ ){
 
+					KeiRo::Base::Coord2 &coord = edge.elements()[i];
+					coord.x() = ( coord.x() - minX ) / ( maxX - minX ) * KeiRo::Base::Common::getMainwidgetWidth() - 0.5 * KeiRo::Base::Common::getMainwidgetWidth();
+					coord.y() = ( coord.y() - minY ) / ( maxY - minY ) * KeiRo::Base::Common::getMainwidgetHeight() - 0.5 * KeiRo::Base::Common::getMainwidgetHeight();
+					coord.updateOldElement();
+				}
+			}
+			// iterate vertices
 			BGL_FORALL_VERTICES( vd, *subGPtr, Graph::BaseUndirectedGraph ) {
 				
 				KeiRo::Base::Coord2 &coord = *(*subGPtr)[vd].coordPtr;

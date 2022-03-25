@@ -53,6 +53,14 @@ namespace Base {
 	
 	    // graphics item id
 	    unsigned int            _itemID;
+	
+	    // attributes
+	    // stroke color
+	    vector< unsigned int >  _stroke;
+	    double                  _strokeWidth;
+		
+	    // fill color
+	    vector< unsigned int >  _fill;
 
         //------------------------------------------------------------------------------
         //	Special functions
@@ -61,15 +69,6 @@ namespace Base {
         virtual void        _clear( void ) {}
 
     public:
-	
-		// attributes
-	    // stroke color
-	    vector< unsigned int >  _stroke;
-	    double                  _strokeWidth;
-	    double                  _strokeOpacity;
-	    // fill color
-	    vector< unsigned int >  _fill;
-	    double                  _fillOpacity;
     	
         //------------------------------------------------------------------------------
         //	Constructors & Destructors
@@ -118,16 +117,11 @@ namespace Base {
 	
 	    double &	                    strokeWidth( void )	            { return _strokeWidth; }
 	    const double &                  strokeWidth( void ) const       { return _strokeWidth; }
-	
-	    double &	                    strokeOpacity( void )	        { return _strokeOpacity; }
-	    const double &                  strokeOpacity( void ) const     { return _strokeOpacity; }
-
+		
 	    // reference to fill
 	    vector< unsigned int > &	    fill( void )	                { return _fill; }
 	    const vector< unsigned int > &  fill( void ) const              { return _fill; }
 	
-	    double &	                    fillOpacity( void )	            { return _fillOpacity; }
-	    const double &                  fillOpacity( void ) const       { return _fillOpacity; }
 	
 	    // parent name
         // string &	                parent( void )	        { return _parent; }

@@ -15,6 +15,7 @@ using namespace std;
 #include "TreeDirectedGraph.h"
 #include "BaseUndirectedGraph.h"
 #include "Common.h"
+#include "xml.h"
 #endif // Q_MOC_RUN
 
 //------------------------------------------------------------------------------
@@ -39,6 +40,8 @@ namespace FileIO {
 		unsigned int                                    _subGraphNodeIndex;
 		multimap< KeiRo::Base::Common::UIDPair,
 			 KeiRo::Base::Common::UIDPair >             _globalPathMap;
+	    multimap< pair< KeiRo::Base::Common::UIDPair,
+			    KeiRo::Base::Common::UIDPair >, KeiRo::Base::Edge2 >             _globalPathAttributeMap;
 
     protected:
 
@@ -78,7 +81,12 @@ namespace FileIO {
 			    KeiRo::Base::Common::UIDPair > &    globalPathMap( void ) 	    { return _globalPathMap; }
 	    const multimap< KeiRo::Base::Common::UIDPair,
 			    KeiRo::Base::Common::UIDPair > &  	globalPathMap( void ) const	{ return _globalPathMap; }
-				
+	
+	    multimap< pair< KeiRo::Base::Common::UIDPair,
+			    KeiRo::Base::Common::UIDPair >, KeiRo::Base::Edge2 > &  globalPathAttributeMap( void ) 	        { return _globalPathAttributeMap; }
+	    const multimap< pair< KeiRo::Base::Common::UIDPair,
+			    KeiRo::Base::Common::UIDPair >, KeiRo::Base::Edge2 > &  globalPathAttributeMap( void ) const	{ return _globalPathAttributeMap; }
+
 	    //------------------------------------------------------------------------------
         //	Special functions
         //------------------------------------------------------------------------------

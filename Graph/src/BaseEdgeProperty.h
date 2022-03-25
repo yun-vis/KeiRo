@@ -21,6 +21,7 @@
 using namespace std;
 
 #include "Coord2.h"
+#include "Edge2.h"
 //#include "GraphicsEdgeItem.h"
 
 //------------------------------------------------------------------------------
@@ -58,6 +59,8 @@ namespace Graph {
         bool                        isShow;
 
         unsigned int                itemID;             // item ID for graphics
+	    KeiRo::Base::Edge2          edge;               // store non-straight-line edge
+		
         //Ui::Vector::GraphicsEdgeItem * itemPtr;
 
         //------------------------------------------------------------------------------
@@ -100,7 +103,6 @@ namespace Graph {
         friend istream &	operator >> ( istream & s, BaseEdgeProperty & v );
         // class name
         virtual const char * className( void ) const { return "BaseEdgeProperty"; }
-
     };
 
 } // namespace Graph

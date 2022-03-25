@@ -12,6 +12,7 @@ add_library(${Target_Name} SHARED
 #add_library(${Target_Name} STATIC
 #        src/sbgn.cpp
 #        src/sbml.cpp
+        src/xml.cpp
         src/graphml.cpp
         src/svg.cpp
 #        src/metadata.cpp

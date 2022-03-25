@@ -489,7 +489,7 @@ namespace FileIO {
             polygon.fill() = fill;
             polygon.stroke() = stroke;
 	        polygon.strokeWidth() = strokeWidth;
-	        polygon.strokeOpacity() = strokeOpacity;
+//	        polygon.strokeOpacity() = strokeOpacity;
 
             int lbx = round( x );
             int lby = round( y );
@@ -638,7 +638,7 @@ namespace FileIO {
 	            }
             }
             // element coordinates
-            SVGTAGTYPE tag;
+            XMLTAGTYPE tag;
             vector< KeiRo::Base::Coord2 > coordElements;
 	        KeiRo::Base::Coord2 origin;
 #ifdef SVG_DEBUG
@@ -661,33 +661,33 @@ namespace FileIO {
                 if( coords.size() == 1 ){
                     // check if c exists
 	                if ( coords.at( 0 ).toStdString() == "M" ) {
-		                tag = SVGTAGTYPE_M;
+		                tag = XMLTAGTYPE_M;
 		                j++;
 		                coords = dList.at( j ).split( "," );
 	                }
                     if ( coords.at( 0 ).toStdString() == "m" ) {
-                    	tag = SVGTAGTYPE_m;
+                    	tag = XMLTAGTYPE_m;
 	                    j++;
 	                    coords = dList.at( j ).split( "," );
                     }
                     if ( coords.at( 0 ).toStdString() == "c" ) {
-                    	tag = SVGTAGTYPE_c;
+                    	tag = XMLTAGTYPE_c;
 	                    j++;
 	                    coords = dList.at( j ).split( "," );
                     }
                     if ( coords.at( 0 ).toStdString() == "v" ) {
-                    	tag = SVGTAGTYPE_v;
+                    	tag = XMLTAGTYPE_v;
                     }
                     if ( coords.at( 0 ).toStdString() == "h" ) {
-                    	tag = SVGTAGTYPE_h;
+                    	tag = XMLTAGTYPE_h;
                     }
                     if ( coords.at( 0 ).toStdString() == "l" ) {
-                    	tag = SVGTAGTYPE_l;
+                    	tag = XMLTAGTYPE_l;
 	                    j++;
 	                    coords = dList.at( j ).split( "," );
                     }
                     if ( coords.at( 0 ).toStdString() == "z" ) {
-                        tag = SVGTAGTYPE_z;
+                        tag = XMLTAGTYPE_z;
                         break;
                     }
                 }
@@ -696,7 +696,7 @@ namespace FileIO {
 #endif // SVG_DEBUG
 
                 switch( tag ){
-	                case SVGTAGTYPE_M:
+	                case XMLTAGTYPE_M:
 	                {
 		                origin.x() = coords.at(0).toDouble();
 		                origin.y() = -coords.at(1).toDouble();
@@ -704,10 +704,10 @@ namespace FileIO {
 		                cerr << "coord = " << origin << endl;
 	#endif // SVG_DEBUG
 		                coordElements.push_back( origin );
-		                tag = SVGTAGTYPE_DEFAULT;
+		                tag = XMLTAGTYPE_DEFAULT;
 	                }
 		                break;
-                    case SVGTAGTYPE_m:
+                    case XMLTAGTYPE_m:
                     {
                         origin.x() = coords.at(0).toDouble();
                         origin.y() = -coords.at(1).toDouble();
@@ -715,10 +715,10 @@ namespace FileIO {
                         cerr << "coord = " << origin << endl;
 #endif // SVG_DEBUG
                         coordElements.push_back( origin );
-                        tag = SVGTAGTYPE_DEFAULT;
+                        tag = XMLTAGTYPE_DEFAULT;
                     }
                         break;
-                    case SVGTAGTYPE_c:
+                    case XMLTAGTYPE_c:
                     {
                         while( true ){
 
@@ -773,7 +773,7 @@ namespace FileIO {
                         }
                     }
                         break;
-                    case SVGTAGTYPE_v:
+                    case XMLTAGTYPE_v:
                     {
                         // coords = dList.at( j ).split( "," );
                         // cerr << "v coords.size() = " << coords.size() << endl;
@@ -791,7 +791,7 @@ namespace FileIO {
                         }
                     }
                         break;
-                    case SVGTAGTYPE_h:
+                    case XMLTAGTYPE_h:
                     {
                         // coords = dList.at( j ).split( "," );
                         // cerr << "h coords.size() = " << coords.size() << endl;
@@ -809,8 +809,8 @@ namespace FileIO {
                         }
                     }
                         break;
-                    case SVGTAGTYPE_l:
-                    case SVGTAGTYPE_DEFAULT:
+                    case XMLTAGTYPE_l:
+                    case XMLTAGTYPE_DEFAULT:
                     {
                         coords = dList.at( j ).split( "," );
                         if( coords.size() == 2 ){
@@ -865,7 +865,7 @@ namespace FileIO {
 	            polygon.fill() = fill;
                 polygon.stroke() = stroke;
 	            polygon.strokeWidth() = strokeWidth;
-	            polygon.strokeOpacity() = strokeOpacity;
+//	            polygon.strokeOpacity() = strokeOpacity;
 	            polygon.update();
 	            polygon.boundingBox().updateOldElement();
                 _polygonVec.push_back( polygon );
@@ -877,7 +877,7 @@ namespace FileIO {
 	            polyline.fill() = fill;
                 polyline.stroke() = stroke;
 	            polyline.strokeWidth() = strokeWidth;
-	            polyline.strokeOpacity() = strokeOpacity;
+//	            polyline.strokeOpacity() = strokeOpacity;
                 _polylineVec.push_back( polyline );
             }
         }

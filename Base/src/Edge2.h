@@ -49,6 +49,9 @@ namespace Base {
         //------------------------------------------------------------------------------
         // select flag
         bool                    _isSelected;
+		
+	    // edge style
+	    bool                    _isClosed;
 
         // graphics item pointer
 //        Ui::Vector::GraphicsEdgeItem * _itemPtr;
@@ -95,6 +98,10 @@ namespace Base {
         vector< Coord2 > &	            fixedElements( void )	        { return _fixedElements; }
         const vector< Coord2 > &	    fixedElements( void ) const	    { return _fixedElements; }
 
+		// style
+		bool &	                        isClosed( void )	            { return _isClosed; }
+	    const bool &	                isClosed( void ) const	        { return _isClosed; }
+		
 	    // graphics item
 //        void setItemPtr( Ui::Vector::GraphicsEdgeItem * ptr )	        { _itemPtr = ptr; }
 //        Ui::Vector::GraphicsEdgeItem * getItemPtr( void )               { return _itemPtr; }

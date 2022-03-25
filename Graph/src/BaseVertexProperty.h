@@ -20,6 +20,7 @@
 
 using namespace std;
 
+#include "Object.h"
 #include "Coord2.h"
 #include "Common.h"
 //#include "GraphicsBallItem.h"
@@ -72,6 +73,7 @@ namespace Graph {
 		bool                        isSelected;             // if the vertex is selected
 		
 	    unsigned int                itemID;                 // item ID for graphics
+	    KeiRo::Base::Object         attribute;              // attribue (e.g., xml style)
 	    // Ui::Vector::GraphicsBallItem * itemPtr;
 
         //------------------------------------------------------------------------------

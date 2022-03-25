@@ -51,12 +51,10 @@ namespace Base {
 	    _stroke[0] = _stroke[1] = _stroke[2] = 0;
 	    _stroke[3] = 255;
 	    _strokeWidth = 1.0;
-	    _strokeOpacity = 1.0;
-	    
+
 	    _fill.resize( 4 );
 	    _fill[0] = _fill[1] = _fill[2] = 100;
 	    _fill[3] = 255;
-	    _fillOpacity = 1.0;
     }
 
     //------------------------------------------------------------------------------
@@ -99,10 +97,8 @@ namespace Base {
 	
 	    _stroke                 = v._stroke;
 	    _strokeWidth            = v._strokeWidth;
-	    _strokeOpacity          = v._strokeOpacity;
 	
 	    _fill                   = v._fill;
-	    _fillOpacity            = v._fillOpacity;
     }
 	
 } // namespace Base

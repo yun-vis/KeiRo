@@ -162,10 +162,8 @@ namespace Base {
 	
 	    _stroke             = v._stroke;
 	    _strokeWidth        = v._strokeWidth;
-	    _strokeOpacity      = v._strokeOpacity;
-
+	    
 	    _fill               = v._fill;
-	    _fillOpacity        = v._fillOpacity;
     }
 
 
