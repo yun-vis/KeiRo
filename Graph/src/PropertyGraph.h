@@ -27,6 +27,7 @@ namespace Graph {
 
 	typedef property_map< PropertyGraph, vertex_index_t >::type VertexIndexMap;
 	typedef property_map< PropertyGraph, edge_index_t >::type EdgeIndexMap;
+	
 	//typedef property_map< PropertyGraph, edge_weight_t >::type EdgeWeightMap;
 }
 

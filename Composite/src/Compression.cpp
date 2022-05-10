@@ -30,7 +30,6 @@
     //
     bool Compression::_closeToSamplesInt( KeiRo::Base::Coord2 coordS, KeiRo::Base::Coord2 coordT )
     {
-//		cerr << "norm = " << ( coordS - coordT ).norm() << endl;
 		if( ( coordS - coordT ).norm() == 0 ){
 			return true;
 		}
@@ -153,6 +152,7 @@
 			if( _graph[vd].initID == sortedID ){
 				if( _closeToSamplesInt( *_graph[vd].coordPtr, coord ) ){
 					index = _graph[vd].id;
+					
 					return true;
 				}
 			}
@@ -207,14 +207,14 @@
 
         if( isCompressed == true ){
 
-        	map< int, Graph::BaseUndirectedGraph::vertex_descriptor > vdMap;
+        	map< double, Graph::BaseUndirectedGraph::vertex_descriptor > vdMap;
         	vector< KeiRo::Base::Coord2 > elements;
         	elements.push_back( *_graph[vdS].coordPtr );
         	elements.push_back( *_graph[vdT].coordPtr );
         	KeiRo::Base::Edge2 e( elements );
         	
         	// sort vertices on the edge
-        	vdMap.insert( pair< int, Graph::BaseUndirectedGraph::vertex_descriptor >( 0, vdS ) );
+        	vdMap.insert( pair< double, Graph::BaseUndirectedGraph::vertex_descriptor >( 0, vdS ) );
         	BGL_FORALL_VERTICES( vd, _graph, Graph::BaseUndirectedGraph ) {
         	
 #ifdef DEBUG_COMPRESSION
@@ -228,18 +228,18 @@
 #endif // DEBUG_COMPRESSION
 				if( (vd != vdS) && (vd != vdT) && sortedID == _graph[vd].initID &&
         		    e.isOnEdge( *_graph[vd].coordPtr ) == true ){
-        			int distance = (*_graph[vd].coordPtr - *_graph[vdS].coordPtr).norm();
-        			vdMap.insert( pair< int, Graph::BaseUndirectedGraph::vertex_descriptor >( distance, vd ) );
+        			double distance = (*_graph[vd].coordPtr - *_graph[vdS].coordPtr).norm();
+        			vdMap.insert( pair< double, Graph::BaseUndirectedGraph::vertex_descriptor >( distance, vd ) );
         		}
         	}
-        	vdMap.insert( pair< int, Graph::BaseUndirectedGraph::vertex_descriptor >( (*_graph[vdT].coordPtr - *_graph[vdS].coordPtr).norm(), vdT ) );
+        	vdMap.insert( pair< double, Graph::BaseUndirectedGraph::vertex_descriptor >( (*_graph[vdT].coordPtr - *_graph[vdS].coordPtr).norm(), vdT ) );
         	
         	// insert edge segments
 //        	cerr << "vdMap.size() = " << vdMap.size() << endl;
         	for( unsigned int i = 1; i < vdMap.size(); i++ ){
 
-        		map< int, Graph::BaseUndirectedGraph::vertex_descriptor >::iterator itS = vdMap.begin();
-        		map< int, Graph::BaseUndirectedGraph::vertex_descriptor >::iterator itT = vdMap.begin();
+        		map< double, Graph::BaseUndirectedGraph::vertex_descriptor >::iterator itS = vdMap.begin();
+        		map< double, Graph::BaseUndirectedGraph::vertex_descriptor >::iterator itT = vdMap.begin();
         		std::advance( itS, i-1 );
         		std::advance( itT, i );
         		Graph::BaseUndirectedGraph::vertex_descriptor vdSS = itS->second;
