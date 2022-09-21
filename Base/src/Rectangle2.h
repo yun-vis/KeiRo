@@ -51,7 +51,15 @@ namespace Base {
         Coord2      _leftBottom;
         double      _width;
         double      _height;
-
+        
+            // Rectangle2 intermediate coordinates of end points
+        Coord2      _intermediateLeftBottom;
+        double      _intermediateWidth;
+        double      _intermediateHeight;
+        
+        // whether -Intermediate... holds useful information
+        bool	_inLocalMove;
+        
         //------------------------------------------------------------------------------
         //	Attribute
         //------------------------------------------------------------------------------
@@ -115,6 +123,19 @@ namespace Base {
 	    double &	        height( void )	            { return _height; }
 	    const double &	    height( void ) const	    { return _height; }
 	    
+	    // left-bottom corner
+	    Coord2 &		intermediateLeftBottom( void )	{ return _intermediateLeftBottom; }
+	    const Coord2 &	intermediateLeftBottom( void ) const	{ return _intermediateLeftBottom; }
+	
+	    double &		intermediateWidth( void )		{ return _intermediateWidth; }
+	    const double &	intermediateWidth( void ) const	{ return _intermediateWidth; }
+	
+	    double &		intermediateHeight( void )		{ return _intermediateHeight; }
+	    const double &	intermediateHeight( void ) const	{ return _intermediateHeight; }
+	    
+	    bool &		inLocalMove( void )		{ return _inLocalMove; }
+	    const bool &	inLocalMove( void ) const	{ return _inLocalMove; }
+	    
 	    //------------------------------------------------------------------------------
         //	Special functions
         //------------------------------------------------------------------------------
@@ -124,6 +145,8 @@ namespace Base {
         bool isInside( Coord2 c );
 	    bool isOverlap( Rectangle2 r, double &area );
 	    void updateOldElement( void );
+	    void updateIntermediateElement( Coord2 & c, double width, double height );
+	    void resetInLocalMove( void );
 	    void updateFixedElement( void );
 	    Coord2 projectedOnBoundary( Coord2 c );
 		

@@ -41,6 +41,10 @@ namespace Base {
         vector< Coord2 >        _fixedElements;
 	    // Line2 old sample points
 	    vector< Coord2 >        _oldElements;
+        // Line2 intermediate sample points
+        vector< Coord2 >        _intermediateElements;
+        // holds whether _intermediateElement holds useful information
+        bool			 _inLocalMove;
         // Line2 sample points
         vector< Coord2 >        _elements;
 	    // Line2 pointer-based sample points
@@ -95,6 +99,13 @@ namespace Base {
 	    const vector< Coord2 > &	    oldElements( void ) const	    { return _oldElements; }
 
         // reference to a vector of coordinates
+        vector< Coord2 > &	            intermediateElements( void )	            { return _intermediateElements; }
+        const vector< Coord2 > &	    intermediateElements( void ) const	        { return _intermediateElements; }
+        
+        bool &	                        inLocalMove( void )	            { return _inLocalMove; }
+        const bool &	                inLocalMove( void ) const	    { return _inLocalMove; }
+        
+        // reference to a vector of coordinates
         vector< Coord2 > &	            elements( void )	            { return _elements; }
         const vector< Coord2 > &	    elements( void ) const	        { return _elements; }
 	
@@ -136,6 +147,8 @@ namespace Base {
         static bool isOnLine( Coord2 &a, Coord2 &b, Coord2 &c );
 	    void updateOldElement( void );
 	    void updateOldElementByPointers( void );
+	    void updateIntermediateElements( vector< Coord2 > __elements );
+	    void resetInLocalMove( void );
 	    void simplifyGeometry( void );
 	
 	    //------------------------------------------------------------------------------

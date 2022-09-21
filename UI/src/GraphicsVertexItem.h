@@ -52,6 +52,7 @@ namespace Vector {
     private:
 	
 	    QRectF   _sourceRect;
+	    QRectF   _intermediateRect;
 	    QRectF   _targetRect;
 	
 	    double          _radius;
@@ -113,6 +114,10 @@ namespace Vector {
 	
 	    const QRectF &sourceRect( void ) const { return _sourceRect; }
 	
+	    QRectF &intermediateRect( void ) { return _intermediateRect; }
+	
+	    const QRectF &intermediateRect( void ) const { return _intermediateRect; }
+	    
 	    QRectF &targetRect( void ) { return _targetRect; }
 	
 	    const QRectF &targetRect( void ) const { return _targetRect; }

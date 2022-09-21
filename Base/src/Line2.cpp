@@ -297,9 +297,21 @@ namespace Base {
 	
 	void Line2::updateOldElementByPointers( void )
 	{
-    	for( unsigned int i = 0; i < _elements.size(); i++ ){
-		    _oldElements[i] = *_elementPointers[i];
-    	}
+    		for( unsigned int i = 0; i < _elements.size(); i++ ){
+			_oldElements[i] = *_elementPointers[i];
+    		}
+    		resetInLocalMove();
+	}
+	
+	void Line2::updateIntermediateElements( vector< Coord2 > __elements )
+	{
+		_intermediateElements = __elements;
+		_inLocalMove = true;
+	}
+	
+	void Line2::resetInLocalMove( void )
+	{
+		_inLocalMove = false;
 	}
 	
     //------------------------------------------------------------------------------

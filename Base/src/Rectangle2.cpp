@@ -107,6 +107,12 @@ namespace Base {
 	    _oldLeftBottom.y()  = y;
 	    _oldWidth           = w;
 	    _oldHeight          = h;
+	    
+	    _intermediateLeftBottom.x()= x;
+	    _intermediateLeftBottom.y()= y;
+	    _intermediateWidth		= w;
+	    _intermediateHeight	= h;
+	    _inLocalMove		= false;
     }
 
     //
@@ -135,6 +141,11 @@ namespace Base {
 	    _oldLeftBottom      = v._oldLeftBottom;
 	    _oldWidth           = v._oldWidth;
 	    _oldHeight          = v._oldHeight;
+	    
+	    _intermediateLeftBottom	= v._intermediateLeftBottom;
+	    _intermediateWidth		= v._intermediateWidth;
+	    _intermediateHeight	= v._intermediateHeight;
+	    _inLocalMove		= false;
     }
 
     //------------------------------------------------------------------------------
@@ -238,6 +249,21 @@ namespace Base {
 		_oldLeftBottom  = _leftBottom;
 		_oldWidth       = _width;
 		_oldHeight      = _height;
+		resetInLocalMove();
+	}
+	
+	void Rectangle2::updateIntermediateElement( Coord2 & c, double width, double height )
+	{
+		
+		_intermediateLeftBottom  = c;
+		_intermediateWidth       = width;
+		_intermediateHeight      = height;
+		_inLocalMove = true;
+	}
+	
+	void Rectangle2::resetInLocalMove( void )
+	{
+		_inLocalMove = false;
 	}
 	
 	void Rectangle2::updateFixedElement( void )

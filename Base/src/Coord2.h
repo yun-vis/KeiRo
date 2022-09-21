@@ -35,8 +35,10 @@ class Coord2 {
 
   protected:
 	
-	double		_oldElement[ 2 ];	// old x, y coordinates
     double		_element[ 2 ];	    // x, y coordinates
+    	double		_oldElement[ 2 ];	// old x, y coordinates
+	double		_intermediateElement[ 2 ];	// intermediate x, y coordinates
+	bool 		_inLocalMove;			// whether _intermediateElement holds useful information
 
     virtual void	_init( void );	// initialize all coordinates to zero
 
@@ -73,8 +75,11 @@ class Coord2 {
     const double &	operator [] ( int i ) const;
     double &		operator [] ( int i );
 				// reference to a specific coordinate
-	const double *	oldElement( void ) const	{ return _oldElement; }
 	const double *	element( void ) const	    { return _element; }
+	const double *	oldElement( void ) const	{ return _oldElement; }
+	const double *	intermediateElement( void ) const	{ return _intermediateElement; }
+	bool & inLocalMove( void )	 	 	{ return _inLocalMove; }
+	const bool & inLocalMove( void ) const 	{ return _inLocalMove; }
 				// pointer to an array of coordinates
     double &	x( void ) 	{ return _element[ 0 ]; }
     const double &	x( void ) const	{ return _element[ 0 ]; }
@@ -98,7 +103,9 @@ class Coord2 {
     Coord2 &		normalize( void );	// transformed into a unit vector
     Coord2		unit( void ) const;	// return a unit vector
 						// without normalization of that vector
-	void        updateOldElement( void );
+	void		updateOldElement( void );
+	void		updateIntermediateElement( double x, double y ); //set intermediate element if participating in local move
+	void		resetInLocalMove( void ); //reset _inLocalMove to false
 	
 //------------------------------------------------------------------------------
 //	Intersection check
