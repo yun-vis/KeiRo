@@ -57,6 +57,11 @@ namespace Base {
         double      _intermediateWidth;
         double      _intermediateHeight;
         
+        // Rectangle2 intermediate coordinates of end points
+        Coord2      _unshrunkLeftBottom;
+        double      _unshrunkWidth;
+        double      _unshrunkHeight;
+        
         // whether -Intermediate... holds useful information
         bool	_inLocalMove;
         
@@ -133,6 +138,15 @@ namespace Base {
 	    double &		intermediateHeight( void )		{ return _intermediateHeight; }
 	    const double &	intermediateHeight( void ) const	{ return _intermediateHeight; }
 	    
+	    Coord2 &		unshrunkLeftBottom( void )	{ return _unshrunkLeftBottom; }
+	    const Coord2 &	unshrunkLeftBottom( void ) const	{ return _unshrunkLeftBottom; }
+	
+	    double &		unshrunkWidth( void )		{ return _unshrunkWidth; }
+	    const double &	unshrunkWidth( void ) const	{ return _unshrunkWidth; }
+	
+	    double &		unshrunkHeight( void )		{ return _unshrunkHeight; }
+	    const double &	unshrunkHeight( void ) const	{ return _unshrunkHeight; }
+	    
 	    bool &		inLocalMove( void )		{ return _inLocalMove; }
 	    const bool &	inLocalMove( void ) const	{ return _inLocalMove; }
 	    
@@ -146,6 +160,7 @@ namespace Base {
 	    bool isOverlap( Rectangle2 r, double &area );
 	    void updateOldElement( void );
 	    void updateIntermediateElement( Coord2 & c, double width, double height );
+	    void updateUnshrunkElement( Coord2 & c, double width, double height );
 	    void resetInLocalMove( void );
 	    void updateFixedElement( void );
 	    Coord2 projectedOnBoundary( Coord2 c );

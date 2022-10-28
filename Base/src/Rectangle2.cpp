@@ -112,6 +112,12 @@ namespace Base {
 	    _intermediateLeftBottom.y()= y;
 	    _intermediateWidth		= w;
 	    _intermediateHeight	= h;
+	    
+	    _unshrunkLeftBottom.x()	= x;
+	    _unshrunkLeftBottom.y()	= y;
+	    _unshrunkWidth		= w;
+	    _unshrunkHeight		= h;
+	    
 	    _inLocalMove		= false;
     }
 
@@ -145,6 +151,11 @@ namespace Base {
 	    _intermediateLeftBottom	= v._intermediateLeftBottom;
 	    _intermediateWidth		= v._intermediateWidth;
 	    _intermediateHeight	= v._intermediateHeight;
+	    
+	    _unshrunkLeftBottom	= v._unshrunkLeftBottom;
+	    _unshrunkWidth		= v._unshrunkWidth;
+	    _unshrunkHeight		= v._unshrunkHeight;
+	    
 	    _inLocalMove		= false;
     }
 
@@ -254,11 +265,67 @@ namespace Base {
 	
 	void Rectangle2::updateIntermediateElement( Coord2 & c, double width, double height )
 	{
-		
-		_intermediateLeftBottom  = c;
-		_intermediateWidth       = width;
-		_intermediateHeight      = height;
-		_inLocalMove = true;
+		// if already in local move, restrict intermediate element to intersection
+		if(_inLocalMove) {
+			// first fix horizontal measurements
+			if( c.x() + width < _intermediateLeftBottom.x() + _intermediateWidth ) {
+			// right side of new box is left of right side of old box
+				if( c.x() < _intermediateLeftBottom.x() ) {
+				// left side of new box is left of left side of old box
+					_intermediateWidth = width - (_intermediateLeftBottom.x() - c.x());
+					
+				} else { // left side of new box is right of left side of old box
+					_intermediateLeftBottom.x() = c.x();
+					_intermediateWidth = width;
+				}
+				
+			} else {
+			// right side of new box is right of right side of old box
+				if( c.x() >= _intermediateLeftBottom.x() ) {
+				// left side of new box is right of left side of old box
+					_intermediateWidth = _intermediateWidth - (c.x() - _intermediateLeftBottom.x());
+					_intermediateLeftBottom.x() = c.x();
+				
+				} // no 'else' because then the old box is completely inside new box 
+				
+			}
+			
+			// then fix vertical measurements
+			if( c.y() + height < _intermediateLeftBottom.y() + _intermediateHeight ) {
+			// top side of new box is below of top side of old box
+				if( c.y() < _intermediateLeftBottom.y() ) {
+				// bottom side of new box is below the bottom side of old box
+					_intermediateHeight = height - (_intermediateLeftBottom.y() - c.y());
+					
+				} else { // bottom side of new box is above the bottom side of old box
+					_intermediateLeftBottom.y() = c.y();
+					_intermediateHeight = height;
+				}
+				
+			} else {
+			// top side of new box is above the top side of old box
+				if( c.y() >= _intermediateLeftBottom.y() ) {
+				// bottom side of new box is above the bottom side of old box
+					_intermediateHeight = _intermediateHeight - (c.y() - _intermediateLeftBottom.y());
+					_intermediateLeftBottom.y() = c.y();
+				
+				} // no 'else' because then the old box is completely inside new box 
+				
+			}
+			
+		} else { // otherwise simply set intermediate values
+			_intermediateLeftBottom  = c;
+			_intermediateWidth       = width;
+			_intermediateHeight      = height;
+			_inLocalMove = true;
+		}
+	}
+	
+	void Rectangle2::updateUnshrunkElement( Coord2 & c, double width, double height )
+	{
+		_unshrunkLeftBottom	= c;
+		_unshrunkWidth		= width;
+		_unshrunkHeight	= height;
 	}
 	
 	void Rectangle2::resetInLocalMove( void )
