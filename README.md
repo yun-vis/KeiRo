@@ -49,7 +49,7 @@ $ ./KeiRo
 
 ### Tested environment
 
-- Ubuntu 16.04 LTS
+- Ubuntu 20.04LTS, 22.04 LTS
 - Mac OS 10.12
 
 
