@@ -1,0 +1,71 @@
+C:\Windows\system32\wsl.exe --distribution Ubuntu-22.04 --exec "/mnt/c/Users/Alsuwazj/AppData/Local/JetBrains/CLion 2024.1/bin/ttyfix" /bin/bash -c "export CLION_IDE=TRUE && export CMAKE_COLOR_DIAGNOSTICS=ON && export DISPLAY='172.20.144.1:0' && export JETBRAINS_IDE=TRUE && cd /home/alsuwazj/KeiRo/build && /usr/bin/cmake -DCMAKE_BUILD_TYPE=Release -G 'CodeBlocks - Unix Makefiles' -S /home/alsuwazj/KeiRo -B /home/alsuwazj/KeiRo/build"
+CMAKE_BINARY_DIR: /home/alsuwazj/KeiRo/build
+CMAKE_SOURCE_DIR: /home/alsuwazj/KeiRo
+GNUInstallDirs: 
+CMake Warning at /usr/lib/x86_64-linux-gnu/cmake/CGAL/CGALConfig.cmake:92 (message):
+  CGAL_DATA_DIR cannot be deduced, set the variable CGAL_DATA_DIR to set the
+  default value of CGAL::data_file_path()
+Call Stack (most recent call first):
+  Base/CMakeLists.txt:60 (find_package)
+
+
+-- Using header-only CGAL
+-- Targetting Unix Makefiles
+-- Using /usr/bin/c++ compiler.
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found suitable version "1.74.0", minimum required is "1.48")  
+-- Boost include dirs: /usr/include
+-- Boost libraries:    
+-- Using gcc version 4 or later. Adding -frounding-math
+-- -- LinkingCGAL
+INSTALL_LIBDIR: /home/alsuwazj/KeiRo/lib
+INSTALL_INCLUDEDIR: /home/alsuwazj/KeiRo/lib
+GNUInstallDirs: 
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0")  
+-- -- Linking boost
+INSTALL_LIBDIR: /home/alsuwazj/KeiRo/lib
+INSTALL_INCLUDEDIR: /home/alsuwazj/KeiRo/lib
+GNUInstallDirs: 
+-- -- Linking qt
+INSTALL_LIBDIR: /home/alsuwazj/KeiRo/lib
+INSTALL_INCLUDEDIR: /home/alsuwazj/KeiRo/lib
+GNUInstallDirs: 
+-- -- Linking qt
+INSTALL_LIBDIR: /home/alsuwazj/KeiRo/lib
+INSTALL_INCLUDEDIR: /home/alsuwazj/KeiRo/lib
+GNUInstallDirs: 
+-- -- Linking boost
+CMake Warning at /usr/lib/x86_64-linux-gnu/cmake/CGAL/CGALConfig.cmake:92 (message):
+  CGAL_DATA_DIR cannot be deduced, set the variable CGAL_DATA_DIR to set the
+  default value of CGAL::data_file_path()
+Call Stack (most recent call first):
+  Geometry/CMakeLists.txt:66 (find_package)
+
+
+-- -- LinkingCGAL
+INSTALL_LIBDIR: /home/alsuwazj/KeiRo/lib
+INSTALL_INCLUDEDIR: /home/alsuwazj/KeiRo/lib
+/home/alsuwazj/KeiRo/third_party/libSBGN2/build/install/lib/
+-- -- Linking qt
+INSTALL_LIBDIR: /home/alsuwazj/KeiRo/lib
+INSTALL_INCLUDEDIR: /home/alsuwazj/KeiRo/lib
+-- -- Linking qt
+INSTALL_LIBDIR: /home/alsuwazj/KeiRo/lib
+INSTALL_INCLUDEDIR: /home/alsuwazj/KeiRo/lib
+CMAKE_BINARY_DIR: /home/alsuwazj/KeiRo/build
+CMAKE_SOURCE_DIR: /home/alsuwazj/KeiRo
+-- -- Linking qt
+-- -- Linking eigen
+-- -- Linking boost
+CMake Warning at /usr/lib/x86_64-linux-gnu/cmake/CGAL/CGALConfig.cmake:92 (message):
+  CGAL_DATA_DIR cannot be deduced, set the variable CGAL_DATA_DIR to set the
+  default value of CGAL::data_file_path()
+Call Stack (most recent call first):
+  ResponsiveLens/CMakeLists.txt:247 (find_package)
+
+
+-- -- Linking CGAL
+-- -std=gnu++14  -fno-inline  -g -Wall -frounding-math -lgmp -lmpfr -DIL_STD -O3 -DNDEBUG/home/alsuwazj/KeiRo/build/Base/libKeiRoBase.so/home/alsuwazj/KeiRo/build/Graph/libKeiRoGraph.so/home/alsuwazj/KeiRo/build/Optimization/libKeiRoOptimization.so/home/alsuwazj/KeiRo/build/Composite/libKeiRoComposite.so/home/alsuwazj/KeiRo/build/Geometry/libKeiRoGeometry.so/home/alsuwazj/KeiRo/build/UI/libKeiRoUI.so/home/alsuwazj/KeiRo/build/FileIO/libKeiRoFileIO.soQt5::CoreQt5::GuiQt5::SvgQt5::XmlQt5::WidgetsQt5::OpenGLEigen3::EigenCGAL
+The system will build ResponsiveLens
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/alsuwazj/KeiRo/build

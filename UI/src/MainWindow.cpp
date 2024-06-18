@@ -401,7 +401,7 @@ namespace Ui {
     	double ww = KeiRo::Base::Common::getMainwidgetWidth();
 		double wh = KeiRo::Base::Common::getMainwidgetHeight();
 
-    	_mainGV->exportPNG( -0.5*ww, -0.5*wh, ww, wh );
+    	_mainGV->exportPNG( -0.9*ww, -0.9*wh, ww, wh );
 	}
 	
     //

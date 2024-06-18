@@ -1,0 +1,12 @@
+C:\Windows\system32\wsl.exe --distribution Ubuntu-22.04 --exec "/mnt/c/Users/Alsuwazj/AppData/Local/JetBrains/CLion 2024.1/bin/ttyfix" /bin/bash -c "export CLION_IDE=TRUE && export CMAKE_COLOR_DIAGNOSTICS=ON && export DISPLAY='172.24.240.1:0' && export JETBRAINS_IDE=TRUE && cd /home/alsuwazj/KeiRo/build && /usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G 'CodeBlocks - Unix Makefiles' -S /home/alsuwazj/KeiRo -B /home/alsuwazj/KeiRo/build"
+
+Cannot get compiler information:
+	Compiler exited with error code 1: \usr\bin\c++ -xc++ -DBOOST_ALL_NO_LIB -DCGAL_USE_CORE=1 -DCGAL_USE_GMPXX=1 -DKeiRoGeometry_EXPORTS -g -fPIC -frounding-math -fpch-preprocess -v -dD -E
+	
+	
+	Compiler exited with error code 1: \usr\bin\c++ -xc++ -DKeiRoOptimization_EXPORTS -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_LIB -DQT_SVG_LIB -DQT_WIDGETS_LIB -isystem/usr/include/x86_64-linux-gnu/qt5 -isystem/usr/include/x86_64-linux-gnu/qt5/QtCore -isystem/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -isystem/usr/include/x86_64-linux-gnu/qt5/QtGui -isystem/usr/include/x86_64-linux-gnu/qt5/QtSvg -isystem/usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -g -fPIC -fPIC -fpch-preprocess -v -dD -E
+	
+	
+	Compiler exited with error code 1: \usr\bin\c++ -xc++ -DKeiRoUI_EXPORTS -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_LIB -DQT_SVG_LIB -DQT_WIDGETS_LIB -isystem/usr/include/x86_64-linux-gnu/qt5 -isystem/usr/include/x86_64-linux-gnu/qt5/QtCore -isystem/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -isystem/usr/include/x86_64-linux-gnu/qt5/QtGui -isystem/usr/include/x86_64-linux-gnu/qt5/QtSvg -isystem/usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -g -fPIC -fPIC -fpch-preprocess -v -dD -E
+	
+	

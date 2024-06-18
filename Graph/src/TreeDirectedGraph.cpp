@@ -62,12 +62,12 @@ namespace Graph {
 //    #ifdef  DEBUG
         // print edge information
         BGL_FORALL_EDGES( ed, graph, TreeDirectedGraph ) {
+	        TreeDirectedGraph::vertex_descriptor vdS = source( ed, graph );
+	        TreeDirectedGraph::vertex_descriptor vdT = target( ed, graph );
 
-            TreeDirectedGraph::vertex_descriptor vdS = source( ed, graph );
-            TreeDirectedGraph::vertex_descriptor vdT = target( ed, graph );
+	        cerr << "eid = " << graph[ ed ].id << " ( " << graph[ vdS ].id << " == " << graph[ vdT ].id << " ) " << endl;
 
-            cerr << "eid = " << graph[ ed ].id << " ( " << graph[ vdS ].id << " == " << graph[ vdT ].id << " ) " << endl;
-        }
+	    }
 //    #endif  // DEBUG
     }
 
