@@ -1,5 +1,5 @@
 cmake_minimum_required( VERSION 3.8 )
-PROJECT( KEIRO )
+PROJECT( KeiRo )
 set( Target_Name KeiRo )
 set(CMAKE_MACOSX_RPATH OFF)
 
