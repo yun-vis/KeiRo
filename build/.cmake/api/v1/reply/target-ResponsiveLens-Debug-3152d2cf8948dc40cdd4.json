@@ -1,0 +1,563 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "bin/ResponsiveLens"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_executable",
+			"target_link_libraries",
+			"target_include_directories"
+		],
+		"files" : 
+		[
+			"ResponsiveLens/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 84,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 178,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 201,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 201,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 201,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 201,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 201,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 201,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 254,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 121,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 221,
+				"parent" : 0
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-std=gnu++14  -fno-inline  -g -Wall -frounding-math -lgmp -lmpfr -DIL_STD -O3 -DNDEBUG -g"
+				},
+				{
+					"backtrace" : 8,
+					"fragment" : "-fPIC"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "-frounding-math"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 9,
+					"define" : "BOOST_ALL_NO_LIB"
+				},
+				{
+					"backtrace" : 9,
+					"define" : "CGAL_USE_GMPXX=1"
+				},
+				{
+					"backtrace" : 8,
+					"define" : "QT_CORE_LIB"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "QT_GUI_LIB"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "QT_OPENGL_LIB"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "QT_SVG_LIB"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "QT_WIDGETS_LIB"
+				},
+				{
+					"backtrace" : 4,
+					"define" : "QT_XML_LIB"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"path" : "/home/alsuwazj/KeiRo/build/ResponsiveLens"
+				},
+				{
+					"path" : "/home/alsuwazj/KeiRo/ResponsiveLens"
+				},
+				{
+					"backtrace" : 0,
+					"path" : "/home/alsuwazj/KeiRo/build/ResponsiveLens/ResponsiveLens_autogen/include"
+				},
+				{
+					"backtrace" : 10,
+					"path" : "/opt/local/include"
+				},
+				{
+					"backtrace" : 10,
+					"path" : "/home/alsuwazj/KeiRo/Base/src"
+				},
+				{
+					"backtrace" : 10,
+					"path" : "/home/alsuwazj/KeiRo/Graph/src"
+				},
+				{
+					"backtrace" : 10,
+					"path" : "/home/alsuwazj/KeiRo/Optimization/src"
+				},
+				{
+					"backtrace" : 10,
+					"path" : "/home/alsuwazj/KeiRo/Composite/src"
+				},
+				{
+					"backtrace" : 10,
+					"path" : "/home/alsuwazj/KeiRo/Geometry/src"
+				},
+				{
+					"backtrace" : 10,
+					"path" : "/home/alsuwazj/KeiRo/UI/src"
+				},
+				{
+					"backtrace" : 10,
+					"path" : "/home/alsuwazj/KeiRo/FileIO/src"
+				},
+				{
+					"backtrace" : 8,
+					"isSystem" : true,
+					"path" : "/usr/include/x86_64-linux-gnu/qt5"
+				},
+				{
+					"backtrace" : 8,
+					"isSystem" : true,
+					"path" : "/usr/include/x86_64-linux-gnu/qt5/QtCore"
+				},
+				{
+					"backtrace" : 8,
+					"isSystem" : true,
+					"path" : "/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++"
+				},
+				{
+					"backtrace" : 7,
+					"isSystem" : true,
+					"path" : "/usr/include/x86_64-linux-gnu/qt5/QtGui"
+				},
+				{
+					"backtrace" : 3,
+					"isSystem" : true,
+					"path" : "/usr/include/x86_64-linux-gnu/qt5/QtSvg"
+				},
+				{
+					"backtrace" : 3,
+					"isSystem" : true,
+					"path" : "/usr/include/x86_64-linux-gnu/qt5/QtWidgets"
+				},
+				{
+					"backtrace" : 4,
+					"isSystem" : true,
+					"path" : "/usr/include/x86_64-linux-gnu/qt5/QtXml"
+				},
+				{
+					"backtrace" : 5,
+					"isSystem" : true,
+					"path" : "/usr/include/x86_64-linux-gnu/qt5/QtOpenGL"
+				},
+				{
+					"backtrace" : 11,
+					"isSystem" : true,
+					"path" : "/usr/include/eigen3"
+				}
+			],
+			"language" : "CXX",
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11,
+				12,
+				13,
+				14,
+				15,
+				16,
+				18
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 0,
+			"id" : "ResponsiveLens_autogen::@897d8a05511f30ed0a7c"
+		}
+	],
+	"id" : "ResponsiveLens::@897d8a05511f30ed0a7c",
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "-std=gnu++14  -fno-inline  -g -Wall -frounding-math -lgmp -lmpfr -DIL_STD -O3 -DNDEBUG -g",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "-L/home/alsuwazj/KeiRo/build/Base",
+				"role" : "libraryPath"
+			},
+			{
+				"fragment" : "-L/home/alsuwazj/KeiRo/build/Graph",
+				"role" : "libraryPath"
+			},
+			{
+				"fragment" : "-L/home/alsuwazj/KeiRo/build/Optimization",
+				"role" : "libraryPath"
+			},
+			{
+				"fragment" : "-L/home/alsuwazj/KeiRo/build/Composite",
+				"role" : "libraryPath"
+			},
+			{
+				"fragment" : "-L/home/alsuwazj/KeiRo/build/Geometry",
+				"role" : "libraryPath"
+			},
+			{
+				"fragment" : "-L/home/alsuwazj/KeiRo/build/UI",
+				"role" : "libraryPath"
+			},
+			{
+				"fragment" : "-L/home/alsuwazj/KeiRo/build/FileIO",
+				"role" : "libraryPath"
+			},
+			{
+				"fragment" : "-Wl,-rpath,/home/alsuwazj/KeiRo/build/Base:/home/alsuwazj/KeiRo/build/Graph:/home/alsuwazj/KeiRo/build/Optimization:/home/alsuwazj/KeiRo/build/Composite:/home/alsuwazj/KeiRo/build/Geometry:/home/alsuwazj/KeiRo/build/UI:/home/alsuwazj/KeiRo/build/FileIO",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "-std=gnu++14  -fno-inline  -g -Wall -frounding-math -lgmp -lmpfr -DIL_STD -O3 -DNDEBUG",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lKeiRoBase",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lKeiRoGraph",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lKeiRoOptimization",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lKeiRoComposite",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lKeiRoGeometry",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lKeiRoUI",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lKeiRoFileIO",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libQt5Svg.so.5.15.3",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 4,
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libQt5Xml.so.5.15.3",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libQt5OpenGL.so.5.15.3",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 6,
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libQt5Widgets.so.5.15.3",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 7,
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libQt5Gui.so.5.15.3",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 8,
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libQt5Core.so.5.15.3",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libgmpxx.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libmpfr.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libgmp.so",
+				"role" : "libraries"
+			}
+		],
+		"language" : "CXX"
+	},
+	"name" : "ResponsiveLens",
+	"nameOnDisk" : "ResponsiveLens",
+	"paths" : 
+	{
+		"build" : "ResponsiveLens",
+		"source" : "ResponsiveLens"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11,
+				12,
+				13,
+				14,
+				15,
+				16,
+				18
+			]
+		},
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				17
+			]
+		},
+		{
+			"name" : "CMake Rules",
+			"sourceIndexes" : 
+			[
+				19
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 0,
+			"compileGroupIndex" : 0,
+			"isGenerated" : true,
+			"path" : "build/ResponsiveLens/ResponsiveLens_autogen/mocs_compilation.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "ResponsiveLens/core/NestedGrid2.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "ResponsiveLens/core/QuadMesh.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "ResponsiveLens/core/QuadTree.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "ResponsiveLens/core/ResponsiveLens.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "ResponsiveLens/core/Treemap.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "ResponsiveLens/core/MetaData.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "ResponsiveLens/core/LocalMove.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "ResponsiveLens/core/HierarchicalPath.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "ResponsiveLens/core/HierarchicalTreemap.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "ResponsiveLens/optimization/Adjustment.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "ResponsiveLens/optimization/Lens.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "ResponsiveLens/ui/LensGraphicsView.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "ResponsiveLens/ui/TreemapGraphicsView.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "ResponsiveLens/ui/SizeTreeGraphicsView.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "ResponsiveLens/ui/LensSetting.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "ResponsiveLens/main.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "resources/ui.qrc",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"compileGroupIndex" : 0,
+			"isGenerated" : true,
+			"path" : "build/ResponsiveLens/ResponsiveLens_autogen/7BV4YJK25R/qrc_ui.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "build/ResponsiveLens/ResponsiveLens_autogen/7BV4YJK25R/qrc_ui.cpp.rule",
+			"sourceGroupIndex" : 2
+		}
+	],
+	"type" : "EXECUTABLE"
+}

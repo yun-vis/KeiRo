@@ -1,0 +1,71 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"install"
+		],
+		"files" : 
+		[
+			"Geometry/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 88,
+				"parent" : 0
+			}
+		]
+	},
+	"installers" : 
+	[
+		{
+			"backtrace" : 1,
+			"component" : "Unspecified",
+			"destination" : "/home/alsuwazj/KeiRo/lib",
+			"paths" : 
+			[
+				"Geometry/libKeiRoGeometry.so.1.0",
+				"Geometry/libKeiRoGeometry.so.1"
+			],
+			"targetId" : "KeiRoGeometry::@8bb03a0d1c401daaf107",
+			"targetIndex" : 5,
+			"targetInstallNamelink" : "skip",
+			"type" : "target"
+		},
+		{
+			"backtrace" : 1,
+			"component" : "Unspecified",
+			"destination" : "/home/alsuwazj/KeiRo/lib",
+			"paths" : 
+			[
+				"Geometry/libKeiRoGeometry.so"
+			],
+			"targetId" : "KeiRoGeometry::@8bb03a0d1c401daaf107",
+			"targetIndex" : 5,
+			"targetInstallNamelink" : "only",
+			"type" : "target"
+		},
+		{
+			"backtrace" : 1,
+			"component" : "Unspecified",
+			"destination" : "/home/alsuwazj/KeiRo/lib",
+			"paths" : 
+			[
+				"Geometry/src/Voronoi.h",
+				"Geometry/src/Seed.h"
+			],
+			"type" : "file"
+		}
+	],
+	"paths" : 
+	{
+		"build" : "Geometry",
+		"source" : "Geometry"
+	}
+}
