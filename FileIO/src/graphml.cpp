@@ -376,8 +376,18 @@ namespace FileIO {
 				if( maxX < coord.x() ) maxX = coord.x();
 				if( maxY < coord.y() ) maxY = coord.y();
 			}
-			
-			_graphmlTree[ parentVD ].boundingBoxPtr = new KeiRo::Base::Rectangle2( minX, minY, maxX-minX, maxY-minY );
+
+            double diffX = maxX-minX;
+            double diffY = maxY-minY;
+            if( diffX == 0 ){
+                diffX += 2;
+                minX -= 1;
+            }
+            if( diffY == 0 ){
+                diffY += 2;
+                minY -= 1;
+            }
+			_graphmlTree[ parentVD ].boundingBoxPtr = new KeiRo::Base::Rectangle2( minX, minY, diffX, diffY );
 			
 #ifdef DEBUG
 			cerr << "cid = " << parentID
