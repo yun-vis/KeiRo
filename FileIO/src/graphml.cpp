@@ -505,17 +505,21 @@ namespace FileIO {
 				for( unsigned int i = 0; i < edge.elements().size(); i++ ){
 
 					KeiRo::Base::Coord2 &coord = edge.elements()[i];
-					coord.x() = ( coord.x() - minX ) / ( maxX - minX ) * KeiRo::Base::Common::getMainwidgetWidth() - 0.5 * KeiRo::Base::Common::getMainwidgetWidth();
-					coord.y() = ( coord.y() - minY ) / ( maxY - minY ) * KeiRo::Base::Common::getMainwidgetHeight() - 0.5 * KeiRo::Base::Common::getMainwidgetHeight();
+                    coord.fixedX() = coord.x() = ( coord.x() - minX ) / ( maxX - minX ) * KeiRo::Base::Common::getMainwidgetWidth() - 0.5 * KeiRo::Base::Common::getMainwidgetWidth();
+                    coord.fixedY() = coord.y() = ( coord.y() - minY ) / ( maxY - minY ) * KeiRo::Base::Common::getMainwidgetHeight() - 0.5 * KeiRo::Base::Common::getMainwidgetHeight();
 					coord.updateOldElement();
-				}
+
+//                    cerr << "coord = " << coord;
+//                    cerr << "coordF = " << coord.fixedX() << ", " << coord.fixedY() << endl;
+
+                }
 			}
 			// iterate vertices
 			BGL_FORALL_VERTICES( vd, *subGPtr, Graph::BaseUndirectedGraph ) {
 				
 				KeiRo::Base::Coord2 &coord = *(*subGPtr)[vd].coordPtr;
-				coord.x() = ( coord.x() - minX ) / ( maxX - minX ) * KeiRo::Base::Common::getMainwidgetWidth() - 0.5 * KeiRo::Base::Common::getMainwidgetWidth();
-				coord.y() = ( coord.y() - minY ) / ( maxY - minY ) * KeiRo::Base::Common::getMainwidgetHeight() - 0.5 * KeiRo::Base::Common::getMainwidgetHeight();
+                coord.fixedX() = coord.x() = ( coord.x() - minX ) / ( maxX - minX ) * KeiRo::Base::Common::getMainwidgetWidth() - 0.5 * KeiRo::Base::Common::getMainwidgetWidth();
+                coord.fixedY() = coord.y() = ( coord.y() - minY ) / ( maxY - minY ) * KeiRo::Base::Common::getMainwidgetHeight() - 0.5 * KeiRo::Base::Common::getMainwidgetHeight();
 				coord.updateOldElement();
 			}
 		}

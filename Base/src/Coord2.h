@@ -36,11 +36,13 @@ class Coord2 {
   protected:
 	
     double		_element[ 2 ];	    // x, y coordinates
-    	double		_oldElement[ 2 ];	// old x, y coordinates
+    double		_fixedElement[ 2 ];	// x, y coordinates
+    double		_oldElement[ 2 ];	// old x, y coordinates
 	double		_intermediateElement[ 2 ];	// intermediate x, y coordinates
 	bool 		_inLocalMove;			// whether _intermediateElement holds useful information
 
     virtual void	_init( void );	// initialize all coordinates to zero
+    void	    _reset( void );	    // reset all coordinates to initial coordinates
 
   public:
 
@@ -72,10 +74,13 @@ class Coord2 {
     void		init( void )		{ _init(); }
     void		zero( void )		{ _init(); }
 				// initialze all the coordinates to zero
+    void		reset( void )		{ _reset(); }
+                // reset all the coordinates to initial coordinatesZ
     const double &	operator [] ( int i ) const;
     double &		operator [] ( int i );
 				// reference to a specific coordinate
 	const double *	element( void ) const	    { return _element; }
+    const double *	fixedElement( void ) const	{ return _fixedElement; }
 	const double *	oldElement( void ) const	{ return _oldElement; }
 	const double *	intermediateElement( void ) const	{ return _intermediateElement; }
 	bool & inLocalMove( void )	 	 	{ return _inLocalMove; }
@@ -92,6 +97,10 @@ class Coord2 {
     void		setX( const double x ) { _element[ 0 ] = x; }
     void		setY( const double y ) { _element[ 1 ] = y; }
 				// set the coordinate(s)
+    double &	fixedX( void ) 	{ return _fixedElement[ 0 ]; }
+    const double &	fixedX( void ) const	{ return _fixedElement[ 0 ]; }
+    double &	fixedY( void ) 	{ return _fixedElement[ 1 ]; }
+    const double &	fixedY( void ) const	{ return _fixedElement[ 1 ]; }
 
 //------------------------------------------------------------------------------
 //	Special functions
