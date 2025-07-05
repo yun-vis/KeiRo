@@ -1,16 +1,4 @@
 C:\Windows\system32\wsl.exe --distribution Ubuntu-22.04 --exec "/mnt/c/Users/Alsuwazj/AppData/Local/JetBrains/CLion 2024.1/bin/ttyfix" /bin/bash -c "export CLION_IDE=TRUE && export CMAKE_COLOR_DIAGNOSTICS=ON && export DISPLAY='172.29.240.1:0' && export JETBRAINS_IDE=TRUE && cd /home/alsuwazj/KeiRo/build && /usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G 'CodeBlocks - Unix Makefiles' -S /home/alsuwazj/KeiRo -B /home/alsuwazj/KeiRo/build"
--- The C compiler identification is GNU 11.4.0
--- The CXX compiler identification is GNU 11.4.0
--- Detecting C compiler ABI info
--- Detecting C compiler ABI info - done
--- Check for working C compiler: /usr/bin/cc - skipped
--- Detecting C compile features
--- Detecting C compile features - done
--- Detecting CXX compiler ABI info
--- Detecting CXX compiler ABI info - done
--- Check for working CXX compiler: /usr/bin/c++ - skipped
--- Detecting CXX compile features
--- Detecting CXX compile features - done
 CMAKE_BINARY_DIR: /home/alsuwazj/KeiRo/build
 CMAKE_SOURCE_DIR: /home/alsuwazj/KeiRo
 GNUInstallDirs: 
@@ -24,16 +12,9 @@ Call Stack (most recent call first):
 -- Using header-only CGAL
 -- Targetting Unix Makefiles
 -- Using /usr/bin/c++ compiler.
--- Found GMP: /usr/lib/x86_64-linux-gnu/libgmp.so  
--- Found MPFR: /usr/lib/x86_64-linux-gnu/libmpfr.so  
 -- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found suitable version "1.74.0", minimum required is "1.48")  
 -- Boost include dirs: /usr/include
 -- Boost libraries:    
--- Looking for pthread.h
--- Looking for pthread.h - found
--- Performing Test CMAKE_HAVE_LIBC_PTHREAD
--- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
--- Found Threads: TRUE  
 -- Using gcc version 4 or later. Adding -frounding-math
 -- -- LinkingCGAL
 INSTALL_LIBDIR: /home/alsuwazj/KeiRo/lib
@@ -63,8 +44,8 @@ Call Stack (most recent call first):
 -- -- LinkingCGAL
 INSTALL_LIBDIR: /home/alsuwazj/KeiRo/lib
 INSTALL_INCLUDEDIR: /home/alsuwazj/KeiRo/lib
-/home/alsuwazj/KeiRo/third_party/libSBGN2/build/install/lib/
 -- -- Linking qt
+/home/alsuwazj/KeiRo/third_party/libSBGN2/build/install/lib/
 INSTALL_LIBDIR: /home/alsuwazj/KeiRo/lib
 INSTALL_INCLUDEDIR: /home/alsuwazj/KeiRo/lib
 -- -- Linking qt
@@ -79,7 +60,7 @@ CMake Warning at /usr/lib/x86_64-linux-gnu/cmake/CGAL/CGALConfig.cmake:92 (messa
   CGAL_DATA_DIR cannot be deduced, set the variable CGAL_DATA_DIR to set the
   default value of CGAL::data_file_path()
 Call Stack (most recent call first):
-  ResponsiveLens/CMakeLists.txt:248 (find_package)
+  ResponsiveLens/CMakeLists.txt:250 (find_package)
 
 
 -- -- Linking CGAL

@@ -317,10 +317,24 @@ ResponsiveLens/CMakeFiles/ResponsiveLens.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ResponsiveLens.dir/main.cpp.s"
 	cd /home/alsuwazj/KeiRo/build/ResponsiveLens && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alsuwazj/KeiRo/ResponsiveLens/main.cpp -o CMakeFiles/ResponsiveLens.dir/main.cpp.s
 
+ResponsiveLens/CMakeFiles/ResponsiveLens.dir/ui/Metrics.cpp.o: ResponsiveLens/CMakeFiles/ResponsiveLens.dir/flags.make
+ResponsiveLens/CMakeFiles/ResponsiveLens.dir/ui/Metrics.cpp.o: ../ResponsiveLens/ui/Metrics.cpp
+ResponsiveLens/CMakeFiles/ResponsiveLens.dir/ui/Metrics.cpp.o: ResponsiveLens/CMakeFiles/ResponsiveLens.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alsuwazj/KeiRo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object ResponsiveLens/CMakeFiles/ResponsiveLens.dir/ui/Metrics.cpp.o"
+	cd /home/alsuwazj/KeiRo/build/ResponsiveLens && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT ResponsiveLens/CMakeFiles/ResponsiveLens.dir/ui/Metrics.cpp.o -MF CMakeFiles/ResponsiveLens.dir/ui/Metrics.cpp.o.d -o CMakeFiles/ResponsiveLens.dir/ui/Metrics.cpp.o -c /home/alsuwazj/KeiRo/ResponsiveLens/ui/Metrics.cpp
+
+ResponsiveLens/CMakeFiles/ResponsiveLens.dir/ui/Metrics.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ResponsiveLens.dir/ui/Metrics.cpp.i"
+	cd /home/alsuwazj/KeiRo/build/ResponsiveLens && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alsuwazj/KeiRo/ResponsiveLens/ui/Metrics.cpp > CMakeFiles/ResponsiveLens.dir/ui/Metrics.cpp.i
+
+ResponsiveLens/CMakeFiles/ResponsiveLens.dir/ui/Metrics.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ResponsiveLens.dir/ui/Metrics.cpp.s"
+	cd /home/alsuwazj/KeiRo/build/ResponsiveLens && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alsuwazj/KeiRo/ResponsiveLens/ui/Metrics.cpp -o CMakeFiles/ResponsiveLens.dir/ui/Metrics.cpp.s
+
 ResponsiveLens/CMakeFiles/ResponsiveLens.dir/ResponsiveLens_autogen/7BV4YJK25R/qrc_ui.cpp.o: ResponsiveLens/CMakeFiles/ResponsiveLens.dir/flags.make
 ResponsiveLens/CMakeFiles/ResponsiveLens.dir/ResponsiveLens_autogen/7BV4YJK25R/qrc_ui.cpp.o: ResponsiveLens/ResponsiveLens_autogen/7BV4YJK25R/qrc_ui.cpp
 ResponsiveLens/CMakeFiles/ResponsiveLens.dir/ResponsiveLens_autogen/7BV4YJK25R/qrc_ui.cpp.o: ResponsiveLens/CMakeFiles/ResponsiveLens.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alsuwazj/KeiRo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object ResponsiveLens/CMakeFiles/ResponsiveLens.dir/ResponsiveLens_autogen/7BV4YJK25R/qrc_ui.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alsuwazj/KeiRo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object ResponsiveLens/CMakeFiles/ResponsiveLens.dir/ResponsiveLens_autogen/7BV4YJK25R/qrc_ui.cpp.o"
 	cd /home/alsuwazj/KeiRo/build/ResponsiveLens && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT ResponsiveLens/CMakeFiles/ResponsiveLens.dir/ResponsiveLens_autogen/7BV4YJK25R/qrc_ui.cpp.o -MF CMakeFiles/ResponsiveLens.dir/ResponsiveLens_autogen/7BV4YJK25R/qrc_ui.cpp.o.d -o CMakeFiles/ResponsiveLens.dir/ResponsiveLens_autogen/7BV4YJK25R/qrc_ui.cpp.o -c /home/alsuwazj/KeiRo/build/ResponsiveLens/ResponsiveLens_autogen/7BV4YJK25R/qrc_ui.cpp
 
 ResponsiveLens/CMakeFiles/ResponsiveLens.dir/ResponsiveLens_autogen/7BV4YJK25R/qrc_ui.cpp.i: cmake_force
@@ -350,6 +364,7 @@ ResponsiveLens_OBJECTS = \
 "CMakeFiles/ResponsiveLens.dir/ui/SizeTreeGraphicsView.cpp.o" \
 "CMakeFiles/ResponsiveLens.dir/ui/LensSetting.cpp.o" \
 "CMakeFiles/ResponsiveLens.dir/main.cpp.o" \
+"CMakeFiles/ResponsiveLens.dir/ui/Metrics.cpp.o" \
 "CMakeFiles/ResponsiveLens.dir/ResponsiveLens_autogen/7BV4YJK25R/qrc_ui.cpp.o"
 
 # External object files for target ResponsiveLens
@@ -372,6 +387,7 @@ bin/ResponsiveLens: ResponsiveLens/CMakeFiles/ResponsiveLens.dir/ui/TreemapGraph
 bin/ResponsiveLens: ResponsiveLens/CMakeFiles/ResponsiveLens.dir/ui/SizeTreeGraphicsView.cpp.o
 bin/ResponsiveLens: ResponsiveLens/CMakeFiles/ResponsiveLens.dir/ui/LensSetting.cpp.o
 bin/ResponsiveLens: ResponsiveLens/CMakeFiles/ResponsiveLens.dir/main.cpp.o
+bin/ResponsiveLens: ResponsiveLens/CMakeFiles/ResponsiveLens.dir/ui/Metrics.cpp.o
 bin/ResponsiveLens: ResponsiveLens/CMakeFiles/ResponsiveLens.dir/ResponsiveLens_autogen/7BV4YJK25R/qrc_ui.cpp.o
 bin/ResponsiveLens: ResponsiveLens/CMakeFiles/ResponsiveLens.dir/build.make
 bin/ResponsiveLens: Base/libKeiRoBase.so
@@ -391,7 +407,7 @@ bin/ResponsiveLens: /usr/lib/x86_64-linux-gnu/libgmpxx.so
 bin/ResponsiveLens: /usr/lib/x86_64-linux-gnu/libmpfr.so
 bin/ResponsiveLens: /usr/lib/x86_64-linux-gnu/libgmp.so
 bin/ResponsiveLens: ResponsiveLens/CMakeFiles/ResponsiveLens.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/alsuwazj/KeiRo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Linking CXX executable ../bin/ResponsiveLens"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/alsuwazj/KeiRo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Linking CXX executable ../bin/ResponsiveLens"
 	cd /home/alsuwazj/KeiRo/build/ResponsiveLens && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ResponsiveLens.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

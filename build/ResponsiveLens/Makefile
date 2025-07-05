@@ -573,6 +573,30 @@ ui/LensSetting.cpp.s:
 	cd /home/alsuwazj/KeiRo/build && $(MAKE) $(MAKESILENT) -f ResponsiveLens/CMakeFiles/ResponsiveLens.dir/build.make ResponsiveLens/CMakeFiles/ResponsiveLens.dir/ui/LensSetting.cpp.s
 .PHONY : ui/LensSetting.cpp.s
 
+ui/Metrics.o: ui/Metrics.cpp.o
+.PHONY : ui/Metrics.o
+
+# target to build an object file
+ui/Metrics.cpp.o:
+	cd /home/alsuwazj/KeiRo/build && $(MAKE) $(MAKESILENT) -f ResponsiveLens/CMakeFiles/ResponsiveLens.dir/build.make ResponsiveLens/CMakeFiles/ResponsiveLens.dir/ui/Metrics.cpp.o
+.PHONY : ui/Metrics.cpp.o
+
+ui/Metrics.i: ui/Metrics.cpp.i
+.PHONY : ui/Metrics.i
+
+# target to preprocess a source file
+ui/Metrics.cpp.i:
+	cd /home/alsuwazj/KeiRo/build && $(MAKE) $(MAKESILENT) -f ResponsiveLens/CMakeFiles/ResponsiveLens.dir/build.make ResponsiveLens/CMakeFiles/ResponsiveLens.dir/ui/Metrics.cpp.i
+.PHONY : ui/Metrics.cpp.i
+
+ui/Metrics.s: ui/Metrics.cpp.s
+.PHONY : ui/Metrics.s
+
+# target to generate assembly for a file
+ui/Metrics.cpp.s:
+	cd /home/alsuwazj/KeiRo/build && $(MAKE) $(MAKESILENT) -f ResponsiveLens/CMakeFiles/ResponsiveLens.dir/build.make ResponsiveLens/CMakeFiles/ResponsiveLens.dir/ui/Metrics.cpp.s
+.PHONY : ui/Metrics.cpp.s
+
 ui/SizeTreeGraphicsView.o: ui/SizeTreeGraphicsView.cpp.o
 .PHONY : ui/SizeTreeGraphicsView.o
 
@@ -683,6 +707,9 @@ help:
 	@echo "... ui/LensSetting.o"
 	@echo "... ui/LensSetting.i"
 	@echo "... ui/LensSetting.s"
+	@echo "... ui/Metrics.o"
+	@echo "... ui/Metrics.i"
+	@echo "... ui/Metrics.s"
 	@echo "... ui/SizeTreeGraphicsView.o"
 	@echo "... ui/SizeTreeGraphicsView.i"
 	@echo "... ui/SizeTreeGraphicsView.s"

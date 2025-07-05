@@ -36,6 +36,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/ResponsiveLens.dir/ui/LensGraphicsView.cpp.o.d"
   "CMakeFiles/ResponsiveLens.dir/ui/LensSetting.cpp.o"
   "CMakeFiles/ResponsiveLens.dir/ui/LensSetting.cpp.o.d"
+  "CMakeFiles/ResponsiveLens.dir/ui/Metrics.cpp.o"
+  "CMakeFiles/ResponsiveLens.dir/ui/Metrics.cpp.o.d"
   "CMakeFiles/ResponsiveLens.dir/ui/SizeTreeGraphicsView.cpp.o"
   "CMakeFiles/ResponsiveLens.dir/ui/SizeTreeGraphicsView.cpp.o.d"
   "CMakeFiles/ResponsiveLens.dir/ui/TreemapGraphicsView.cpp.o"

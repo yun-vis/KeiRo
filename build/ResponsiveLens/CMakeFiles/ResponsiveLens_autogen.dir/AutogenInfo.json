@@ -166,6 +166,12 @@
 			null
 		],
 		[
+			"/home/alsuwazj/KeiRo/ResponsiveLens/ui/Metrics.h",
+			"MU",
+			"UYX5XTB5RZ/moc_Metrics.cpp",
+			null
+		],
+		[
 			"/home/alsuwazj/KeiRo/ResponsiveLens/ui/SizeTreeGraphicsView.h",
 			"MU",
 			"UYX5XTB5RZ/moc_SizeTreeGraphicsView.cpp",
@@ -294,6 +300,7 @@
 			null
 		],
 		[ "/home/alsuwazj/KeiRo/ResponsiveLens/ui/LensSetting.cpp", "MU", null ],
+		[ "/home/alsuwazj/KeiRo/ResponsiveLens/ui/Metrics.cpp", "MU", null ],
 		[
 			"/home/alsuwazj/KeiRo/ResponsiveLens/ui/SizeTreeGraphicsView.cpp",
 			"MU",
