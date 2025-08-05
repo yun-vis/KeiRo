@@ -71,7 +71,8 @@ namespace Graph {
         int                         color;                  // color type
         bool                        flag;                   // flag
 		bool                        isSelected;             // if the vertex is selected
-		
+
+    	bool                        scalable;
 	    unsigned int                itemID;                 // item ID for graphics
 	    KeiRo::Base::Object         attribute;              // attribue (e.g., xml style)
 	    // Ui::Vector::GraphicsBallItem * itemPtr;
