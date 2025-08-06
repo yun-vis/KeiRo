@@ -100,38 +100,138 @@ namespace Ui {
 	    	// setting
 		    _settingsDock = new QDockWidget(tr("Setting"), this );
 		    _settingsDock->setAllowedAreas( Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-		
-		    _setting = __setPtr;
-		    _setting->setGeometry( QRect(0,0,KeiRo::Base::Common::getDockWidgetWidth(),
-		                                 KeiRo::Base::Common::getMainwidgetHeight()/2.0 ) );
+
+            // Create the tab widget
+            QTabWidget *tabWidget = new QTabWidget(this);
+
+
+// tab setting
+            _setting = __setPtr;
+//		    _setting->setGeometry( QRect(0,0,KeiRo::Base::Common::getDockWidgetWidth(),
+//		                                 KeiRo::Base::Common::getMainwidgetHeight()/2.0 ) );
 		    _setting->setMinimumSize( QSize( KeiRo::Base::Common::getDockWidgetWidth(),
-		                                     KeiRo::Base::Common::getMainwidgetHeight()/3.0 ) );
+		                                     KeiRo::Base::Common::getMainwidgetHeight()/2.0 ) );
 //	    _setting->setMaximumSize( QSize( KeiRo::Base::Common::getDockWidgetWidth(),
 //	                                     KeiRo::Base::Common::getMainwidgetHeight()/3.0 ) );
 //        _setting->setMouseTracking( false );
-		    _settingsDock->setWidget( _setting );
-		    addDockWidget(Qt::RightDockWidgetArea, _settingsDock );
-		    _viewMenu->addAction(_settingsDock->toggleViewAction() );
+		    //_settingsDock->setWidget( _setting );
+
+
+// Add Setting tab
+            tabWidget->addTab(_setting, tr("Setting"));
+
+// ---------- Path Info tab ----------
+
+            QWidget *_pathInfoWidget = new QWidget;
+            QVBoxLayout *pathLayout = new QVBoxLayout(_pathInfoWidget);
+
+            // Example labels (replace with dynamic content if needed)
+            QLabel *pathLabel = new QLabel("Path information will be here: ", _pathInfoWidget);
+
+            pathLayout->addWidget(pathLabel);
+            //pathLayout->addStretch(); // Push contents to the top
+
+            // Optional: title label
+            QLabel *checklistTitle = new QLabel("Available Paths:", _pathInfoWidget);
+            pathLayout->addWidget(checklistTitle);
+
+// Create the checklist
+            QListWidget *checklist = new QListWidget(_pathInfoWidget);
+
+// Example items (you can fill from your data)
+            QStringList paths = { "Local Paths ", "Global Paths" };
+
+            for (const QString &path : paths) {
+                QListWidgetItem *item = new QListWidgetItem(path, checklist);
+                item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+                item->setCheckState(Qt::Unchecked);
+            }
+
+            pathLayout->addWidget(checklist);
+
+
+            tabWidget->addTab(_pathInfoWidget, tr("Path Info"));
+            // ---------- Finalize dock ----------
+            _settingsDock->setWidget(tabWidget);
+            addDockWidget(Qt::RightDockWidgetArea, _settingsDock);
+            _viewMenu->addAction(_settingsDock->toggleViewAction());
+
+// Create the dock and set the tab widget as its content
+//            _settingsDock = new QDockWidget(tr("Settings and Info"), this);
+//            _settingsDock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+//            _settingsDock->setWidget(tabWidget);
+//            addDockWidget(Qt::RightDockWidgetArea, _settingsDock);
+//            _viewMenu->addAction(_settingsDock->toggleViewAction());
+//
+//            addDockWidget(Qt::RightDockWidgetArea, _settingsDock );
+//		    _viewMenu->addAction(_settingsDock->toggleViewAction() );
 		
 		
-		    // interaction
-		    _interactionDock = new QDockWidget(tr("Interaction"), this );
-		    _interactionDock->setAllowedAreas( Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-		
-		    _interaction = __interactPtr;
-		    _interaction->setGeometry( QRect(0,0,KeiRo::Base::Common::getDockWidgetWidth(),
-		                                     KeiRo::Base::Common::getDockWidgetWidth()*KeiRo::Base::Common::getMainwidgetHeight()/KeiRo::Base::Common::getMainwidgetWidth() ) );
-		    _interaction->setMinimumSize( QSize( KeiRo::Base::Common::getDockWidgetWidth(),
+//		    // interaction
+//		    _interactionDock = new QDockWidget(tr("Legend"), this );
+//		    _interactionDock->setAllowedAreas( Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+//
+//		    _interaction = __interactPtr;
+//		    _interaction->setGeometry( QRect(0,0,KeiRo::Base::Common::getDockWidgetWidth(),
+//		                                     KeiRo::Base::Common::getDockWidgetWidth()*KeiRo::Base::Common::getMainwidgetHeight()/KeiRo::Base::Common::getMainwidgetWidth() ) );
+//		    _interaction->setMinimumSize( QSize( KeiRo::Base::Common::getDockWidgetWidth(),
+//		                                         KeiRo::Base::Common::getDockWidgetWidth()*KeiRo::Base::Common::getMainwidgetHeight()/KeiRo::Base::Common::getMainwidgetWidth() ) );
+//		    _interaction->setMaximumSize( QSize( KeiRo::Base::Common::getDockWidgetWidth(),
+//		                                         KeiRo::Base::Common::getDockWidgetWidth()*KeiRo::Base::Common::getMainwidgetHeight()/KeiRo::Base::Common::getMainwidgetWidth() ) );
+////        _interaction->setMouseTracking( false );
+//            //_interaction->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+//            _interaction->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+//            _interaction->setFrameShape(QFrame::NoFrame);
+//
+//			//_interaction->init( _basePtr );
+//
+//		    _interactionDock->setWidget( _interaction );
+//		    addDockWidget(Qt::RightDockWidgetArea, _interactionDock );
+//		    _viewMenu->addAction( _interactionDock->toggleViewAction() );
+
+// add legend widget
+            _interactionDock = new QDockWidget(tr("Legend"), this);
+            _interactionDock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+
+            _interaction = __interactPtr;  // This is already a SizeTreeGraphicsView* passed in
+
+//            _interaction->setGeometry(QRect(0, 0,
+//                                            KeiRo::Base::Common::getDockWidgetWidth(),
+//                                            KeiRo::Base::Common::getDockWidgetWidth() *
+//                                            KeiRo::Base::Common::getMainwidgetHeight() /
+//                                            KeiRo::Base::Common::getMainwidgetWidth()));
+
+            _interaction->setMinimumSize( QSize( KeiRo::Base::Common::getDockWidgetWidth(),
 		                                         KeiRo::Base::Common::getDockWidgetWidth()*KeiRo::Base::Common::getMainwidgetHeight()/KeiRo::Base::Common::getMainwidgetWidth() ) );
-		    _interaction->setMaximumSize( QSize( KeiRo::Base::Common::getDockWidgetWidth(),
-		                                         KeiRo::Base::Common::getDockWidgetWidth()*KeiRo::Base::Common::getMainwidgetHeight()/KeiRo::Base::Common::getMainwidgetWidth() ) );
-//        _interaction->setMouseTracking( false );
-			_interaction->init( _basePtr );
-		
-		    _interactionDock->setWidget( _interaction );
-		    addDockWidget(Qt::RightDockWidgetArea, _interactionDock );
-		    _viewMenu->addAction( _interactionDock->toggleViewAction() );
-		
+//		    _interaction->setMaximumSize( QSize( KeiRo::Base::Common::getDockWidgetWidth(),
+//		                                         KeiRo::Base::Common::getDockWidgetWidth()*KeiRo::Base::Common::getMainwidgetHeight()/KeiRo::Base::Common::getMainwidgetWidth() ) );
+
+
+            //_interaction->setStyleSheet("QGraphicsView { background-color: blue; }");
+            _interaction->setBackgroundBrush(QColor(240, 240, 240));
+            _interaction->setFrameShape(QFrame::NoFrame);
+            _interaction->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+            _interaction->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+
+// Let it draw legend internally
+            _interaction->init(_basePtr);  // This calls _draw_legend() internally
+            QScrollArea *scrollArea = new QScrollArea;
+            scrollArea->setWidget(_interaction);  // SizeTreeGraphicsView
+            scrollArea->setWidgetResizable(true);
+            scrollArea->setFrameShape(QFrame::NoFrame);
+            scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+            scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+            scrollArea->setMinimumSize(QSize(
+                    KeiRo::Base::Common::getDockWidgetWidth(),
+                    KeiRo::Base::Common::getMainwidgetHeight() * 0.25));  // Legend's initial min height
+
+
+            _interactionDock->setWidget(scrollArea);
+            addDockWidget(Qt::RightDockWidgetArea, _interactionDock);
+            _viewMenu->addAction(_interactionDock->toggleViewAction());
+
+
+
 //	        connect( _setting, &QWidget::windowIconChanged, this, &MainWindow::_updateSetting );
 //	        connect( _interaction, &QWidget::windowIconChanged, this, &MainWindow::_updateInteraction );
 	    }

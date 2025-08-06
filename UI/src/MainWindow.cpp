@@ -171,6 +171,7 @@ namespace Ui {
 //	    //    connect(interaction, &QWidget::windowIconChanged, this, &MainWindow::updateInteraction );
 //    }
 
+
     void MainWindow::setSettings(QWidget* settingsWidget) 
     {
     }
@@ -208,7 +209,8 @@ namespace Ui {
 	//
 	void MainWindow::_initInteraction( const QString &interaction )
 	{
-		_interaction->initSceneItems();
+		//
+         _interaction->initSceneItems();
 		if( interaction.isEmpty() ) return;
 	}
 	

@@ -59,6 +59,39 @@ namespace Base {
 		_fixedLeftBottom.zero();
     	_width = _oldWidth = _fixedWidth = _height = _oldHeight = _fixedHeight = 0.0;
     }
+//
+    //  Polygon2::_reset --	reset elements
+    //
+    //  Inputs
+    //
+    //
+    //  Outputs
+    //  none
+    //
+    void Rectangle2::_reset( void )
+    {
+        _leftBottom = _oldLeftBottom = _fixedLeftBottom;
+        _oldWidth = _width;
+        _oldHeight = _height;
+        _width = _fixedWidth;
+        _height = _fixedHeight;
+    }
+
+    //
+    //  Polygon2::_setFixed --	set fixed elements
+    //
+    //  Inputs
+    //
+    //
+    //  Outputs
+    //  none
+    //
+    void Rectangle2::_setFixed( void )
+    {
+        _fixedLeftBottom = _leftBottom ;
+        _fixedWidth = _width;
+        _fixedHeight = _height;
+    }
 
     //------------------------------------------------------------------------------
     //	Public functions

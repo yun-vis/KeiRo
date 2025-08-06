@@ -139,23 +139,43 @@ namespace Vector {
 		    if( maxY < polygon()[i].y() ) maxY = polygon()[i].y();
 	    }
 	    
-	    QPointF p( 0.5*(minX+maxX), 0.5*(minY+maxY) );
-        if( _textOn == true ){
+	    //QPointF p( 0.5*(minX+maxX), 0.5*(minY+maxY) );
+//        QPointF p(minX + 5, minY + sy + 5);
+//        if( _textOn == true ){
+//
+//            painter->setPen( _textpen );
+//	        painter->setFont( _font );
+//#ifdef SKIP
+//            for( unsigned int i = 0; i < p.size(); i++ ){
+//                painter->drawText( p.at(i).x()+5, p.at(i).y()-5, QString::fromStdString( to_string( _id ) ) );
+//            }
+//#endif // SKIP
+//
+//	        //painter->drawText( p.x() - 0.5 * sx, p.y() + 0.5 * sy, _text );
+//            painter->drawText(p.x(), p.y(), _text);
+////            painter->drawText(
+////                    _bbox.x() + 0.5 * _bbox.width() - 0.5 * sx,
+////                    -_bbox.y() - 0.5 * _bbox.height() + 0.5 * sy,
+////                    _text
+////                    );
+//        }
 
-            painter->setPen( _textpen );
-	        painter->setFont( _font );
-#ifdef SKIP
-            for( unsigned int i = 0; i < p.size(); i++ ){
-                painter->drawText( p.at(i).x()+5, p.at(i).y()-5, QString::fromStdString( to_string( _id ) ) );
+        if (_textOn == true) {
+            painter->setPen(_textpen);
+            painter->setFont(_font);
+
+            QFontMetrics metrics(_font);
+            double textWidth = metrics.width(_text);
+            double textHeight = metrics.height();
+
+            QRectF bounds = polygon().boundingRect();
+
+            // Only show text if it fits inside the polygon
+            if (textWidth + 5 < bounds.width() && textHeight + 5 < bounds.height()) {
+                // 5px margin from top-left corner
+                QPointF p(bounds.left() + 5, bounds.top() + textHeight);
+                painter->drawText(p.x(), p.y(), _text);
             }
-#endif // SKIP
-
-	        painter->drawText( p.x() - 0.5 * sx, p.y() + 0.5 * sy, _text );
-//            painter->drawText(
-//                    _bbox.x() + 0.5 * _bbox.width() - 0.5 * sx,
-//                    -_bbox.y() - 0.5 * _bbox.height() + 0.5 * sy,
-//                    _text
-//                    );
         }
 
         //cerr << "paint x = " << pos().x() << " y = " << pos().y() << endl;
