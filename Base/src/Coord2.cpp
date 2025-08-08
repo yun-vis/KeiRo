@@ -94,8 +94,8 @@ Coord2::Coord2()
 //
 Coord2::Coord2( const double x, const double y )
 {
-	_oldElement[ 0 ] = _element[ 0 ]	= x;
-	_oldElement[ 1 ] = _element[ 1 ]	= y;
+	_oldElement[ 0 ] = _fixedElement[0] = _element[ 0 ]	= x;
+	_oldElement[ 1 ] = _fixedElement[1] = _element[ 1 ]	= y;
 	_inLocalMove = false;
 }
 

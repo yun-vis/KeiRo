@@ -450,8 +450,138 @@ namespace FileIO {
 #endif // DEBUG
 	
 	}
-	
+
 	//
+	//  GraphML::alignNodes --	align all nodes
+	//
+	//  Input
+	//	none
+	//
+	//  Output
+	//	none
+	//
+	void GraphML::alignNodes( void )
+	{
+		for( map< unsigned int, Graph::BaseUndirectedGraph >::iterator it = _subGraphMap.begin();
+			 it != _subGraphMap.end(); it++ ) {
+
+			Graph::BaseUndirectedGraph *subGPtr = &it->second;
+
+			// iterate vertex sample points
+			BGL_FORALL_VERTICES(vd, *subGPtr, Graph::BaseUndirectedGraph) {
+
+				vector<KeiRo::Base::Coord2> coordVec;
+				KeiRo::Base::Coord2 coordAvg;
+
+				Graph::BaseUndirectedGraph::out_edge_iterator e, e_end;
+
+				for (tie(e, e_end) = out_edges(vd, *subGPtr); e != e_end; ++e) {
+
+					Graph::BaseUndirectedGraph::edge_descriptor ed = *e;
+					Graph::BaseUndirectedGraph::vertex_descriptor vdT = target(ed, *subGPtr);
+
+					// to improve label readability, update the original node coordinates
+					int firstElement = 0;
+					int lastElement = (*subGPtr)[ed].edge.elements().size() - 1;
+
+					KeiRo::Base::Coord2 forwardVec = *(*subGPtr)[vdT].coordPtr - *(*subGPtr)[vd].coordPtr;
+					KeiRo::Base::Coord2 backwardVec = *(*subGPtr)[vd].coordPtr - *(*subGPtr)[vdT].coordPtr;
+					KeiRo::Base::Coord2 vec = (*subGPtr)[ed].edge.elements()[lastElement] - (*subGPtr)[ed].edge.elements()[firstElement];
+					double forwardSimilarity = (forwardVec * vec) / (forwardVec.norm() * vec.norm());
+					double backwardSimilarity = (backwardVec * vec) / (backwardVec.norm() * vec.norm());
+
+					// path info could be inversely ordered, so need to swap the first and last elements
+					if(  (1.0-forwardSimilarity) > (1.0-backwardSimilarity) ){
+						int tmp = firstElement;
+						firstElement = lastElement;
+						lastElement = tmp;
+					}
+
+					coordVec.push_back(KeiRo::Base::Coord2((*subGPtr)[ed].edge.elements()[firstElement][0],
+														   (*subGPtr)[ed].edge.elements()[firstElement][1]));
+				}
+
+				// calculate the average coordinates
+				for( unsigned int i = 0; i < coordVec.size(); i++ ){
+					coordAvg.x() += coordVec[i].x();
+					coordAvg.y() += coordVec[i].y();
+				}
+				coordAvg.x() /= (double) coordVec.size();
+				coordAvg.y() /= (double) coordVec.size();
+
+				// assign the new coordinates
+				(*subGPtr)[vd].coordPtr->x() = coordAvg.x();
+				(*subGPtr)[vd].coordPtr->y() = coordAvg.y();
+			}
+		}
+	}
+
+    //
+    //  GraphML::alignDegreeOneNodes --	align degree one nodes
+    //
+    //  Input
+    //	none
+    //
+    //  Output
+    //	none
+    //
+    void GraphML::alignDegreeOneNodes( void )
+    {
+        for( map< unsigned int, Graph::BaseUndirectedGraph >::iterator it = _subGraphMap.begin();
+             it != _subGraphMap.end(); it++ ) {
+
+            Graph::BaseUndirectedGraph *subGPtr = &it->second;
+
+			// iterate edge sample points
+            BGL_FORALL_EDGES( ed, *subGPtr, Graph::BaseUndirectedGraph ) {
+
+                KeiRo::Base::Edge2 &edge = (*subGPtr)[ed].edge;
+
+                Graph::BaseUndirectedGraph::vertex_descriptor vdS= source( ed, *subGPtr );
+                Graph::BaseUndirectedGraph::vertex_descriptor vdT= target( ed, *subGPtr );
+                Graph::BaseUndirectedGraph::degree_size_type outDegreeS = out_degree( vdS, *subGPtr );
+                Graph::BaseUndirectedGraph::degree_size_type outDegreeT = out_degree( vdT, *subGPtr );
+
+                // to improve label readability, update the original node coordinates
+                int firstElement = 0;
+                int lastElement = (*subGPtr)[ed].edge.elements().size() - 1;
+
+                KeiRo::Base::Coord2 forwardVec = *(*subGPtr)[vdT].coordPtr - *(*subGPtr)[vdS].coordPtr;
+                KeiRo::Base::Coord2 backwardVec = *(*subGPtr)[vdS].coordPtr - *(*subGPtr)[vdT].coordPtr;
+                KeiRo::Base::Coord2 vec = (*subGPtr)[ed].edge.elements()[lastElement] - (*subGPtr)[ed].edge.elements()[firstElement];
+                double forwardSimilarity = (forwardVec * vec) / (forwardVec.norm() * vec.norm());
+                double backwardSimilarity = (backwardVec * vec) / (backwardVec.norm() * vec.norm());
+
+                // path info could be inversely ordered, so need to swap the first and last elements
+                if(  (1.0-forwardSimilarity) > (1.0-backwardSimilarity) ){
+                    int tmp = firstElement;
+                    firstElement = lastElement;
+                    lastElement = tmp;
+                }
+
+                // source
+                if( outDegreeS == 1 ){
+					(*subGPtr)[vdS].coordPtr->x() = (*subGPtr)[ed].edge.elements()[firstElement][0];
+                    (*subGPtr)[vdS].coordPtr->y() = (*subGPtr)[ed].edge.elements()[firstElement][1];
+                }
+                // target
+                if( outDegreeT == 1 ) {
+                    (*subGPtr)[vdT].coordPtr->x() = (*subGPtr)[ed].edge.elements()[lastElement][0];
+                    (*subGPtr)[vdT].coordPtr->y() = (*subGPtr)[ed].edge.elements()[lastElement][1];
+                }
+
+//				if( *(*subGPtr)[vdS].namePtr == "amp[c]" || *(*subGPtr)[vdT].namePtr == "amp[c]" ){
+//					cerr << "sGID = " << it->first << endl;
+//					cerr << "(*subGPtr)[vdS].namePtr = " << *(*subGPtr)[vdS].namePtr << endl;
+//					cerr << "(*subGPtr)[vdS].coordPtr = " << *(*subGPtr)[vdS].coordPtr;
+//					cerr << "(*subGPtr)[vdT].namePtr = " << *(*subGPtr)[vdT].namePtr << endl;
+//					cerr << "(*subGPtr)[vdT].coordPtr = " << *(*subGPtr)[vdT].coordPtr << endl;
+//				}
+            }
+        }
+    }
+
+    //
 	//  GraphML::normalize --	normalize the data
 	//
 	//  Input
@@ -469,7 +599,7 @@ namespace FileIO {
 			
 			unsigned int parentID = it->first;
 			Graph::BaseUndirectedGraph *subGPtr = &it->second;
-			
+
 			// iterate edge sample points
 			BGL_FORALL_EDGES( ed, *subGPtr, Graph::BaseUndirectedGraph ) {
 				KeiRo::Base::Edge2 &edge = (*subGPtr)[ed].edge;
@@ -494,7 +624,7 @@ namespace FileIO {
 			}
 		}
 
-		// update the coordinates
+        // update the coordinates
 		for( map< unsigned int, Graph::BaseUndirectedGraph >::iterator it = _subGraphMap.begin();
 		     it != _subGraphMap.end(); it++ ){
 			
@@ -511,14 +641,12 @@ namespace FileIO {
                     coord.fixedY() = coord.y() = ( coord.y() - minY ) / ( maxY - minY ) * KeiRo::Base::Common::getMainwidgetHeight() - 0.5 * KeiRo::Base::Common::getMainwidgetHeight();
 					coord.updateOldElement();
 
-//                    cerr << "coord = " << coord;
-//                    cerr << "coordF = " << coord.fixedX() << ", " << coord.fixedY() << endl;
-
                 }
 			}
+
 			// iterate vertices
 			BGL_FORALL_VERTICES( vd, *subGPtr, Graph::BaseUndirectedGraph ) {
-				
+
 				KeiRo::Base::Coord2 &coord = *(*subGPtr)[vd].coordPtr;
                 coord.fixedX() = coord.x() = ( coord.x() - minX ) / ( maxX - minX ) * KeiRo::Base::Common::getMainwidgetWidth() - 0.5 * KeiRo::Base::Common::getMainwidgetWidth();
                 coord.fixedY() = coord.y() = ( coord.y() - minY ) / ( maxY - minY ) * KeiRo::Base::Common::getMainwidgetHeight() - 0.5 * KeiRo::Base::Common::getMainwidgetHeight();
@@ -603,6 +731,8 @@ namespace FileIO {
 	
     	// load edges
 	    loadEdge( graphElement );
+		alignNodes();
+//		alignDegreeOneNodes();
 
 		// nomalization
 		normalize();

@@ -97,6 +97,8 @@ namespace FileIO {
         void loadGroup( QDomElement & groupElement, int parentID = -1 );
         void loadNode( QDomElement & nodeElement, int parentID = -1 );
         void loadEdge( QDomElement & graphElement );
+        void alignNodes( void );
+		void alignDegreeOneNodes( void );
 		void normalize( void );
 		void computeGroupBoundary( void );
 	    void findNodesinSubGraphs( unsigned int idS, unsigned int idT,
