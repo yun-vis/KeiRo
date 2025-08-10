@@ -20,6 +20,7 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets>
+//#include "../../ResponsiveLens/ui/TreemapGraphicsView.h"
 
 QT_BEGIN_NAMESPACE
 //class QAction;
@@ -28,6 +29,7 @@ QT_END_NAMESPACE
 
 #ifndef Q_MOC_RUN
 #include "GraphicsView.h"
+
 #include "Config.h"
 #endif // Q_MOC_RUN
 
@@ -60,6 +62,7 @@ namespace Ui {
 	    GraphicsView                                *_interaction;
         QMenu                                       *_viewMenu;
 
+        QListWidget                                 *_pathChecklist = nullptr;
         //------------------------------------------------------------------------------
         //	Special functions
         //------------------------------------------------------------------------------
@@ -78,7 +81,7 @@ namespace Ui {
         void _createActions     ( void );
         void _createStatusBar   ( void );
 	    template <class T> void _createMainView( T *__mvPtr ){
-		
+
 		    _mainGV = __mvPtr;
 		    // _mainGV = new Ui::GraphicsView( this );
 		    _mainGV->setStyleSheet("background: white; border: transparent;");
@@ -96,7 +99,8 @@ namespace Ui {
 	    }
 	    
 	    template <class T1, class T2> void _createDockWindows ( T1 *__setPtr = NULL, T2 *__interactPtr = NULL ){
-	    	
+
+
 	    	// setting
 		    _settingsDock = new QDockWidget(tr("Setting"), this );
 		    _settingsDock->setAllowedAreas( Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
@@ -135,19 +139,18 @@ namespace Ui {
             QLabel *checklistTitle = new QLabel("Available Paths:", _pathInfoWidget);
             pathLayout->addWidget(checklistTitle);
 
-// Create the checklist
+// Create the checklist (empty for now)
             QListWidget *checklist = new QListWidget(_pathInfoWidget);
+            _pathChecklist = checklist;
+            _pathChecklist->setEnabled(false);
+            pathLayout->addWidget(_pathChecklist);
 
-// Example items (you can fill from your data)
-            QStringList paths = { "Local Paths ", "Global Paths" };
+            tabWidget->addTab(_pathInfoWidget, tr("Path Info"));
 
-            for (const QString &path : paths) {
-                QListWidgetItem *item = new QListWidgetItem(path, checklist);
-                item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
-                item->setCheckState(Qt::Unchecked);
-            }
+//// Fire your filter on user changes
+//            connect(checklist, &QListWidget::itemChanged,
+//                    this, &MainWindow::onPathFilterChanged);
 
-            pathLayout->addWidget(checklist);
 
 
             tabWidget->addTab(_pathInfoWidget, tr("Path Info"));
@@ -155,6 +158,7 @@ namespace Ui {
             _settingsDock->setWidget(tabWidget);
             addDockWidget(Qt::RightDockWidgetArea, _settingsDock);
             _viewMenu->addAction(_settingsDock->toggleViewAction());
+
 
 // Create the dock and set the tab widget as its content
 //            _settingsDock = new QDockWidget(tr("Settings and Info"), this);
@@ -165,8 +169,8 @@ namespace Ui {
 //
 //            addDockWidget(Qt::RightDockWidgetArea, _settingsDock );
 //		    _viewMenu->addAction(_settingsDock->toggleViewAction() );
-		
-		
+
+
 //		    // interaction
 //		    _interactionDock = new QDockWidget(tr("Legend"), this );
 //		    _interactionDock->setAllowedAreas( Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
@@ -214,7 +218,8 @@ namespace Ui {
             _interaction->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
 // Let it draw legend internally
-            _interaction->init(_basePtr);  // This calls _draw_legend() internally
+            //_interaction->init(_basePtr);  // This calls _draw_legend() internally
+
             QScrollArea *scrollArea = new QScrollArea;
             scrollArea->setWidget(_interaction);  // SizeTreeGraphicsView
             scrollArea->setWidgetResizable(true);
@@ -230,7 +235,39 @@ namespace Ui {
             addDockWidget(Qt::RightDockWidgetArea, _interactionDock);
             _viewMenu->addAction(_interactionDock->toggleViewAction());
 
+            auto rebuild = [this]() {
+                if (!_interaction) return;
 
+                _interaction->init(_basePtr);              // now safe (data exists)
+                auto* scene = _interaction->scene();
+                if (!scene) return;
+
+                // Scrape legend labels
+                QSet<QString> labels;
+                for (QGraphicsItem* gi : scene->items()) {
+                    if (auto* ti = qgraphicsitem_cast<QGraphicsTextItem*>(gi)) {
+                        const QString s = ti->toPlainText().trimmed();
+                        if (!s.isEmpty()) labels.insert(s);
+                    }
+                }
+                QStringList names(labels.begin(), labels.end());
+                std::sort(names.begin(), names.end(),
+                          [](const QString& a, const QString& b){ return a.localeAwareCompare(b) < 0; });
+
+                _pathChecklist->blockSignals(true);
+                _pathChecklist->clear();
+                for (const QString& name : names) {
+                    auto* it = new QListWidgetItem(name, _pathChecklist);
+                    it->setFlags(it->flags() | Qt::ItemIsUserCheckable);
+                    it->setCheckState(Qt::Checked);        // show all initially
+                }
+                _pathChecklist->blockSignals(false);
+                _pathChecklist->setEnabled(!names.isEmpty());
+
+
+            };
+            connect(_mainGV, &GraphicsView::dataInitialized, this, [this, rebuild]{ rebuild(); });
+            connect(_mainGV, &GraphicsView::dataChanged,    this, [this, rebuild]{ rebuild(); });
 
 //	        connect( _setting, &QWidget::windowIconChanged, this, &MainWindow::_updateSetting );
 //	        connect( _interaction, &QWidget::windowIconChanged, this, &MainWindow::_updateInteraction );
@@ -294,6 +331,7 @@ namespace Ui {
         void _updateSetting     ( const QString &setting );
         void _updateInteraction ( const QString &interaction );
         void _updateAllDocks    ( void );
+
         
     public slots:
     	

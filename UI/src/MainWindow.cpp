@@ -14,6 +14,9 @@
 
 
 #include "MainWindow.h"
+#include <QGraphicsTextItem>
+//#include "../../ResponsiveLens/ui/TreemapGraphicsView.h"
+
 
 namespace Ui {
 	
@@ -275,6 +278,8 @@ namespace Ui {
         _updateInteraction( "" );
 //        cerr << "update docks..." << endl;
     }
+
+
 
     //------------------------------------------------------------------------------
     //	Public functions
