@@ -14,6 +14,9 @@
 
 
 #include "MainWindow.h"
+#include <QGraphicsTextItem>
+//#include "../../ResponsiveLens/ui/TreemapGraphicsView.h"
+
 
 namespace Ui {
 	
@@ -171,6 +174,7 @@ namespace Ui {
 //	    //    connect(interaction, &QWidget::windowIconChanged, this, &MainWindow::updateInteraction );
 //    }
 
+
     void MainWindow::setSettings(QWidget* settingsWidget) 
     {
     }
@@ -208,7 +212,8 @@ namespace Ui {
 	//
 	void MainWindow::_initInteraction( const QString &interaction )
 	{
-		_interaction->initSceneItems();
+		//
+         _interaction->initSceneItems();
 		if( interaction.isEmpty() ) return;
 	}
 	
@@ -273,6 +278,8 @@ namespace Ui {
         _updateInteraction( "" );
 //        cerr << "update docks..." << endl;
     }
+
+
 
     //------------------------------------------------------------------------------
     //	Public functions
