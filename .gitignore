@@ -1,0 +1,6 @@
+# Ignore system dependent folders
+*build*/
+.*/
+ResponsiveLens/
+thirdparty/
+third_party/

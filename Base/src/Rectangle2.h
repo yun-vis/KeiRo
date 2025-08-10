@@ -75,9 +75,9 @@ namespace Base {
         // initialize all coordinates to zero
         void _init( void );
         void _clear( void );
-
         void _reset( void );
         void _setFixed( void );
+
     public:
 
         //------------------------------------------------------------------------------
@@ -158,7 +158,6 @@ namespace Base {
         // initialization
         void init( void ) { _init(); }
 	    void clear( void ) { _clear(); }
-
         void reset( void ) { _reset(); }
         void setFixed( void ) { _setFixed(); }
         bool isInside( Coord2 c );

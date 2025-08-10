@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC -g -shared -Wl,-soname,libKeiRoGeometry.so.1 -o libKeiRoGeometry.so.1.0 CMakeFiles/KeiRoGeometry.dir/src/Voronoi.cpp.o  -lgmp -lmpfr /usr/lib/x86_64-linux-gnu/libgmpxx.so /usr/lib/x86_64-linux-gnu/libmpfr.so /usr/lib/x86_64-linux-gnu/libgmp.so 
