@@ -52,13 +52,13 @@ void Coord2::_init( void )
     _inLocalMove = false;
 }
 
-        void Coord2::_reset( void )
-        {
-            _oldElement[ 0 ] = _element[ 0 ];
-            _oldElement[ 1 ] = _element[ 1 ];
-            _element[ 0 ] = _fixedElement[ 0 ];
-            _element[ 1 ] = _fixedElement[ 1 ];
-        }
+void Coord2::_reset( void )
+{
+    _oldElement[ 0 ] = _element[ 0 ];
+    _oldElement[ 1 ] = _element[ 1 ];
+    _element[ 0 ] = _fixedElement[ 0 ];
+    _element[ 1 ] = _fixedElement[ 1 ];
+}
 
 //------------------------------------------------------------------------------
 //	Public functions
@@ -94,8 +94,8 @@ Coord2::Coord2()
 //
 Coord2::Coord2( const double x, const double y )
 {
-	_oldElement[ 0 ] = _element[ 0 ]	= x;
-	_oldElement[ 1 ] = _element[ 1 ]	= y;
+	_oldElement[ 0 ] = _fixedElement[0] = _element[ 0 ]	= x;
+	_oldElement[ 1 ] = _fixedElement[1] = _element[ 1 ]	= y;
 	_inLocalMove = false;
 }
 
@@ -114,7 +114,6 @@ Coord2::Coord2( const Coord2 & v )
 	_oldElement[ 1 ]	= v._oldElement[ 1 ];
     _element[ 0 ]	= v._element[ 0 ];
     _element[ 1 ]	= v._element[ 1 ];
-
     _fixedElement[ 0 ]	= v._fixedElement[ 0 ];
     _fixedElement[ 1 ]	= v._fixedElement[ 1 ];
     _inLocalMove = false;

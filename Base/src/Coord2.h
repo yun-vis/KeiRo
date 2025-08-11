@@ -73,10 +73,9 @@ class Coord2 {
 //------------------------------------------------------------------------------
     void		init( void )		{ _init(); }
     void		zero( void )		{ _init(); }
-
 				// initialze all the coordinates to zero
     void		reset( void )		{ _reset(); }
-    // reset all the coordinates to initial coordinatesZ
+                // reset all the coordinates to initial coordinatesZ
     const double &	operator [] ( int i ) const;
     double &		operator [] ( int i );
 				// reference to a specific coordinate
@@ -102,6 +101,7 @@ class Coord2 {
     const double &	fixedX( void ) const	{ return _fixedElement[ 0 ]; }
     double &	fixedY( void ) 	{ return _fixedElement[ 1 ]; }
     const double &	fixedY( void ) const	{ return _fixedElement[ 1 ]; }
+
 //------------------------------------------------------------------------------
 //	Special functions
 //------------------------------------------------------------------------------
