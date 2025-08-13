@@ -581,6 +581,176 @@ namespace FileIO {
         }
     }
 
+	//
+	//  GraphML::seamCarvingLayout --	seam carving layout to avoid node overlaps
+	//
+	//  Input
+	//	none
+	//
+	//  Output
+	//	none
+	//
+	void GraphML::seamCarvingLayout(int fontSize) {
+		QFont font;
+		font.setPointSize(fontSize);
+		QFontMetrics fm(font);
+
+		// leaf nodes
+		// update the coordinates
+		for (map<unsigned int, Graph::BaseUndirectedGraph>::iterator it = _subGraphMap.begin();
+			 it != _subGraphMap.end(); it++) {
+
+			unsigned int parentID = it->first;
+			Graph::BaseUndirectedGraph *subGPtr = &it->second;
+			double minXOld = INFINITY, minYOld = INFINITY, maxXOld = -INFINITY, maxYOld = -INFINITY;
+			double minXNew = INFINITY, minYNew = INFINITY, maxXNew = -INFINITY, maxYNew = -INFINITY;
+
+			// calculate the old bounding box
+			// iterate edge sample points
+			BGL_FORALL_EDGES(ed, *subGPtr, Graph::BaseUndirectedGraph) {
+					KeiRo::Base::Edge2 &edge = (*subGPtr)[ed].edge;
+					for (unsigned int i = 0; i < edge.elements().size(); i++) {
+						KeiRo::Base::Coord2 &coord = edge.elements()[i];
+
+						if (minXOld > coord.x()) minXNew = minXOld = coord.x();
+						if (minYOld > coord.y()) minYNew = minYOld = coord.y();
+						if (maxXOld < coord.x()) maxXNew = maxXOld = coord.x();
+						if (maxYOld < coord.y()) maxYNew = maxYOld = coord.y();
+					}
+				}
+			// iterate vertices
+			BGL_FORALL_VERTICES(vd, *subGPtr, Graph::BaseUndirectedGraph) {
+
+					KeiRo::Base::Coord2 &coord = *(*subGPtr)[vd].coordPtr;
+
+					if (minXOld > coord.x()) minXNew = minXOld = coord.x();
+					if (minYOld > coord.y()) minYNew = minYOld = coord.y();
+					if (maxXOld < coord.x()) maxXNew = maxXOld = coord.x();
+					if (maxYOld < coord.y()) maxYNew = maxYOld = coord.y();
+				}
+
+			// find the overlapped nodes and adjust node and edge positions
+			BGL_FORALL_VERTICES(vdO, *subGPtr, Graph::BaseUndirectedGraph) {
+
+					KeiRo::Base::Rectangle2 bboxO;
+					bboxO.leftBottom().x() = (*subGPtr)[vdO].coordPtr->x();
+					bboxO.leftBottom().y() = (*subGPtr)[vdO].coordPtr->y();
+					bboxO.width() = fm.width(QString::fromStdString(*(*subGPtr)[vdO].namePtr));
+					bboxO.height() = fm.height();
+
+					BGL_FORALL_VERTICES(vdI, *subGPtr, Graph::BaseUndirectedGraph) {
+
+							if ((*subGPtr)[vdI].id < (*subGPtr)[vdO].id) {
+								KeiRo::Base::Rectangle2 bboxI;
+								bboxI.leftBottom().x() = (*subGPtr)[vdI].coordPtr->x();
+								bboxI.leftBottom().y() = (*subGPtr)[vdI].coordPtr->y();
+								bboxI.width() = fm.width(QString::fromStdString(*(*subGPtr)[vdI].namePtr));
+								bboxI.height() = fm.height();
+
+								double overlappedWidth = 0.0, overlappedHeight = 0.0;
+								bool isOverlapped = bboxO.isOverlap(bboxI, overlappedWidth, overlappedHeight);
+
+								if (isOverlapped) {
+#ifdef DEBUG
+									cerr << "parentID = " << parentID
+										 << " nameO = " << *(*subGPtr)[vdO].namePtr
+										 << " name1 = " << *(*subGPtr)[vdI].namePtr
+										 << ", overlappedWidth = " << overlappedWidth << ", overlappedHeight = "
+										 << overlappedHeight << endl;
+#endif // DEBUG
+									// update coordinates
+									KeiRo::Base::Coord2 center(
+											(*(*subGPtr)[vdI].coordPtr + *(*subGPtr)[vdO].coordPtr) / 2.0);
+
+									BGL_FORALL_EDGES(ed, *subGPtr, Graph::BaseUndirectedGraph) {
+											KeiRo::Base::Edge2 &edge = (*subGPtr)[ed].edge;
+											for (unsigned int i = 0; i < edge.elements().size(); i++) {
+
+												KeiRo::Base::Coord2 &coord = edge.elements()[i];
+												// extend horizontally
+												if (coord.x() > center.x()) {
+													coord.fixedX() = coord.x() = coord.x() + 0.5 * overlappedWidth;
+												} else {
+													coord.fixedX() = coord.x() = coord.x() - 0.5 * overlappedWidth;
+												}
+												// extend vertically
+												if (coord.y() > center.y()) {
+													coord.fixedY() = coord.y() = coord.y() + 0.5 * overlappedHeight;
+												} else {
+													coord.fixedY() = coord.y() = coord.y() - 0.5 * overlappedHeight;
+												}
+												coord.updateOldElement();
+
+												// calculate the new bounding box
+												if (minXNew > coord.x()) minXNew = coord.x();
+												if (minYNew > coord.y()) minYNew = coord.y();
+												if (maxXNew < coord.x()) maxXNew = coord.x();
+												if (maxYNew < coord.y()) maxYNew = coord.y();
+											}
+										}
+									BGL_FORALL_VERTICES(vd, *subGPtr, Graph::BaseUndirectedGraph) {
+
+											KeiRo::Base::Coord2 &coord = *(*subGPtr)[vd].coordPtr;
+											// extend horizontally
+											if (coord.x() > center.x()) {
+												coord.fixedX() = coord.x() = coord.x() + 0.5 * overlappedWidth;
+											} else {
+												coord.fixedX() = coord.x() = coord.x() - 0.5 * overlappedWidth;
+											}
+											// extend vertically
+											if (coord.y() > center.y()) {
+												coord.fixedY() = coord.y() = coord.y() + 0.5 * overlappedHeight;
+											} else {
+												coord.fixedY() = coord.y() = coord.y() - 0.5 * overlappedHeight;
+											}
+											coord.updateOldElement();
+
+											// calculate the new bounding box
+											if (minXNew > coord.x()) minXNew = coord.x();
+											if (minYNew > coord.y()) minYNew = coord.y();
+											if (maxXNew < coord.x()) maxXNew = coord.x();
+											if (maxYNew < coord.y()) maxYNew = coord.y();
+										}
+								}
+							}
+						}
+				}
+
+			// rescale based on the bounding box
+			BGL_FORALL_EDGES(ed, *subGPtr, Graph::BaseUndirectedGraph) {
+					KeiRo::Base::Edge2 &edge = (*subGPtr)[ed].edge;
+					for (unsigned int i = 0; i < edge.elements().size(); i++) {
+						KeiRo::Base::Coord2 &coord = edge.elements()[i];
+
+						if ((maxXNew - minXNew) != 0) {
+							coord.fixedX() = coord.x() =
+									(coord.x() - minXNew) / (maxXNew - minXNew) * (maxXOld - minXOld) + minXOld;
+						}
+						if ((maxYNew - minYNew) != 0) {
+							coord.fixedY() = coord.y() =
+									(coord.y() - minYNew) / (maxYNew - minYNew) * (maxYOld - minYOld) + minYOld;
+						}
+						coord.updateOldElement();
+					}
+				}
+			// iterate vertices
+			BGL_FORALL_VERTICES(vd, *subGPtr, Graph::BaseUndirectedGraph) {
+
+					KeiRo::Base::Coord2 &coord = *(*subGPtr)[vd].coordPtr;
+
+					if ((maxXNew - minXNew) != 0) {
+						coord.fixedX() = coord.x() =
+								(coord.x() - minXNew) / (maxXNew - minXNew) * (maxXOld - minXOld) + minXOld;
+					}
+					if ((maxYNew - minYNew) != 0) {
+						coord.fixedY() = coord.y() =
+								(coord.y() - minYNew) / (maxYNew - minYNew) * (maxYOld - minYOld) + minYOld;
+					}
+					coord.updateOldElement();
+				}
+		}
+	}
+
     //
 	//  GraphML::normalize --	normalize the data
 	//
@@ -627,7 +797,7 @@ namespace FileIO {
         // update the coordinates
 		for( map< unsigned int, Graph::BaseUndirectedGraph >::iterator it = _subGraphMap.begin();
 		     it != _subGraphMap.end(); it++ ){
-			
+
 			unsigned int parentID = it->first;
 			Graph::BaseUndirectedGraph *subGPtr = &it->second;
 			
@@ -731,7 +901,9 @@ namespace FileIO {
 	
     	// load edges
 	    loadEdge( graphElement );
+//		Only for metabopolis data
 		alignNodes();
+		seamCarvingLayout(8);
 //		alignDegreeOneNodes();
 
 		// nomalization

@@ -3,6 +3,8 @@
 
 #include <QtXml/QDomDocument>
 #include <QtCore/QFile>
+#include <QtGui/QFont>
+#include <QtGui/QFontMetrics>
 
 #include <iostream>
 #include <sstream>
@@ -99,6 +101,7 @@ namespace FileIO {
         void loadEdge( QDomElement & graphElement );
         void alignNodes( void );
 		void alignDegreeOneNodes( void );
+		void seamCarvingLayout( int fontSize );
 		void normalize( void );
 		void computeGroupBoundary( void );
 	    void findNodesinSubGraphs( unsigned int idS, unsigned int idT,

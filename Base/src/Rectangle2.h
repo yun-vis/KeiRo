@@ -161,7 +161,8 @@ namespace Base {
         void reset( void ) { _reset(); }
         void setFixed( void ) { _setFixed(); }
         bool isInside( Coord2 c );
-	    bool isOverlap( Rectangle2 r, double &area );
+	    bool isOverlap( const Rectangle2 &r, double &area );
+		bool isOverlap( const Rectangle2 &r, double &overlappedWidth, double &overlappedHeight );
 	    void updateOldElement( void );
 	    void updateIntermediateElement( Coord2 & c, double width, double height );
 	    void updateUnshrunkElement( Coord2 & c, double width, double height );

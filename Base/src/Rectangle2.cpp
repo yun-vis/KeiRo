@@ -225,11 +225,12 @@ namespace Base {
 	//
 	//  Inputs
 	//  Rectangle2 r
+	//  double area
 	//
 	//  Outputs
-	//  none
+	//  isoverlapped
 	//
-	bool Rectangle2::isOverlap( Rectangle2 r, double &area )
+	bool Rectangle2::isOverlap( const Rectangle2 &r, double &area )
 	{
     	area = 0.0;
     	
@@ -240,6 +241,28 @@ namespace Base {
 		area = w*h;
 
 		if( area > 0.0 ) return true;
+		else return false;
+	}
+
+	//
+	//  Polygon2::isOverlap -- check if the two rectangle overlapped
+	//
+	//  Inputs
+	//  Rectangle2 r
+	//  double overlappedWidth
+	//  double overlappedHeight
+	//
+	//  Outputs
+	//  isOverlapped
+	//
+	bool Rectangle2::isOverlap( const Rectangle2 &r, double &overlappedWidth, double &overlappedHeight )
+	{
+		Coord2 ci = _leftBottom + Coord2( 0.5*_width, 0.5*_height );
+		Coord2 cj = r._leftBottom + Coord2( 0.5*r._width, 0.5*r._height );
+		overlappedWidth = MAX2( 0.0, MIN2( 0.5*(_width+r._width)-fabs(ci.x()-cj.x()), MIN2( _width, r._width )) );
+		overlappedHeight = MAX2( 0.0, MIN2( 0.5*(_height+r._height)-fabs(ci.y()-cj.y()), MIN2( _height, r._height )) );
+
+		if( overlappedWidth * overlappedHeight > 0.0 ) return true;
 		else return false;
 	}
 	
