@@ -475,7 +475,7 @@ namespace FileIO {
 
 				Graph::BaseUndirectedGraph::out_edge_iterator e, e_end;
 
-				for (tie(e, e_end) = out_edges(vd, *subGPtr); e != e_end; ++e) {
+					for (tie(e, e_end) = out_edges(vd, *subGPtr); e != e_end; ++e) {
 
 					Graph::BaseUndirectedGraph::edge_descriptor ed = *e;
 					Graph::BaseUndirectedGraph::vertex_descriptor vdT = target(ed, *subGPtr);
@@ -502,16 +502,19 @@ namespace FileIO {
 				}
 
 				// calculate the average coordinates
-				for( unsigned int i = 0; i < coordVec.size(); i++ ){
-					coordAvg.x() += coordVec[i].x();
-					coordAvg.y() += coordVec[i].y();
-				}
-				coordAvg.x() /= (double) coordVec.size();
-				coordAvg.y() /= (double) coordVec.size();
+				if (coordVec.size() > 0) {
+					for (unsigned int i = 0; i < coordVec.size(); i++) {
+						cerr << coordVec[i];
+						coordAvg.x() += coordVec[i].x();
+						coordAvg.y() += coordVec[i].y();
+					}
+					coordAvg.x() /= (double) coordVec.size();
+					coordAvg.y() /= (double) coordVec.size();
 
-				// assign the new coordinates
-				(*subGPtr)[vd].coordPtr->x() = coordAvg.x();
-				(*subGPtr)[vd].coordPtr->y() = coordAvg.y();
+					// assign the new coordinates
+					(*subGPtr)[vd].coordPtr->x() = coordAvg.x();
+					(*subGPtr)[vd].coordPtr->y() = coordAvg.y();
+				}
 			}
 		}
 	}
