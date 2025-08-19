@@ -163,7 +163,7 @@ namespace Ui{
         
     Q_SIGNALS:
 	
-	    virtual void dataInitialized() = 0;
+	    void dataInitialized() ;
 	    virtual void dataChanged() = 0;
      
     public Q_SLOTS:

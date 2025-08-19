@@ -47,13 +47,16 @@ namespace Ui {
         Q_OBJECT
 
     private:
-	
+        QSet<unsigned int>                          _activeTargetIDs;     // currently checked target IDs
+        std::vector<unsigned int>                   _filteredPathIDs;
+
 	    KeiRo::Base::Base                           *_basePtr;
 	    
         // setup timer
 	    QTimer                                      *_timerptr;
 	    
     private:
+
 
         GraphicsView                                *_mainGV;
 	    QDockWidget                                 *_settingsDock;
@@ -141,9 +144,16 @@ namespace Ui {
 
 // Create the checklist (empty for now)
             QListWidget *checklist = new QListWidget(_pathInfoWidget);
+
             _pathChecklist = checklist;
+            _pathChecklist->setObjectName("pathChecklist");
             _pathChecklist->setEnabled(false);
             pathLayout->addWidget(_pathChecklist);
+
+//            connect(_pathChecklist, &QListWidget::itemChanged,
+//                    this, &MainWindow::onPathFilterChanged);
+            connect(_pathChecklist, &QListWidget::itemChanged,
+                    this, &MainWindow::onPathFilterChanged);
 
             tabWidget->addTab(_pathInfoWidget, tr("Path Info"));
 
@@ -153,7 +163,7 @@ namespace Ui {
 
 
 
-            tabWidget->addTab(_pathInfoWidget, tr("Path Info"));
+
             // ---------- Finalize dock ----------
             _settingsDock->setWidget(tabWidget);
             addDockWidget(Qt::RightDockWidgetArea, _settingsDock);
@@ -199,6 +209,9 @@ namespace Ui {
 
             _interaction = __interactPtr;  // This is already a SizeTreeGraphicsView* passed in
 
+
+
+
 //            _interaction->setGeometry(QRect(0, 0,
 //                                            KeiRo::Base::Common::getDockWidgetWidth(),
 //                                            KeiRo::Base::Common::getDockWidgetWidth() *
@@ -238,31 +251,37 @@ namespace Ui {
             auto rebuild = [this]() {
                 if (!_interaction) return;
 
-                _interaction->init(_basePtr);              // now safe (data exists)
+                _interaction->init(_basePtr);
                 auto* scene = _interaction->scene();
                 if (!scene) return;
 
-                // Scrape legend labels
-                QSet<QString> labels;
-                for (QGraphicsItem* gi : scene->items()) {
-                    if (auto* ti = qgraphicsitem_cast<QGraphicsTextItem*>(gi)) {
-                        const QString s = ti->toPlainText().trimmed();
-                        if (!s.isEmpty()) labels.insert(s);
-                    }
-                }
-                QStringList names(labels.begin(), labels.end());
-                std::sort(names.begin(), names.end(),
-                          [](const QString& a, const QString& b){ return a.localeAwareCompare(b) < 0; });
-
-                _pathChecklist->blockSignals(true);
-                _pathChecklist->clear();
-                for (const QString& name : names) {
-                    auto* it = new QListWidgetItem(name, _pathChecklist);
-                    it->setFlags(it->flags() | Qt::ItemIsUserCheckable);
-                    it->setCheckState(Qt::Checked);        // show all initially
-                }
-                _pathChecklist->blockSignals(false);
-                _pathChecklist->setEnabled(!names.isEmpty());
+// *********** I added this to the draw legend
+//                QSet<QString> labels;
+//                for (QGraphicsItem* gi : scene->items()) {
+//                    if (auto* ti = qgraphicsitem_cast<QGraphicsTextItem*>(gi)) {
+//                        const QString s = ti->toPlainText().trimmed();
+//                        if (!s.isEmpty()) labels.insert(s);
+//                    }
+//                }
+//                QStringList names(labels.begin(), labels.end());
+//                std::sort(names.begin(), names.end(),
+//                          [](const QString& a, const QString& b){ return a.localeAwareCompare(b) < 0; });
+//
+//                _pathChecklist->blockSignals(true);
+//                _pathChecklist->clear();
+//
+//
+//                for (const QString& name : names) {
+//                    auto* it = new QListWidgetItem(name, _pathChecklist);
+//                    it->setFlags(it->flags() | Qt::ItemIsUserCheckable);
+//                    it->setCheckState(Qt::Checked);  // show initially
+//
+//
+//
+//                }
+//                _pathChecklist->blockSignals(false);
+//                _pathChecklist->setEnabled(!names.isEmpty());
+//                qDebug() << "Scene items: " << _interaction->scene()->items().size();
 
 
             };
@@ -275,6 +294,7 @@ namespace Ui {
 
         void setSettings(QWidget* settingsWidget);
 	    void setInteraction(QWidget* interactionWidget);
+
 
     protected:
 
@@ -331,8 +351,11 @@ namespace Ui {
         void _updateSetting     ( const QString &setting );
         void _updateInteraction ( const QString &interaction );
         void _updateAllDocks    ( void );
+        //void updateChecklist(const QMap<QString, unsigned int>& labelToIdMap);
+        void onPathFilterChanged(QListWidgetItem* item);
 
-        
+
+
     public slots:
     	
 	    void exportPNG( void );

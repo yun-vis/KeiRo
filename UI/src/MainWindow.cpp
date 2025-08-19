@@ -15,6 +15,8 @@
 
 #include "MainWindow.h"
 #include <QGraphicsTextItem>
+
+
 //#include "../../ResponsiveLens/ui/TreemapGraphicsView.h"
 
 
@@ -113,6 +115,11 @@ namespace Ui {
 		
 		connect( _mainGV, SIGNAL( dataInitialized() ), this, SLOT( _initAllDocks() ) );
         connect( _mainGV, SIGNAL( dataChanged() ), this, SLOT( _updateAllDocks() ) );
+
+
+
+
+
     }
 
     //
@@ -214,6 +221,7 @@ namespace Ui {
 	{
 		//
          _interaction->initSceneItems();
+
 		if( interaction.isEmpty() ) return;
 	}
 	
@@ -230,6 +238,7 @@ namespace Ui {
 	{
 		_initSetting( "" );
 		_initInteraction( "" );
+
 //		cerr << "init docks..." << endl;
 	}
 	
@@ -486,5 +495,51 @@ namespace Ui {
        QMessageBox::about(this, tr("About KeiRo"),
                 tr( "Map-based biological pathway diagram"));
     }
-	
+    // MainWindow.cpp
+    void MainWindow::onPathFilterChanged(QListWidgetItem*)
+    {
+        qDebug() << "onPathFilterChanged fired";
+
+        if (!_pathChecklist) { qWarning() << "_pathChecklist is null"; return; }
+        qDebug() << "signalsBlocked=" << _pathChecklist->signalsBlocked()
+                 << " count=" << _pathChecklist->count();
+
+        // Gather checked IDs + print what we see
+        QList<uint> ids;
+        ids.reserve(_pathChecklist->count());
+
+        for (int i = 0; i < _pathChecklist->count(); ++i) {
+            auto* it = _pathChecklist->item(i);
+            if (!it) { qWarning() << "[i" << i << "] null item"; continue; }
+
+            const bool checked = (it->checkState() == Qt::Checked);
+            const QVariant vId = it->data(Qt::UserRole);
+            qDebug() << "[i" << i << "]"
+                     << "text=" << it->text()
+                     << "checked=" << checked
+                     << "userRoleValid=" << vId.isValid()
+                     << "id=" << vId;
+
+            if (checked) ids.push_back(vId.toUInt());
+        }
+
+        qDebug() << "IDs to send =" << ids;
+
+        // Send to the treemap view (Q_INVOKABLE version, no header needed)
+        const bool ok = QMetaObject::invokeMethod(
+                _mainGV, "setActiveTargetIDsList",
+                Q_ARG(QList<uint>, ids)
+        );
+        qDebug() << "invokeMethod setActiveTargetIDsList ok? " << ok
+                 << "  sender class =" << _mainGV->metaObject()->className();
+
+        if (!ok) {
+            qWarning() << "Ensure TreemapGraphicsView has: Q_INVOKABLE void setActiveTargetIDsList(const QList<uint>&)";
+        }
+    }
+
+
+
+
+
 } // namespace Ui
