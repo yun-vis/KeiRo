@@ -132,13 +132,13 @@ namespace Ui {
             QWidget *_pathInfoWidget = new QWidget;
             QVBoxLayout *pathLayout = new QVBoxLayout(_pathInfoWidget);
 
-            // Example labels (replace with dynamic content if needed)
+
             QLabel *pathLabel = new QLabel("Path information will be here: ", _pathInfoWidget);
 
             pathLayout->addWidget(pathLabel);
             //pathLayout->addStretch(); // Push contents to the top
 
-            // Optional: title label
+
             QLabel *checklistTitle = new QLabel("Available Paths:", _pathInfoWidget);
             pathLayout->addWidget(checklistTitle);
 
@@ -230,8 +230,8 @@ namespace Ui {
             _interaction->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
             _interaction->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
-// Let it draw legend internally
-            //_interaction->init(_basePtr);  // This calls _draw_legend() internally
+
+            //_interaction->init(_basePtr);  // This calls _draw_legend()
 
             QScrollArea *scrollArea = new QScrollArea;
             scrollArea->setWidget(_interaction);  // SizeTreeGraphicsView
