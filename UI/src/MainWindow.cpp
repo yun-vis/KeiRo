@@ -15,6 +15,8 @@
 
 #include "MainWindow.h"
 #include <QGraphicsTextItem>
+#include <QComboBox>
+#include <QHBoxLayout>
 
 
 //#include "../../ResponsiveLens/ui/TreemapGraphicsView.h"

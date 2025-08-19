@@ -132,30 +132,89 @@ namespace Ui {
             QWidget *_pathInfoWidget = new QWidget;
             QVBoxLayout *pathLayout = new QVBoxLayout(_pathInfoWidget);
 
+            pathLayout->setContentsMargins(8,8,8,8);
+            pathLayout->setSpacing(8);
 
-            QLabel *pathLabel = new QLabel("Path information will be here: ", _pathInfoWidget);
 
-            pathLayout->addWidget(pathLabel);
+//            QLabel *pathLabel = new QLabel("Path information will be here: ", _pathInfoWidget);
+//
+//            pathLayout->addWidget(pathLabel);
             //pathLayout->addStretch(); // Push contents to the top
 
 
             QLabel *checklistTitle = new QLabel("Available Paths:", _pathInfoWidget);
+            checklistTitle->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
             pathLayout->addWidget(checklistTitle);
 
-// Create the checklist (empty for now)
-            QListWidget *checklist = new QListWidget(_pathInfoWidget);
+            // Horizontal separator
+            auto *sepTop = new QFrame(_pathInfoWidget);
+            sepTop->setFrameShape(QFrame::HLine);
+            sepTop->setFrameShadow(QFrame::Sunken);
+            sepTop->setLineWidth(1);
+            pathLayout->addWidget(sepTop);
 
-            _pathChecklist = checklist;
+
+
+            // Panel containing: filter row + (optional line) + checklist
+            auto *panel = new QWidget(_pathInfoWidget);
+            auto *vbox  = new QVBoxLayout(panel);
+            vbox->setContentsMargins(0,0,0,0);
+            vbox->setSpacing(8);
+
+// Filter row
+            auto *row  = new QHBoxLayout;
+            row->setContentsMargins(0,0,0,0);
+            row->setSpacing(8);
+
+
+            auto *lbl  = new QLabel("Filter by:", panel);
+            auto *mode = new QComboBox(panel);
+            mode->setObjectName("pathFilterModeCombo");
+            mode->addItem("Target");
+            mode->addItem("Source");
+
+            row->addWidget(lbl);
+            row->addStretch();
+            row->addWidget(mode, 0);
+            vbox->addLayout(row);
+
+            auto *sepMid = new QFrame(panel);
+            sepMid->setFrameShape(QFrame::HLine);
+            sepMid->setFrameShadow(QFrame::Sunken);
+            sepMid->setLineWidth(1);
+            vbox->addWidget(sepMid);
+
+// Checklist
+
+
+            _pathChecklist = new QListWidget(panel);
             _pathChecklist->setObjectName("pathChecklist");
             _pathChecklist->setEnabled(false);
-            pathLayout->addWidget(_pathChecklist);
+            vbox->addWidget(_pathChecklist);
+
+
+
+            panel->setLayout(vbox);
+            pathLayout->addWidget(panel);
+            connect(mode, QOverload<int>::of(&QComboBox::currentIndexChanged),
+                    this, [this](int idx){
+                        // 0 = Target, 1 = Source
+                        const bool ok = QMetaObject::invokeMethod(
+                                _mainGV, "setPathFilterMode", Q_ARG(int, idx));
+                        qDebug() << "[UI] mode changed to" << idx
+                                 << "invoke setPathFilterMode ok=" << ok;
+
+                        // re-apply current checks so paths are cleared/redrawn in that mode
+                        onPathFilterChanged(nullptr);
+                    },
+                    Qt::UniqueConnection);
 
 //            connect(_pathChecklist, &QListWidget::itemChanged,
 //                    this, &MainWindow::onPathFilterChanged);
             connect(_pathChecklist, &QListWidget::itemChanged,
                     this, &MainWindow::onPathFilterChanged);
 
-            tabWidget->addTab(_pathInfoWidget, tr("Path Info"));
+            tabWidget->addTab(_pathInfoWidget, tr("Paths Filter"));
 
 //// Fire your filter on user changes
 //            connect(checklist, &QListWidget::itemChanged,
